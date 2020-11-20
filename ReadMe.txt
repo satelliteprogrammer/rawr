@@ -1,3 +1,8 @@
+Rawr Beta 16.2
+------------
+16.2 is an iteration on the old 16.1b Rawr for TBC WoW. It is mostly focused on updating the Tankadin model, and has been updated to work on Visual Studio 19.
+
+
 Rawr Beta 16.1
 ------------
  Welcome to Rawr b16.1. This beta contains one new model, Rawr.Rogue! Let us know how it works. Additionally, this is expected to be our last version of Rawr aimed at WoW 2.x; all future Rawr development will focus on WoW 3.0, and WotLK. If you have any suggestions/requests for features/fixes in the new version of Rawr, now is the time to let us know! Post on our development site, http://codeplex.com/Rawr/.
