@@ -1485,14 +1485,6 @@ namespace Rawr
                 SetName = "Netherblade",
                 SetThreshold = 2
             });
-            defaultBuffs.Add(new Buff()
-            {
-                Name = "Netherblade 2 Piece Bonus",
-                Category = BuffCategory.SetBonuses,
-                Stats = new Stats() { BonusSnDDuration = 3f },
-                SetName = "Netherblade",
-                SetThreshold = 2
-            });
 
             defaultBuffs.Add(new Buff()
             {
