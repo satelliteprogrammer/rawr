@@ -85,7 +85,7 @@ namespace Rawr.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("http://www.wowarmory.com/images/icons/64x64/")]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://cdn.cavernoftime.com/tbc/icons/large/")]
         public string WoWItemIconURI {
             get {
                 return ((string)(this["WoWItemIconURI"]));
