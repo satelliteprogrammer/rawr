@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Text;
 
 namespace Rawr.Tankadin
@@ -7,10 +8,23 @@ namespace Rawr.Tankadin
     {
 
         private bool _loadingCalculationOptions;
+        private Dictionary<int, string> armorBosses = new Dictionary<int, string>();
 
         public CalculationOptionsPanelTankadin()
         {
             InitializeComponent();
+            armorBosses.Add(3800, "Shade of Aran");
+            armorBosses.Add(4700, "Roar");
+            armorBosses.Add(5500, "Netherspite");
+            armorBosses.Add(6100, "Julianne, Curator");
+            armorBosses.Add(6200, "Karathress, Vashj, Solarian, Kael'thas, Winterchill, Anetheron, Kaz'rogal, Azgalor, Archimonde, Teron, Shahraz");
+            armorBosses.Add(6700, "Maiden, Illhoof");
+            armorBosses.Add(7300, "Strawman");
+            armorBosses.Add(7500, "Attumen");
+            armorBosses.Add(7600, "Romulo, Nightbane, Malchezaar, Doomwalker");
+            armorBosses.Add(7700, "Hydross, Lurker, Leotheras, Tidewalker, Al'ar, Naj'entus, Supremus, Akama, Gurtogg");
+            armorBosses.Add(8200, "Midnight");
+            armorBosses.Add(8800, "Void Reaver");
         }
 
         protected override void LoadCalculationOptions()
@@ -31,6 +45,9 @@ namespace Rawr.Tankadin
             labelMitigationScale.Text = calcOpts.MitigationScale.ToString();
             labelTargetArmor.Text = calcOpts.TargetArmor.ToString();
             labelThreatScale.Text = calcOpts.ThreatScale.ToString();
+            checkBoxExorcism.Checked = calcOpts.Exorcism;
+            checkBoxRetAura.Checked = calcOpts.RetAura;
+            checkBoxJotC.Checked = calcOpts.JotC;
             _loadingCalculationOptions = false;
 
         }
@@ -109,6 +126,35 @@ namespace Rawr.Tankadin
             }
         }
 
+        private void checkBoxExorcism_CheckedChanged(object sender, EventArgs e)
+        {
+            if (!_loadingCalculationOptions)
+            {
+                CalculationOptionsTankadin calcOpts = Character.CalculationOptions as CalculationOptionsTankadin;
+                calcOpts.Exorcism = checkBoxExorcism.Checked;
+                Character.OnItemsChanged();
+            }
+        }
+
+        private void checkBoxRetAura_CheckedChanged(object sender, EventArgs e)
+        {
+            if (!_loadingCalculationOptions)
+            {
+                CalculationOptionsTankadin calcOpts = Character.CalculationOptions as CalculationOptionsTankadin;
+                calcOpts.RetAura = checkBoxRetAura.Checked;
+                Character.OnItemsChanged();
+            }
+        }
+
+        private void checkBoxJotC_CheckedChanged(object sender, EventArgs e)
+        {
+            if (!_loadingCalculationOptions)
+            {
+                CalculationOptionsTankadin calcOpts = Character.CalculationOptions as CalculationOptionsTankadin;
+                calcOpts.JotC = checkBoxJotC.Checked;
+                Character.OnItemsChanged();
+            }
+        }
     }
 
     [Serializable]
@@ -132,6 +178,9 @@ namespace Rawr.Tankadin
         public int TargetArmor = 6600;
         public int ThreatScale = 100;
         public int MitigationScale = 4000;
+        public bool Exorcism = false;
+        public bool RetAura = false;
+        public bool JotC = true;
     }
 
 }

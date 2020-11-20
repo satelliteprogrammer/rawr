@@ -39,6 +39,7 @@ namespace Rawr.Tankadin
                     "Basic Stats:Block",
                     "Basic Stats:Block Value",
                     "Basic Stats:Spell Damage",
+                    "Complex Stats:Hard Avoidance",
                     "Complex Stats:Avoidance",
                     "Complex Stats:Mitigation",
                     "Complex Stats:Total Mitigation",
@@ -67,7 +68,13 @@ you are being killed by burst damage, focus on Survival Points.",
                      "Threat:Seal of Right",
                      "Threat:Judgement of Right",
                      "Threat:Consecrate",
-                     "Threat:Misc"
+                     "Threat:Exorcism",
+                     "Threat:Retribution Aura",
+                     "Threat:Misc",
+                     "Ratings:Defense Rating",
+                     "Ratings:Dodge Rating",
+                     "Ratings:Parry Rating",
+                     "Ratings:Block Rating"
                 };
                 return _characterDisplayCalculationLabels;
             }
@@ -148,17 +155,17 @@ you are being killed by burst damage, focus on Survival Points.",
             //_cachedCharacter = character;
             int targetLevel = calcOpts.TargetLevel;
             Stats stats = GetCharacterStats(character, additionalItem);
+
             Talents talents = new Talents();
             float targetDefense = targetLevel * 5;
             CharacterCalculationsTankadin calculatedStats = new CharacterCalculationsTankadin();
             calculatedStats.BasicStats = stats;
             calculatedStats.TargetLevel = targetLevel;
 
-
             //Avoidance calculations
             calculatedStats.Defense = 350 + (float)Math.Floor(stats.DefenseRating / (123f / 52f)) + talents.Anticipation;
             calculatedStats.Miss = 5 + (calculatedStats.Defense - targetDefense) * .04f + stats.Miss;
-            calculatedStats.Dodge = Math.Min(100f - calculatedStats.Miss,
+            calculatedStats.Dodge += Math.Min(100f - calculatedStats.Miss,
                 (calculatedStats.Defense - targetDefense) * .04f +
                 stats.Agility / 25f +
                 (stats.DodgeRating / (984f / 52f)) +
@@ -171,12 +178,10 @@ you are being killed by burst damage, focus on Survival Points.",
             calculatedStats.Avoidance = calculatedStats.Dodge + calculatedStats.Miss + calculatedStats.Parry;
 
             calculatedStats.Block = 5 + (calculatedStats.Defense - targetDefense) * .04f + stats.BlockRating / 7.884614944458f;
-            calculatedStats.BlockValue = stats.BlockValue * talents.ShieldSpecializaiton;
+            calculatedStats.BlockValue = stats.BlockValue * talents.ShieldSpecialization * (1 + stats.BonusBlockValueMultiplier);
             calculatedStats.CrushAvoidance = calculatedStats.Avoidance + calculatedStats.Block + 30;
             calculatedStats.CritAvoidance = (calculatedStats.Defense - targetDefense) * .04f + stats.Resilience / 39.423f;
-            calculatedStats.Mitigation = Math.Min(75f, (stats.Armor / (stats.Armor - 22167.5f + (467.5f * targetLevel))) * 100f);
 
-            float reduction = (1f - (calculatedStats.Mitigation * .01f)) * .96f;
             float attacks = calcOpts.NumberAttackers / calcOpts.AttackSpeed * 10;
             //Apply armor and multipliers for each attack type...
             float miss = Math.Min(0.01f * attacks * calculatedStats.Avoidance, attacks);
@@ -186,8 +191,42 @@ you are being killed by burst damage, focus on Survival Points.",
             float crush = Math.Min((targetLevel == 73 ? .15f : 0f) * attacks, attacks - miss - block - crit);
             float hit = attacks - miss - block - crit - crush;
 
-            float modifier = talents.OneHandSpec * (1 + (.6f * talents.ImpRF));
+            if (stats.ArmorFor10SecOnHit > 0)
+            {
+                stats.Armor += (block + hit + crush + crit) * .02f * stats.ArmorFor10SecOnHit;
+            }
+
+            calculatedStats.Mitigation = Math.Min(75f, (stats.Armor / (stats.Armor - 22167.5f + (467.5f * targetLevel))) * 100f);
+            float reduction = (1f - (calculatedStats.Mitigation * .01f)) * .96f;
+
+            if (calcOpts.JotC)
+            {
+                stats.SpellDamageRating += 219;
+            }
+
+            // Tome of Fiery Redemption. It procs from virtually everything
+            if (stats.SpellDamageFor15SecOnCast45Sec > 0)
+            {
+                stats.SpellDamageRating += stats.SpellDamageFor15SecOnCast45Sec / 4f;  // 4 instead of 3.3 for conservative approach
+            }
+
+            float modifier = talents.OneHandSpec * (1 + (.6f * talents.ImpRF)) * (1 + stats.ThreatIncreaseMultiplier);
             calculatedStats.HolyShieldTPS = modifier * Math.Min(block, 8f) * 1.2f * 1.35f * (155 + .05f * stats.SpellDamageRating) / 10f;
+
+            calculatedStats.RetributionAuraTPS = 0;
+            if (calcOpts.RetAura)
+            {
+                if (calcOpts.AverageHit * reduction * Math.Max(1f - (calculatedStats.BlockValue / calcOpts.AverageHit / reduction), 0) > 0)
+                {
+                    calculatedStats.RetributionAuraTPS = (block + hit + crush + crit) * (21 + stats.BonusRetributionAura) * modifier / 10f;
+                }
+            }
+
+            calculatedStats.MiscTPS = 0;
+            if (stats.VengeanceProc > 0)
+            {
+                calculatedStats.MiscTPS += (block + hit + crush + crit) * (105 * .1f) * modifier / 10f;
+            }
 
             crit *= calcOpts.AverageHit * reduction * 2f;
             crush *= calcOpts.AverageHit * reduction * 1.5f;
@@ -196,15 +235,53 @@ you are being killed by burst damage, focus on Survival Points.",
             calculatedStats.DamageTaken = (hit + crush + crit + block) / (attacks * calcOpts.AverageHit) * 100;
             calculatedStats.TotalMitigation = 100f - calculatedStats.DamageTaken;
 
-            calculatedStats.SurvivalPoints = stats.Health / reduction;
+            calculatedStats.SurvivalPoints = stats.Health / reduction +
+                (stats.Health / (float)Math.Floor(calcOpts.AverageHit * reduction)) * calculatedStats.BlockValue;
             calculatedStats.MitigationPoints = calcOpts.MitigationScale * (1f * (1f / (calculatedStats.DamageTaken / 100f)));
-            float ws = character.MainHand == null ? 0 : character.MainHand.Speed;
+            float ws = character.MainHand == null ? 0 : character.MainHand.Speed / (1f + (stats.HasteRating / 1576f));
+            if (stats.MongooseProc > 0)
+            {
+                ws /= 1f + (.02f * .4f); // ASSUMPTION: Mongoose has a 40% uptime
+            }
             float wd = character.MainHand == null ? 0 : ((character.MainHand.MinDamage + character.MainHand.MaxDamage) / 2f);
-            calculatedStats.SoRTPS = ws == 0 ? 0 : ((0.85f * (2610.43f * ws / 100f) + 0.03f * wd - 1f + (0.108f * ws * stats.SpellDamageRating * ws)) / ws) * modifier;
-            calculatedStats.ConsecrateTPS = calcOpts.NumberAttackers * (512 + .9524f * stats.SpellDamageRating) / 8f * modifier;
-            calculatedStats.JoRTPS = (218f + stats.SpellDamageRating * .7143f) / 9f * modifier;
+
+            float chanceMiss = Math.Max(0f, .09f - stats.Hit - stats.HitRating / 1577f);
+            int expertise = (int)Math.Floor((stats.ExpertiseRating / 3.9423f) + stats.Expertise);
+            float chanceDodge = Math.Max(0f, 0.056f - expertise * 0.0025f);
+            float chanceParry = Math.Max(0f, 0.16f - expertise * 0.0025f);
+            float chanceAvoided = chanceMiss + chanceDodge + chanceParry;
+
+            float windProcRate = 0;
+            if (stats.WindfuryAPBonus > 0)
+            {
+                windProcRate = .2f / (1 + (3 - ws));
+            }
+
+            calculatedStats.SoRTPS = ws == 0 ? 0 : (
+                (0.85f * (2610.43f * ws / 100f) + 0.03f * wd - 1f + (0.092f * ws * stats.SpellDamageRating) + 0.714f * stats.BonusSoRJoR)
+                * (1 - chanceAvoided) * (1 + windProcRate) / ws
+                ) * modifier;
+            calculatedStats.ConsecrateTPS = calcOpts.NumberAttackers *
+                (1 + stats.ConsecrationMultiplier) *
+                (512 + .9524f * (stats.SpellDamageRating + 0.714f * stats.BonusConsecrationDamage))
+                / 10f * modifier;
+            calculatedStats.JoRTPS = Math.Max(.99f, 1 - .16f + stats.SpellHitRating / 1206) * (
+                stats.SpellCritRating / 2208 * 1.5f * (218f + stats.SpellDamageRating * .7143f + stats.BonusSoRJoR) +
+                (1 - stats.SpellCritRating / 2208) * (218f + stats.SpellDamageRating * .7143f + stats.BonusSoRJoR)
+                ) / 10f * modifier;
+
+            calculatedStats.ExorcismTPS = 0;
+            if (calcOpts.Exorcism)
+            {
+                calculatedStats.ExorcismTPS = Math.Max(.99f, 1 - .16f + stats.SpellHitRating / 1206) * (
+                    stats.SpellCritRating / 2208 * 1.5f * ((691f + 619f) / 2 + stats.SpellDamageRating * .428f) +
+                    (1 - stats.SpellCritRating / 2208) * ((691f + 619f) / 2 + stats.SpellDamageRating * .428f)
+                    ) / 20f * modifier;
+            }
+
             calculatedStats.OverallTPS = calculatedStats.SoRTPS + calculatedStats.JoRTPS +
-                calculatedStats.HolyShieldTPS + calculatedStats.ConsecrateTPS + calculatedStats.MiscTPS;
+                calculatedStats.HolyShieldTPS + calculatedStats.ConsecrateTPS + calculatedStats.RetributionAuraTPS +
+                calculatedStats.ExorcismTPS + calculatedStats.MiscTPS;
             calculatedStats.ThreatPoints = calculatedStats.OverallTPS * calcOpts.ThreatScale;
 
             calculatedStats.OverallPoints = calculatedStats.MitigationPoints + calculatedStats.SurvivalPoints + calculatedStats.ThreatPoints;
@@ -220,11 +297,21 @@ you are being killed by burst damage, focus on Survival Points.",
             Stats statsBuffs = GetBuffsStats(character.ActiveBuffs);
             Talents talents = new Talents();
 
+            float mongooseAgility = 0;
+            // ASSUMPTION: Mongoose has a 30% uptime (lower than tps calculations for conservative approach
+            if (statsEnchants.MongooseProc > 0)
+            {
+                mongooseAgility += 120f * 0.3f;
+            }
+
             Stats statsTotal = statsBaseGear + statsEnchants + statsBuffs + statsRace;
-            statsTotal.Agility = (float)Math.Floor(statsTotal.Agility * (1 + statsBuffs.BonusAgilityMultiplier));
+            statsTotal.Agility = (float)Math.Floor((statsTotal.Agility + mongooseAgility) * (1 + statsBuffs.BonusAgilityMultiplier));
             statsTotal.Stamina = (float)Math.Round(statsTotal.Stamina * (1 + statsBuffs.BonusStaminaMultiplier) * talents.SacredDuty * talents.CombatExpertise);
-            statsTotal.Health = (float)Math.Round(statsTotal.Health + (statsTotal.Stamina * 10));
+            statsTotal.Health = (float)(Math.Round(statsTotal.Health + (statsTotal.Stamina - 20) * 10) + 20);
             statsTotal.Armor = (float)Math.Round((statsTotal.Armor + (statsTotal.Agility * 2f)) * (1 + statsBuffs.BonusArmorMultiplier) * talents.Thoughness);
+            statsTotal.SpellDamageRating += statsTotal.SpellHolyDamageRating;
+            statsTotal.Hit += talents.Precision * 0.01f;
+            statsTotal.Expertise += (talents.CombatExpertise - 1f) / .02f;
             return statsTotal;
         }
 
@@ -249,12 +336,32 @@ you are being killed by burst damage, focus on Survival Points.",
                 BonusAgilityMultiplier = stats.BonusAgilityMultiplier,
                 BonusArmorMultiplier = stats.BonusArmorMultiplier,
                 BonusStaminaMultiplier = stats.BonusStaminaMultiplier,
+                BonusBlockValueMultiplier = stats.BonusBlockValueMultiplier,
                 Health = stats.Health,
                 Miss = stats.Miss,
                 SpellDamageRating = stats.SpellDamageRating,
+                SpellHolyDamageRating = stats.SpellHolyDamageRating,
                 HitRating = stats.HitRating,
                 SpellHitRating = stats.SpellHitRating,
+                SpellCritRating = stats.SpellCritRating,
                 ArmorPenetration = stats.ArmorPenetration,
+                BonusSoRJoR = stats.BonusSoRJoR,
+                ThreatIncreaseMultiplier = stats.ThreatIncreaseMultiplier,
+                MongooseProc = stats.MongooseProc,
+                BonusConsecrationDamage = stats.BonusConsecrationDamage,
+                ConsecrationMultiplier = stats.ConsecrationMultiplier,
+                HasteRating = stats.HasteRating,
+                ExpertiseRating = stats.ExpertiseRating,
+                SpellDamageFor15SecOnCast45Sec = stats.SpellDamageFor15SecOnCast45Sec,
+                BonusRetributionAura = stats.BonusRetributionAura,
+                VengeanceProc = stats.VengeanceProc,
+                ArmorFor10SecOnHit = stats.ArmorFor10SecOnHit,
+                WindfuryAPBonus = stats.WindfuryAPBonus,
+                ArcaneResistance = stats.ArcaneResistance,
+                FireResistance = stats.FireResistance,
+                FrostResistance = stats.FrostResistance,
+                ShadowResistance = stats.ShadowResistance,
+                NatureResistance = stats.NatureResistance
             };
         }
 
@@ -263,7 +370,13 @@ you are being killed by burst damage, focus on Survival Points.",
             return (stats.Agility + stats.Armor + stats.BonusAgilityMultiplier + stats.BonusArmorMultiplier +
                 stats.BonusStaminaMultiplier + stats.DefenseRating + stats.DodgeRating + stats.Health +
                 stats.Miss + stats.Resilience + stats.Stamina + stats.ParryRating + stats.BlockRating + stats.BlockValue +
-                stats.SpellHitRating + stats.SpellDamageRating + stats.HitRating + stats.ArmorPenetration) > 0;
+                stats.SpellHitRating + stats.SpellDamageRating + stats.HitRating + stats.ArmorPenetration +
+                stats.SpellHitRating + stats.SpellDamageRating + stats.HitRating + stats.ArmorPenetration + stats.BonusSoRJoR +
+                stats.ThreatIncreaseMultiplier + stats.SpellHolyDamageRating + stats.MongooseProc + stats.BonusConsecrationDamage +
+                stats.ConsecrationMultiplier + stats.HasteRating + stats.ExpertiseRating + stats.SpellDamageFor15SecOnCast45Sec +
+                stats.BonusRetributionAura + stats.VengeanceProc + stats.ArmorFor10SecOnHit + stats.WindfuryAPBonus +
+                stats.SpellCritRating + stats.BonusBlockValueMultiplier + stats.ArcaneResistance + stats.FireResistance +
+                stats.FrostResistance + stats.ShadowResistance + stats.NatureResistance) != 0;
         }
     }
 

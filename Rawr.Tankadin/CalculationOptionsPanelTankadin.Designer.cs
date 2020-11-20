@@ -50,6 +50,10 @@
             this.trackBarMitigationScale = new System.Windows.Forms.TrackBar();
             this.label7 = new System.Windows.Forms.Label();
             this.labelMitigationScale = new System.Windows.Forms.Label();
+            this.gbSkillUsage = new System.Windows.Forms.GroupBox();
+            this.checkBoxJotC = new System.Windows.Forms.CheckBox();
+            this.checkBoxRetAura = new System.Windows.Forms.CheckBox();
+            this.checkBoxExorcism = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.nubAtkSpeed)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nubAttackers)).BeginInit();
             this.groupBox1.SuspendLayout();
@@ -58,6 +62,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.trackBarThreatScale)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBarTargetArmor)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBarMitigationScale)).BeginInit();
+            this.gbSkillUsage.SuspendLayout();
             this.SuspendLayout();
             // 
             // cmbTargetLevel
@@ -357,11 +362,55 @@
             this.labelMitigationScale.Size = new System.Drawing.Size(31, 13);
             this.labelMitigationScale.TabIndex = 21;
             this.labelMitigationScale.Text = "4000";
+            //
+            // gbSkillUsage
+            //
+            this.gbSkillUsage.Controls.Add(this.checkBoxJotC);
+            this.gbSkillUsage.Controls.Add(this.checkBoxRetAura);
+            this.gbSkillUsage.Controls.Add(this.checkBoxExorcism);
+            this.gbSkillUsage.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.gbSkillUsage.Location = new System.Drawing.Point(3, 362);
+            this.gbSkillUsage.Name = "gbSkillUsage";
+            this.gbSkillUsage.Size = new System.Drawing.Size(202, 102);
+            this.gbSkillUsage.TabIndex = 22;
+            this.gbSkillUsage.TabStop = false;
+            this.gbSkillUsage.Text = "Skill Usage";
+            //
+            // checkBoxJotC
+            //
+            this.checkBoxJotC.AutoSize = true;
+            this.checkBoxJotC.Location = new System.Drawing.Point(6, 70);
+            this.checkBoxJotC.Name = "checkBoxJotC";
+            this.checkBoxJotC.Size = new System.Drawing.Size(174, 19);
+            this.checkBoxJotC.TabIndex = 2;
+            this.checkBoxJotC.Text = "Judgement of the Crusader";
+            this.checkBoxJotC.CheckedChanged += new System.EventHandler(this.checkBoxJotC_CheckedChanged);
+            //
+            // checkBoxRetAura
+            //
+            this.checkBoxRetAura.AutoSize = true;
+            this.checkBoxRetAura.Location = new System.Drawing.Point(6, 45);
+            this.checkBoxRetAura.Name = "checkBoxRetAura";
+            this.checkBoxRetAura.Size = new System.Drawing.Size(114, 19);
+            this.checkBoxRetAura.TabIndex = 1;
+            this.checkBoxRetAura.Text = "Retribution Aura";
+            this.checkBoxRetAura.CheckedChanged += new System.EventHandler(this.checkBoxRetAura_CheckedChanged);
+            //
+            // checkBoxExorcism
+            //
+            this.checkBoxExorcism.AutoSize = true;
+            this.checkBoxExorcism.Location = new System.Drawing.Point(6, 20);
+            this.checkBoxExorcism.Name = "checkBoxExorcism";
+            this.checkBoxExorcism.Size = new System.Drawing.Size(77, 19);
+            this.checkBoxExorcism.TabIndex = 0;
+            this.checkBoxExorcism.Text = "Exorcism";
+            this.checkBoxExorcism.CheckedChanged += new System.EventHandler(this.checkBoxExorcism_CheckedChanged);
             // 
             // CalculationOptionsPanelTankadin
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.gbSkillUsage);
             this.Controls.Add(this.labelMitigationScale);
             this.Controls.Add(this.trackBarMitigationScale);
             this.Controls.Add(this.label7);
@@ -370,7 +419,7 @@
             this.Controls.Add(this.cmbTargetLevel);
             this.Controls.Add(this.label1);
             this.Name = "CalculationOptionsPanelTankadin";
-            this.Size = new System.Drawing.Size(210, 375);
+            this.Size = new System.Drawing.Size(210, 467);
             ((System.ComponentModel.ISupportInitialize)(this.nubAtkSpeed)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nubAttackers)).EndInit();
             this.groupBox1.ResumeLayout(false);
@@ -381,6 +430,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.trackBarThreatScale)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBarTargetArmor)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBarMitigationScale)).EndInit();
+            this.gbSkillUsage.ResumeLayout(false);
+            this.gbSkillUsage.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -410,5 +461,9 @@
         private System.Windows.Forms.Label labelTargetArmor;
         private System.Windows.Forms.Label labelMitigationScale;
         private System.Windows.Forms.Label labelBossAttackValue;
+        private System.Windows.Forms.GroupBox gbSkillUsage;
+        private System.Windows.Forms.CheckBox checkBoxExorcism;
+        private System.Windows.Forms.CheckBox checkBoxRetAura;
+        private System.Windows.Forms.CheckBox checkBoxJotC;
     }
 }

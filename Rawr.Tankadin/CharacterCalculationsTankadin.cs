@@ -140,6 +140,8 @@ namespace Rawr.Tankadin
         public float JoRTPS { get; set; }
         public float HolyShieldTPS { get; set; }
         public float ConsecrateTPS { get; set; }
+        public float RetributionAuraTPS { get; set; }
+        public float ExorcismTPS { get; set; }
         public float MiscTPS { get; set; }
 
         public float NatureSurvivalPoints { get; set; }
@@ -163,8 +165,9 @@ namespace Rawr.Tankadin
             dictValues.Add("Dodge", Dodge.ToString() + "%");
             dictValues.Add("Parry", Parry.ToString() + "%");
             dictValues.Add("Block", Block.ToString() + "%");
-            dictValues.Add("Block Value", BlockValue.ToString() + "%");
-            dictValues.Add("Avoidance", Avoidance.ToString() + "%");
+            dictValues.Add("Block Value", BlockValue.ToString());
+            dictValues.Add("Hard Avoidance", Avoidance.ToString() + "%");
+            dictValues.Add("Avoidance", CrushAvoidance.ToString() + "%");
             dictValues.Add("Mitigation", Mitigation.ToString());
             dictValues.Add("Spell Damage", _basicStats.SpellDamageRating.ToString());
             dictValues.Add("Total Mitigation", TotalMitigation.ToString() + "%");
@@ -187,7 +190,13 @@ namespace Rawr.Tankadin
             dictValues.Add("Seal of Right", Math.Round(SoRTPS) + " tps");
             dictValues.Add("Judgement of Right", Math.Round(JoRTPS) + " tps");
             dictValues.Add("Consecrate", Math.Round(ConsecrateTPS) + " tps");
+            dictValues.Add("Exorcism", Math.Round(ExorcismTPS) + " tps");
+            dictValues.Add("Retribution Aura", Math.Round(RetributionAuraTPS) + " tps");
             dictValues.Add("Misc", Math.Round(MiscTPS) + " tps");
+            dictValues.Add("Defense Rating", BasicStats.DefenseRating.ToString());
+            dictValues.Add("Dodge Rating", BasicStats.DodgeRating.ToString());
+            dictValues.Add("Parry Rating", BasicStats.ParryRating.ToString());
+            dictValues.Add("Block Rating", BasicStats.BlockRating.ToString());
 
             return dictValues;
         }
