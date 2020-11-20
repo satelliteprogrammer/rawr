@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Rawr.Healadin
 {
@@ -30,7 +28,7 @@ namespace Rawr.Healadin
         private static float[] HLHEAL = new float[] { 0, 1, 2, 3, 345, 537.5f, 758, 1022, 1343, 1709, 1872, 2321 };
         private static float[] HLLEVEL = new float[] { 0, 1, 2, 3, 22, 30, 38, 46, 54, 60, 62, 70 };
 
-        public Spell(string name, int rank) : this(name, rank, true){ }
+        public Spell(string name, int rank) : this(name, rank, true) { }
 
         public Spell(string name, int rank, bool bol)
         {
@@ -68,7 +66,7 @@ namespace Rawr.Healadin
             float bonus, multi, bol = 0, cost;
             spellCrit = .08336f + stats.Intellect / 8000 + stats.SpellCritRating / 2208;
             castTime = baseCastTime / (1 + stats.SpellHasteRating / 1570);
-            
+
             if (name.Equals("Holy Light"))
             {
                 spellCrit += .06f + stats.HLCrit;
@@ -94,7 +92,7 @@ namespace Rawr.Healadin
 
         public float DFMana()
         {
-            return baseMana*.6f*(1 - spellCrit);
+            return baseMana * .6f * (1 - spellCrit);
         }
 
 

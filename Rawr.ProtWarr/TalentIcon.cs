@@ -1,12 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Drawing;
-using System.Data;
-using System.Text;
 using System.Windows.Forms;
-using System.IO;
-using System.Net;
 
 namespace Rawr.ProtWarr
 {
@@ -22,7 +16,7 @@ namespace Rawr.ProtWarr
             InitializeComponent();
             panel1.Resize += new EventHandler(panel1_Resize);
             panel1.MouseHover += new EventHandler(panel1_MouseHover);
-     
+
         }
 
         void panel1_MouseHover(object sender, EventArgs e)
@@ -36,7 +30,7 @@ namespace Rawr.ProtWarr
 
         public TalentIcon(TalentItem ti, Character.CharacterClass charClass, Label treeLabel) : this()
         {
-            
+
             Talent = ti;
             _name = ti.Name;
             _treeLabel = treeLabel;
@@ -44,7 +38,7 @@ namespace Rawr.ProtWarr
             getIcon(ti, charClass);
             panel1.Width = _icon.Width;
             panel1.Height = _icon.Height;
-            
+
         }
 
         void panel1_Resize(object sender, EventArgs e)
@@ -79,15 +73,15 @@ namespace Rawr.ProtWarr
         {
             if (_icon == null)
             {
-				WebRequestWrapper wrw = new WebRequestWrapper();
-				string filePath = wrw.DownloadTalentIcon(charclass, ti.Tree.Replace(" ", ""), ti.Name.Replace(" ", ""));
-				if (!String.IsNullOrEmpty(filePath))
-				{
-					_icon = new Bitmap(filePath);
-				}
+                WebRequestWrapper wrw = new WebRequestWrapper();
+                string filePath = wrw.DownloadTalentIcon(charclass, ti.Tree.Replace(" ", ""), ti.Name.Replace(" ", ""));
+                if (!String.IsNullOrEmpty(filePath))
+                {
+                    _icon = new Bitmap(filePath);
+                }
             }
 
-            
+
         }
 
         private void panel1_MouseClick(object sender, MouseEventArgs e)

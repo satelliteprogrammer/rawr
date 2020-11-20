@@ -1,9 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Text;
 using System.Windows.Forms;
 
 namespace Rawr.Forms
@@ -12,24 +8,24 @@ namespace Rawr.Forms
     public partial class EditEnchants : Form
     {
         private List<Enchant> _Enchants;
-		public EditEnchants(List<Enchant> enchants)
+        public EditEnchants(List<Enchant> enchants)
         {
             InitializeComponent();
             _Enchants = Rawr.Utilities.Clone<List<Enchant>>(enchants);
-			List<string> catNames = new List<string>();
+            List<string> catNames = new List<string>();
             foreach (Character.CharacterSlot slot in Enum.GetValues(typeof(Character.CharacterSlot)))
             {
-				catNames.Add(slot.ToString());    
+                catNames.Add(slot.ToString());
             }
-			catNames.Sort();
-			for (int i = 0; i < catNames.Count; i++)
-			{
-				listView1.Groups.Add(catNames[i], catNames[i]);
-			}
-			listView1.Sorting = SortOrder.Ascending;
+            catNames.Sort();
+            for (int i = 0; i < catNames.Count; i++)
+            {
+                listView1.Groups.Add(catNames[i], catNames[i]);
+            }
+            listView1.Sorting = SortOrder.Ascending;
         }
 
-		public List<Enchant> EditedEnchants
+        public List<Enchant> EditedEnchants
         {
             get { return _Enchants; }
         }
@@ -51,7 +47,7 @@ namespace Rawr.Forms
 
         private void LoadListView()
         {
-            for(int i=0;i<_Enchants.Count;i++)
+            for (int i = 0; i < _Enchants.Count; i++)
             {
                 Enchant currentEnchant = _Enchants[i];
                 if (string.IsNullOrEmpty(Filter.Text) || currentEnchant.Name.ToLower().Contains(Filter.Text.ToLower()))
@@ -61,17 +57,17 @@ namespace Rawr.Forms
                     listView1.Items.Add(lvi);
                 }
             }
-			listView1.Sort();
+            listView1.Sort();
         }
 
-		private void listView1_SelectedIndexChanged(object sender, EventArgs e)
-		{
-			if (listView1.SelectedIndices.Count > 0)
-			{
-				Enchant enchant = listView1.SelectedItems[0].Tag as Enchant;
-				EnchantName.Text = enchant.Name;
-				Stats.SelectedObject = enchant.Stats;
-			}
-		}
+        private void listView1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (listView1.SelectedIndices.Count > 0)
+            {
+                Enchant enchant = listView1.SelectedItems[0].Tag as Enchant;
+                EnchantName.Text = enchant.Name;
+                Stats.SelectedObject = enchant.Stats;
+            }
+        }
     }
 }

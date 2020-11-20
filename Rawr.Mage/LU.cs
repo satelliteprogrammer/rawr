@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Rawr.Mage
 {
@@ -444,7 +442,7 @@ namespace Rawr.Mage
                 for (i = 0; i <= j + 1; i++)
                 {
                     U[i * size + j] = U[i * size + j + 1];
-                }                        
+                }
             }
             Q[lastnz] = Qcol;
             for (i = 0; i <= lastnz; i++)

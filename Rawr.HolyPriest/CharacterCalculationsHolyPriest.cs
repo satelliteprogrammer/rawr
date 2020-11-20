@@ -13,7 +13,7 @@ namespace Rawr.HolyPriest
         public float RegenInFSR { get; set; }
         public float RegenOutFSR { get; set; }
         public Character.CharacterRace Race { get; set; }
-       
+
         public TalentTree Talents
         {
             get { return talents; }
@@ -74,8 +74,8 @@ namespace Rawr.HolyPriest
 
             dictValues.Add("Holy Spell Crit", string.Format("{0}%*{1} Spell Crit rating\n{2} ({2}%) points in Holy Specialization",
                 BasicStats.SpellCrit, BasicStats.SpellCritRating.ToString(), talents.GetTalent("Holy Specialization").PointsInvested));
-            
-            dictValues.Add("Spell Haste", string.Format("{0}%*{1} Spell Haste rating\n", 
+
+            dictValues.Add("Spell Haste", string.Format("{0}%*{1} Spell Haste rating\n",
                 Math.Round(BasicStats.SpellHasteRating / 15.7, 2), BasicStats.SpellHasteRating.ToString()));
             dictValues.Add("Global Cooldown", Spell.GetGlobalCooldown(BasicStats).ToString("0.00"));
 
@@ -102,8 +102,8 @@ namespace Rawr.HolyPriest
                 dictValues.Add("Lightwell", new Lightwell(BasicStats, talents).ToString());
             else
                 dictValues.Add("Lightwell", "- *No required talents");
-            
-            if(Race == Character.CharacterRace.Draenei)
+
+            if (Race == Character.CharacterRace.Draenei)
                 dictValues.Add("Gift of the Naaru", new GiftOfTheNaaru(BasicStats, talents).ToString());
             else
                 dictValues.Add("Gift of the Naaru", "-");

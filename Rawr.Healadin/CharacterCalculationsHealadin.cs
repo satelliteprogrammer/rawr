@@ -32,11 +32,11 @@ namespace Rawr.Healadin
             set { _subPoints[0] = value; }
         }
 
-  /*      public float LongevityPoints
-        {
-            get { return _subPoints[1]; }
-            set { _subPoints[1] = value; }
-        }*/
+        /*      public float LongevityPoints
+              {
+                  get { return _subPoints[1]; }
+                  set { _subPoints[1] = value; }
+              }*/
 
 
         public float AvgHPS { get; set; }
@@ -78,17 +78,17 @@ namespace Rawr.Healadin
             dictValues.Add("Spirit", BasicStats.Spirit.ToString());
             dictValues.Add("Healing", BasicStats.Healing.ToString());
             dictValues.Add("Mp5", BasicStats.Mp5.ToString());
-            dictValues.Add("Spell Crit", string.Format("{0}%*{1} Spell Crit rating\nFoL Crit: {2}%\nHL Crit: {3}%", 
+            dictValues.Add("Spell Crit", string.Format("{0}%*{1} Spell Crit rating\nFoL Crit: {2}%\nHL Crit: {3}%",
                 Math.Round(_spells[0].SpellCrit * 100 - 5 - BasicStats.FoLCrit, 2), BasicStats.SpellCritRating.ToString(),
                 Math.Round(_spells[0].SpellCrit * 100, 2), Math.Round(_spells[1].SpellCrit * 100, 2)));
             dictValues.Add("Spell Haste", string.Format("{0}%*{1} Spell Haste rating\nFoL Cast Time: {2} sec\nHL Cast Time: {3} sec",
-                Math.Round(BasicStats.SpellHasteRating/15.7,2), BasicStats.SpellHasteRating.ToString(), Math.Round(_spells[0].CastTime,2), Math.Round(_spells[1].CastTime,2)));
+                Math.Round(BasicStats.SpellHasteRating / 15.7, 2), BasicStats.SpellHasteRating.ToString(), Math.Round(_spells[0].CastTime, 2), Math.Round(_spells[1].CastTime, 2)));
             dictValues.Add("Total Healed", Math.Round(Healed).ToString());
             dictValues.Add("Average Hps", Math.Round(AvgHPS).ToString());
             dictValues.Add("Average Hpm", Math.Round(AvgHPM, 2).ToString());
             dictValues.Add("Holy Light Time", Math.Round(TimeHL * 100).ToString() + "%");
             dictValues.Add("Holy Light Healing", Math.Round(HealHL * 100).ToString() + "%");
-            dictValues.Add("Flash of Light", string.Format("{0} hps*{1} hpm\n{2} average heal", Math.Round(_spells[0].Hps).ToString(), Math.Round(_spells[0].Hpm,2).ToString(), Math.Round(_spells[0].AverageHeal).ToString()));
+            dictValues.Add("Flash of Light", string.Format("{0} hps*{1} hpm\n{2} average heal", Math.Round(_spells[0].Hps).ToString(), Math.Round(_spells[0].Hpm, 2).ToString(), Math.Round(_spells[0].AverageHeal).ToString()));
             dictValues.Add("Holy Light 11", string.Format("{0} hps*{1} hpm\n{2} average heal", Math.Round(_spells[1].Hps).ToString(), Math.Round(_spells[1].Hpm, 2).ToString(), Math.Round(_spells[1].AverageHeal).ToString()));
             dictValues.Add("Holy Light 10", string.Format("{0} hps*{1} hpm\n{2} average heal", Math.Round(_spells[2].Hps).ToString(), Math.Round(_spells[2].Hpm, 2).ToString(), Math.Round(_spells[2].AverageHeal).ToString()));
             dictValues.Add("Holy Light 9", string.Format("{0} hps*{1} hpm\n{2} average heal", Math.Round(_spells[3].Hps).ToString(), Math.Round(_spells[3].Hpm, 2).ToString(), Math.Round(_spells[3].AverageHeal).ToString()));

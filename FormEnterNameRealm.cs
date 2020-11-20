@@ -1,5 +1,5 @@
-using System.Windows.Forms;
 using System;
+using System.Windows.Forms;
 
 namespace Rawr
 {
@@ -8,7 +8,7 @@ namespace Rawr
         public FormEnterNameRealm()
         {
             InitializeComponent();
-			comboBoxRegion.SelectedIndex = 0;
+            comboBoxRegion.SelectedIndex = 0;
         }
 
         public string CharacterName

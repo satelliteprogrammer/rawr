@@ -1,10 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 
 namespace Rawr.Retribution
@@ -18,7 +13,7 @@ namespace Rawr.Retribution
             InitializeComponent();
         }
 
-       
+
         private void Graph_Load(object sender, EventArgs e)
         {
             pictureBoxGraph.Image = bitGraph;

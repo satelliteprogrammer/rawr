@@ -1,31 +1,26 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Data;
-using System.Text;
 using System.Windows.Forms;
 
 namespace Rawr.Warlock
 {
-	public partial class CalculationOptionsPanelWarlock : CalculationOptionsPanelBase
-	{
+    public partial class CalculationOptionsPanelWarlock : CalculationOptionsPanelBase
+    {
         private bool calculationSuspended = false;
         private WarlockTalentsForm talents;
         private RaidISB raidIsb;
 
-		public CalculationOptionsPanelWarlock()
-		{
-			InitializeComponent();
+        public CalculationOptionsPanelWarlock()
+        {
+            InitializeComponent();
             talents = new WarlockTalentsForm(this);
             raidIsb = new RaidISB(this);
         }
 
-		protected override void LoadCalculationOptions()
-		{
+        protected override void LoadCalculationOptions()
+        {
             if (Character.CalculationOptions == null)
                 Character.CalculationOptions = new CalculationOptionsWarlock(Character);
-			CalculationOptionsWarlock options = Character.CalculationOptions as CalculationOptionsWarlock;
+            CalculationOptionsWarlock options = Character.CalculationOptions as CalculationOptionsWarlock;
 
             calculationSuspended = true;
 
@@ -119,7 +114,7 @@ namespace Rawr.Warlock
         private void checkBoxEnforceMetagemRequirements_CheckedChanged(object sender, EventArgs e)
         {
             Character.EnforceMetagemRequirements = checkBoxEnforceMetagemRequirements.Checked;
-            if(!calculationSuspended) Character.OnItemsChanged();
+            if (!calculationSuspended) Character.OnItemsChanged();
         }
 
         private void textBoxLatency_Leave(object sender, EventArgs e)
@@ -131,14 +126,14 @@ namespace Rawr.Warlock
                 options.Latency = value;
                 if (!calculationSuspended) Character.OnItemsChanged();
             }
-        }   
-	
-		private void comboBoxTargetLevel_SelectedIndexChanged(object sender, EventArgs e)
-		{
-			CalculationOptionsWarlock options = Character.CalculationOptions as CalculationOptionsWarlock;
+        }
+
+        private void comboBoxTargetLevel_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            CalculationOptionsWarlock options = Character.CalculationOptions as CalculationOptionsWarlock;
             options.TargetLevel = int.Parse(comboBoxTargetLevel.SelectedItem.ToString());
             if (!calculationSuspended) Character.OnItemsChanged();
-		}
+        }
 
         private void textBoxFightDuration_Leave(object sender, EventArgs e)
         {
@@ -186,14 +181,14 @@ namespace Rawr.Warlock
 
         private void comboBoxFillerSpell_SelectedIndexChanged(object sender, EventArgs e)
         {
-			CalculationOptionsWarlock options = Character.CalculationOptions as CalculationOptionsWarlock;
+            CalculationOptionsWarlock options = Character.CalculationOptions as CalculationOptionsWarlock;
             options.FillerSpell = (FillerSpell)(comboBoxFillerSpell.SelectedIndex);
             if (!calculationSuspended) Character.OnItemsChanged();
         }
 
         private void comboBoxCastedCurse_SelectedIndexChanged(object sender, EventArgs e)
         {
-			CalculationOptionsWarlock options = Character.CalculationOptions as CalculationOptionsWarlock;
+            CalculationOptionsWarlock options = Character.CalculationOptions as CalculationOptionsWarlock;
             options.CastedCurse = (CastedCurse)(comboBoxCastedCurse.SelectedIndex);
             if (!calculationSuspended) Character.OnItemsChanged();
         }
@@ -204,7 +199,7 @@ namespace Rawr.Warlock
             options.CastImmolate = checkBoxCastImmolate.Checked;
             if (!options.CastImmolate)
                 checkBoxCastConflagrate.Enabled = checkBoxCastConflagrate.Checked = false;
-            else if(options.Conflagrate == 1)
+            else if (options.Conflagrate == 1)
                 checkBoxCastConflagrate.Enabled = true;
             if (!calculationSuspended) Character.OnItemsChanged();
         }
@@ -246,14 +241,14 @@ namespace Rawr.Warlock
 
         private void comboBoxPet_SelectedIndexChanged(object sender, EventArgs e)
         {
-			CalculationOptionsWarlock options = Character.CalculationOptions as CalculationOptionsWarlock;
+            CalculationOptionsWarlock options = Character.CalculationOptions as CalculationOptionsWarlock;
             options.Pet = (Pet)(comboBoxPet.SelectedIndex);
             if (!calculationSuspended) Character.OnItemsChanged();
         }
 
         private void checkBoxPetSacrificed_CheckedChanged(object sender, EventArgs e)
         {
-			CalculationOptionsWarlock options = Character.CalculationOptions as CalculationOptionsWarlock;
+            CalculationOptionsWarlock options = Character.CalculationOptions as CalculationOptionsWarlock;
             options.PetSacrificed = checkBoxPetSacrificed.Checked;
             if (!calculationSuspended) Character.OnItemsChanged();
         }
@@ -275,7 +270,7 @@ namespace Rawr.Warlock
         {
             CalculationOptionsWarlock options = Character.CalculationOptions as CalculationOptionsWarlock;
             float value;
-            if(float.TryParse(textBoxIsbCustom.Text, out value))
+            if (float.TryParse(textBoxIsbCustom.Text, out value))
             {
                 options.CustomIsbUptime = value;
                 if (!calculationSuspended) Character.OnItemsChanged();
@@ -305,5 +300,5 @@ namespace Rawr.Warlock
                 raidIsb.SaveRaid();
             if (!calculationSuspended) Character.OnItemsChanged();
         }
-	}
+    }
 }

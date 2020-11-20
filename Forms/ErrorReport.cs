@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 
@@ -66,7 +62,7 @@ namespace Rawr.Forms
                 }
             }
             Clipboard.SetText(sb.ToString(), TextDataFormat.Text);
-            MessageBox.Show("Information has been copied to the clipboard.", "Copy to Clipboard",MessageBoxButtons.OK,MessageBoxIcon.Information);
+            MessageBox.Show("Information has been copied to the clipboard.", "Copy to Clipboard", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
     }
 }

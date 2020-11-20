@@ -1,9 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Text;
 using System.Windows.Forms;
 
 namespace Rawr.Hunter
@@ -26,7 +22,7 @@ namespace Rawr.Hunter
         }
 
         #endregion
-        
+
         #region Properties
 
         public Character Character
@@ -48,28 +44,28 @@ namespace Rawr.Hunter
             ComboBox cb = (ComboBox)sender;
             string talent = cb.Tag as string;
 
-			if (Character.Talents.Trees.ContainsKey(cb.Parent.Text) && !String.IsNullOrEmpty(talent))
-			{
-				List<TalentItem> talents = Character.Talents.Trees[cb.Parent.Text];
-				TalentItem item = null;
-				for (int i = 0; i < Character.Talents.Trees[cb.Parent.Text].Count; i++)
-				{
-					if (string.Compare(talents[i].Name.Trim(), talent.Trim(), true) == 0)
-					{
-						item = talents[i];
-						break;
-					}
-				}
+            if (Character.Talents.Trees.ContainsKey(cb.Parent.Text) && !String.IsNullOrEmpty(talent))
+            {
+                List<TalentItem> talents = Character.Talents.Trees[cb.Parent.Text];
+                TalentItem item = null;
+                for (int i = 0; i < Character.Talents.Trees[cb.Parent.Text].Count; i++)
+                {
+                    if (string.Compare(talents[i].Name.Trim(), talent.Trim(), true) == 0)
+                    {
+                        item = talents[i];
+                        break;
+                    }
+                }
 
-				if (item != null)
-				{
-					item.PointsInvested = Convert.ToInt32(cb.SelectedItem);
-					if (!calculationSuspended)
-					{
-						Character.OnItemsChanged();
-					}
-				}
-			}
+                if (item != null)
+                {
+                    item.PointsInvested = Convert.ToInt32(cb.SelectedItem);
+                    if (!calculationSuspended)
+                    {
+                        Character.OnItemsChanged();
+                    }
+                }
+            }
         }
 
         private void HunterTalentsForm_FormClosing(object sender, FormClosingEventArgs e)
@@ -84,84 +80,84 @@ namespace Rawr.Hunter
         #endregion
 
 
-		private void LoadTalents()
-		{
-			calculationSuspended = true;
-			foreach (Control c in Controls)
-			{
-				if (c is GroupBox)
-				{
-					foreach (Control cc in c.Controls)
-					{
-						if (cc is ComboBox)
-						{
-							ComboBox cb = (ComboBox)cc;
-							string talent = cb.Tag as string;
+        private void LoadTalents()
+        {
+            calculationSuspended = true;
+            foreach (Control c in Controls)
+            {
+                if (c is GroupBox)
+                {
+                    foreach (Control cc in c.Controls)
+                    {
+                        if (cc is ComboBox)
+                        {
+                            ComboBox cb = (ComboBox)cc;
+                            string talent = cb.Tag as string;
 
-							if (Character.Talents.Trees.ContainsKey(c.Text) && !String.IsNullOrEmpty(talent))
-							{
-								List<TalentItem> talents =  Character.Talents.Trees[c.Text];
-								TalentItem ti = null;
-								for(int i=0;i<talents.Count;i++)
-								{
-									if (string.Compare(talents[i].Name.Trim(), talent.Trim(), true) == 0)
-									{
-										ti = talents[i];
-										break;
-									}
-								}
-								if (ti != null)
-								{
-									cb.SelectedItem = ti.PointsInvested.ToString();
-								}
-							}
-						}
-					}
-				}
-			}
-			calculationSuspended = false;
-			ComputeTalentTotals();
-		}
+                            if (Character.Talents.Trees.ContainsKey(c.Text) && !String.IsNullOrEmpty(talent))
+                            {
+                                List<TalentItem> talents = Character.Talents.Trees[c.Text];
+                                TalentItem ti = null;
+                                for (int i = 0; i < talents.Count; i++)
+                                {
+                                    if (string.Compare(talents[i].Name.Trim(), talent.Trim(), true) == 0)
+                                    {
+                                        ti = talents[i];
+                                        break;
+                                    }
+                                }
+                                if (ti != null)
+                                {
+                                    cb.SelectedItem = ti.PointsInvested.ToString();
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            calculationSuspended = false;
+            ComputeTalentTotals();
+        }
 
-		private void ComputeTalentTotals()
-		{
-			List<string> totals = new List<string>();
-			foreach (Control c in Controls)
-			{
-				if (c is GroupBox)
-				{
-					int total = 0;
-					foreach (Control cc in c.Controls)
-					{
-						if (cc is ComboBox)
-						{
-							ComboBox cb = (ComboBox)cc;
-							string talent = cb.Tag as string;
-							if (Character.Talents.Trees.ContainsKey(c.Text) && !String.IsNullOrEmpty(talent))
-							{
-								List<TalentItem> talents = Character.Talents.Trees[c.Text];
-								TalentItem ti = null;
-								for (int i = 0; i < talents.Count; i++)
-								{
-									if (string.Compare(talents[i].Name.Trim(), talent.Trim(), true) == 0)
-									{
-										ti = talents[i];
-										break;
-									}
-								}
-								if (ti != null)
-								{
-									total += ti.PointsInvested;
-								}
-							}
-						}
-					}
-					totals.Add(total.ToString());
-				}
-			}
-			totals.Reverse();
-			Text = "Hunter Talents (" + string.Join("/", totals.ToArray()) + ")";
-		}
+        private void ComputeTalentTotals()
+        {
+            List<string> totals = new List<string>();
+            foreach (Control c in Controls)
+            {
+                if (c is GroupBox)
+                {
+                    int total = 0;
+                    foreach (Control cc in c.Controls)
+                    {
+                        if (cc is ComboBox)
+                        {
+                            ComboBox cb = (ComboBox)cc;
+                            string talent = cb.Tag as string;
+                            if (Character.Talents.Trees.ContainsKey(c.Text) && !String.IsNullOrEmpty(talent))
+                            {
+                                List<TalentItem> talents = Character.Talents.Trees[c.Text];
+                                TalentItem ti = null;
+                                for (int i = 0; i < talents.Count; i++)
+                                {
+                                    if (string.Compare(talents[i].Name.Trim(), talent.Trim(), true) == 0)
+                                    {
+                                        ti = talents[i];
+                                        break;
+                                    }
+                                }
+                                if (ti != null)
+                                {
+                                    total += ti.PointsInvested;
+                                }
+                            }
+                        }
+                    }
+                    totals.Add(total.ToString());
+                }
+            }
+            totals.Reverse();
+            Text = "Hunter Talents (" + string.Join("/", totals.ToArray()) + ")";
+        }
 
     }
 }

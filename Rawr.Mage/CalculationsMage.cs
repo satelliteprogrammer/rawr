@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
-using System.Globalization;
 using System.Drawing;
+using System.Text;
 
 namespace Rawr.Mage
 {
-	[System.ComponentModel.DisplayName("Mage|Spell_Holy_MagicalSentry")]
+    [System.ComponentModel.DisplayName("Mage|Spell_Holy_MagicalSentry")]
     public sealed class CalculationsMage : CalculationsBase
     {
         private Dictionary<string, System.Drawing.Color> _subPointNameColors = null;
@@ -40,12 +39,12 @@ namespace Rawr.Mage
             {
                 if (_characterDisplayCalculationLabels == null)
                     _characterDisplayCalculationLabels = new string[] {
-					"Basic Stats:Stamina",
-					"Basic Stats:Intellect",
-					"Basic Stats:Spirit",
-					"Basic Stats:Armor",
-					"Basic Stats:Health",
-					"Basic Stats:Mana",
+                    "Basic Stats:Stamina",
+                    "Basic Stats:Intellect",
+                    "Basic Stats:Spirit",
+                    "Basic Stats:Armor",
+                    "Basic Stats:Health",
+                    "Basic Stats:Mana",
                     "Spell Stats:Spell Crit Rate",
                     "Spell Stats:Spell Hit Rate",
                     "Spell Stats:Spell Penetration",
@@ -116,7 +115,7 @@ namespace Rawr.Mage
                     "Survivability:Dodge",
                     "Survivability:Mean Incoming Dps",
                     "Survivability:Chance to Die",
-				};
+                };
                 return _characterDisplayCalculationLabels;
             }
         }
@@ -166,14 +165,14 @@ namespace Rawr.Mage
                 if (_relevantItemTypes == null)
                 {
                     _relevantItemTypes = new List<Item.ItemType>(new Item.ItemType[]
-					{
-						Item.ItemType.None,
-						Item.ItemType.Cloth,
-						Item.ItemType.Dagger,
-						Item.ItemType.OneHandSword,
-						Item.ItemType.Staff,
-						Item.ItemType.Wand,
-					});
+                    {
+                        Item.ItemType.None,
+                        Item.ItemType.Cloth,
+                        Item.ItemType.Dagger,
+                        Item.ItemType.OneHandSword,
+                        Item.ItemType.Staff,
+                        Item.ItemType.Wand,
+                    });
                 }
                 return _relevantItemTypes;
             }
@@ -181,9 +180,9 @@ namespace Rawr.Mage
 
         public override string GetCharacterStatsString(Character character)
         {
-			StringBuilder sb = new StringBuilder();
-			sb.AppendFormat("Character:\t\t{0}@{1}-{2}\r\nRace:\t\t{3}",
-				character.Name, character.Region, character.Realm, character.Race);
+            StringBuilder sb = new StringBuilder();
+            sb.AppendFormat("Character:\t\t{0}@{1}-{2}\r\nRace:\t\t{3}",
+                character.Name, character.Region, character.Realm, character.Race);
 
             CalculationOptionsMage CalculationOptions = (CalculationOptionsMage)character.CalculationOptions;
             CharacterCalculationsMage calculations;
@@ -193,8 +192,8 @@ namespace Rawr.Mage
             CalculationOptions.IncrementalOptimizations = savedIncrementalOptimizations;
 
             Dictionary<string, string> dict = calculations.GetCharacterDisplayCalculationValuesInternal();
-			foreach (KeyValuePair<string, string> kvp in dict)
-			{
+            foreach (KeyValuePair<string, string> kvp in dict)
+            {
                 if (kvp.Key != "Sequence" && kvp.Key != "Spell Cycles")
                 {
                     string[] value = kvp.Value.Split('*');
@@ -207,7 +206,7 @@ namespace Rawr.Mage
                         sb.AppendFormat("\r\n{0}: {1}", kvp.Key, value[0]);
                     }
                 }
-			}
+            }
 
             // spell cycles
             sb.AppendFormat("\r\n\r\nSpell Cycles:\r\n\r\n");
@@ -289,11 +288,11 @@ namespace Rawr.Mage
                 sb.Append(value[1]);
             }
 
-			return sb.ToString();
+            return sb.ToString();
         }
 
-		public override Character.CharacterClass TargetClass { get { return Character.CharacterClass.Mage; } }
-		public override ComparisonCalculationBase CreateNewComparisonCalculation() { return new ComparisonCalculationMage(); }
+        public override Character.CharacterClass TargetClass { get { return Character.CharacterClass.Mage; } }
+        public override ComparisonCalculationBase CreateNewComparisonCalculation() { return new ComparisonCalculationMage(); }
         public override CharacterCalculationsBase CreateNewCharacterCalculations() { return new CharacterCalculationsMage(); }
 
         public override CharacterCalculationsBase GetCharacterCalculations(Character character, Item additionalItem)
@@ -770,10 +769,10 @@ namespace Rawr.Mage
         private static string[] TalentListFriendly = { "Arcane Subtlety", "Arcane Focus", "Improved Arcane Missiles", "Wand Specialization", "Magic Absorption", "Arcane Concentration", "Magic Attunement", "Arcane Impact", "Arcane Fortitude", "Improved Mana Shield", "Improved Counterspell", "Arcane Meditation", "Improved Blink", "Presence of Mind", "Arcane Mind", "Prismatic Cloak", "Arcane Instability", "Arcane Potency", "Empowered Arcane Missiles", "Arcane Power", "Spell Power", "Mind Mastery", "Slow", "Improved Fireball", "Impact", "Ignite", "Flame Throwing", "Improved Fire Blast", "Incinerate", "Improved Flamestrike", "Pyroblast", "Burning Soul", "Improved Scorch", "Improved Fire Ward", "Master of Elements", "Playing with Fire", "Critical Mass", "Blast Wave", "Blazing Speed", "Fire Power", "Pyromaniac", "Combustion", "Molten Fury", "Empowered Fireball", "Dragon's Breath", "Frost Warding", "Improved Frostbolt", "Elemental Precision", "Ice Shards", "Frostbite", "Improved Frost Nova", "Permafrost", "Piercing Ice", "Icy Veins", "Improved Blizzard", "Arctic Reach", "Frost Channeling", "Shatter", "Frozen Core", "Cold Snap", "Improved Cone of Cold", "Ice Floes", "Winter's Chill", "Ice Barrier", "Arctic Winds", "Empowered Frostbolt", "Summon Water Elemental" };
         private static int[] MaxTalentPoints = { 2, 5, 5, 2, 5, 5, 2, 3, 1, 2, 2, 3, 2, 1, 5, 2, 3, 3, 3, 1, 2, 5, 1, 5, 5, 5, 2, 3, 2, 3, 1, 2, 3, 2, 3, 3, 3, 1, 2, 5, 3, 1, 2, 5, 1, 2, 5, 3, 5, 3, 2, 3, 3, 1, 3, 2, 3, 5, 3, 1, 3, 2, 5, 1, 5, 5, 1 };
 
-        private static string[] TalentListWotLK = {          "ArcaneSubtlety",  "ArcaneFocus",   "ImprovedArcaneMissiles",  "MagicAbsorption",  "ArcaneConcentration",  "MagicAttunement",  "SpellImpact",  "ArcaneFortitude",    "StudentOfTheMind",  "FocusMagic", "ImprovedManaShield",  "ImprovedCounterspell",  "ArcaneMeditation",  "ImprovedBlink",   "PresenceOfMind",   "TormentTheWeak",  "ArcaneMind",  "PrismaticCloak",  "ArcaneInstability",  "ArcanePotency", "EmpoweredArcaneMissiles",  "ArcanePower",  "SpellPower",  "MindMastery", "Slow",   "IncantersAbsorption",  "ArcaneFlows",  "MissileBarrage",  "NetherwindPresence",  "ArcaneBarrage",  "ImprovedFireball", "Impact", "Ignite",  "FlameThrowing",   "ImprovedFireBlast",   "Incinerate",  "ImprovedFlamestrike", "Pyroblast",  "BurningSoul",  "ImprovedScorch",   "ImprovedFireWard",   "MasterOfElements",   "PlayingWithFire",  "CriticalMass",  "BlastWave",  "BlazingSpeed",  "FirePower", "Pyromaniac", "Combustion",  "MoltenFury",  "EmpoweredFireball",   "DragonsBreath",  "FrostWarding",  "ImprovedFrostbolt",  "ElementalPrecision",  "IceShards", "Frostbite",   "ImprovedFrostNova", "Permafrost",  "PiercingIce",  "IcyVeins",  "ImprovedBlizzard",  "ArcticReach",  "FrostChanneling", "Shatter",  "FrozenCore",  "ColdSnap",    "ImprovedConeOfCold",  "IceFloes",   "WintersChill",  "IceBarrier",  "ArcticWinds",  "EmpoweredFrostbolt",   "SummonWaterElemental" };
-        private static string[] TalentListFriendlyWotLK = { "Arcane Subtlety", "Arcane Focus", "Improved Arcane Missiles", "Magic Absorption", "Arcane Concentration", "Magic Attunement", "Spell Impact", "Arcane Fortitude", "Student of the Mind", "Focus Magic",   "Arcane Shielding", "Improved Counterspell", "Arcane Meditation", "Improved Blink", "Presence of Mind", "Torment the Weak", "Arcane Mind", "Prismatic Cloak", "Arcane Instability", "Arcane Potency",      "Arcane Empowerment", "Arcane Power", "Spell Power", "Mind Mastery", "Slow", "Incanter's Absorption", "Arcane Flows", "Missile Barrage", "Netherwind Presence", "Arcane Barrage", "Improved Fireball", "Impact", "Ignite", "Flame Throwing", "Improved Fire Blast", "Incineration", "Improved Flamestrike", "Pyroblast", "Burning Soul", "Improved Scorch", "Improved Fire Ward", "Master of Elements", "Playing with Fire", "Critical Mass", "Blast Wave", "Blazing Speed", "Fire Power", "Pyromaniac", "Combustion", "Molten Fury", "Empowered Fireball", "Dragon's Breath", "Frost Warding", "Improved Frostbolt", "Elemental Precision", "Ice Shards", "Frostbite", "Improved Frost Nova", "Permafrost", "Piercing Ice", "Icy Veins", "Improved Blizzard", "Arctic Reach", "Frost Channeling", "Shatter", "Frozen Core", "Cold Snap", "Improved Cone of Cold", "Ice Floes", "Winter's Chill", "Ice Barrier", "Arctic Winds", "Empowered Frostbolt", "Summon Water Elemental" };
-        private static int[] MaxTalentPointsWotLK = {                       2,              3,                          5,                  2,                      5,                  2,              3,                  3,                     3,             1,                    2,                       2,                   3,                2,                  1,                  3,             5,                 3,                    3,                2,                         3,              1,             2,              5,      1,                       3,              2,                 5,                     3,                1,                   5,        5,        5,                2,                     3,              3,                      3,           1,              2,                 3,                    2,                    3,                   3,               3,            1,               2,            5,            3,            1,             2,                    5,                 1,               2,                    5,                     3,            5,           3,                     2,            3,              3,           1,                   3,              2,                  3,         5,             3,           1,                       3,           3,                5,             1,              5,                     5,                        1 };
-         
+        private static string[] TalentListWotLK = { "ArcaneSubtlety", "ArcaneFocus", "ImprovedArcaneMissiles", "MagicAbsorption", "ArcaneConcentration", "MagicAttunement", "SpellImpact", "ArcaneFortitude", "StudentOfTheMind", "FocusMagic", "ImprovedManaShield", "ImprovedCounterspell", "ArcaneMeditation", "ImprovedBlink", "PresenceOfMind", "TormentTheWeak", "ArcaneMind", "PrismaticCloak", "ArcaneInstability", "ArcanePotency", "EmpoweredArcaneMissiles", "ArcanePower", "SpellPower", "MindMastery", "Slow", "IncantersAbsorption", "ArcaneFlows", "MissileBarrage", "NetherwindPresence", "ArcaneBarrage", "ImprovedFireball", "Impact", "Ignite", "FlameThrowing", "ImprovedFireBlast", "Incinerate", "ImprovedFlamestrike", "Pyroblast", "BurningSoul", "ImprovedScorch", "ImprovedFireWard", "MasterOfElements", "PlayingWithFire", "CriticalMass", "BlastWave", "BlazingSpeed", "FirePower", "Pyromaniac", "Combustion", "MoltenFury", "EmpoweredFireball", "DragonsBreath", "FrostWarding", "ImprovedFrostbolt", "ElementalPrecision", "IceShards", "Frostbite", "ImprovedFrostNova", "Permafrost", "PiercingIce", "IcyVeins", "ImprovedBlizzard", "ArcticReach", "FrostChanneling", "Shatter", "FrozenCore", "ColdSnap", "ImprovedConeOfCold", "IceFloes", "WintersChill", "IceBarrier", "ArcticWinds", "EmpoweredFrostbolt", "SummonWaterElemental" };
+        private static string[] TalentListFriendlyWotLK = { "Arcane Subtlety", "Arcane Focus", "Improved Arcane Missiles", "Magic Absorption", "Arcane Concentration", "Magic Attunement", "Spell Impact", "Arcane Fortitude", "Student of the Mind", "Focus Magic", "Arcane Shielding", "Improved Counterspell", "Arcane Meditation", "Improved Blink", "Presence of Mind", "Torment the Weak", "Arcane Mind", "Prismatic Cloak", "Arcane Instability", "Arcane Potency", "Arcane Empowerment", "Arcane Power", "Spell Power", "Mind Mastery", "Slow", "Incanter's Absorption", "Arcane Flows", "Missile Barrage", "Netherwind Presence", "Arcane Barrage", "Improved Fireball", "Impact", "Ignite", "Flame Throwing", "Improved Fire Blast", "Incineration", "Improved Flamestrike", "Pyroblast", "Burning Soul", "Improved Scorch", "Improved Fire Ward", "Master of Elements", "Playing with Fire", "Critical Mass", "Blast Wave", "Blazing Speed", "Fire Power", "Pyromaniac", "Combustion", "Molten Fury", "Empowered Fireball", "Dragon's Breath", "Frost Warding", "Improved Frostbolt", "Elemental Precision", "Ice Shards", "Frostbite", "Improved Frost Nova", "Permafrost", "Piercing Ice", "Icy Veins", "Improved Blizzard", "Arctic Reach", "Frost Channeling", "Shatter", "Frozen Core", "Cold Snap", "Improved Cone of Cold", "Ice Floes", "Winter's Chill", "Ice Barrier", "Arctic Winds", "Empowered Frostbolt", "Summon Water Elemental" };
+        private static int[] MaxTalentPointsWotLK = { 2, 3, 5, 2, 5, 2, 3, 3, 3, 1, 2, 2, 3, 2, 1, 3, 5, 3, 3, 2, 3, 1, 2, 5, 1, 3, 2, 5, 3, 1, 5, 5, 5, 2, 3, 3, 3, 1, 2, 3, 2, 3, 3, 3, 1, 2, 5, 3, 1, 2, 5, 1, 2, 5, 3, 5, 3, 2, 3, 3, 1, 3, 2, 3, 5, 3, 1, 3, 3, 5, 1, 5, 5, 1 };
+
         private static string[] GlyphList = { "GlyphOfFireball", "GlyphOfFrostbolt", "GlyphOfIceArmor", "GlyphOfImprovedScorch", "GlyphOfMageArmor", "GlyphOfManaGem", "GlyphOfMoltenArmor", "GlyphOfWaterElemental", "GlyphOfArcaneExplosion" };
         private static string[] GlyphListFriendly = { "Glyph of Fireball", "Glyph of Frostbolt", "Glyph of Ice Armor", "Glyph of Improved Scorch", "Glyph of Mage Armor", "Glyph of Mana Gem", "Glyph of Molten Armor", "Glyph of Water Elemental", "Glyph of Arcane Explosion" };
 
@@ -811,7 +810,7 @@ namespace Rawr.Mage
                     calculationOptions.IncrementalOptimizations = false;
                     calculationOptions.SmartOptimization = true;
 
-                    for (int index = 0; index < talents.Length; index++ )
+                    for (int index = 0; index < talents.Length; index++)
                     {
                         string talent = talents[index];
                         int maxPoints = maxTalents[index];
@@ -1158,12 +1157,12 @@ namespace Rawr.Mage
                         float maxScale = calculationOptions.FightDuration;
                         float graphEnd = graphStart + graphWidth;
                         float[] ticks = new float[] {(float)Math.Round(graphStart + graphWidth * 0.5f),
-							(float)Math.Round(graphStart + graphWidth * 0.75f),
-							(float)Math.Round(graphStart + graphWidth * 0.25f),
-							(float)Math.Round(graphStart + graphWidth * 0.125f),
-							(float)Math.Round(graphStart + graphWidth * 0.375f),
-							(float)Math.Round(graphStart + graphWidth * 0.625f),
-							(float)Math.Round(graphStart + graphWidth * 0.875f)};
+                            (float)Math.Round(graphStart + graphWidth * 0.75f),
+                            (float)Math.Round(graphStart + graphWidth * 0.25f),
+                            (float)Math.Round(graphStart + graphWidth * 0.125f),
+                            (float)Math.Round(graphStart + graphWidth * 0.375f),
+                            (float)Math.Round(graphStart + graphWidth * 0.625f),
+                            (float)Math.Round(graphStart + graphWidth * 0.875f)};
                         Pen black200 = new Pen(Color.FromArgb(200, 0, 0, 0));
                         Pen black150 = new Pen(Color.FromArgb(150, 0, 0, 0));
                         Pen black75 = new Pen(Color.FromArgb(75, 0, 0, 0));
@@ -1356,7 +1355,7 @@ namespace Rawr.Mage
             {
                 if (_optimizableCalculationLabels == null)
                     _optimizableCalculationLabels = new string[] {
-					"Health",
+                    "Health",
                     "Nature Resistance",
                     "Fire Resistance",
                     "Frost Resistance",
@@ -1367,7 +1366,7 @@ namespace Rawr.Mage
                     "Spell Haste Rating",
                     "PVP Trinket",
                     "Movement Speed",
-					};
+                    };
                 return _optimizableCalculationLabels;
             }
         }
@@ -1487,9 +1486,9 @@ namespace Rawr.Mage
         {
             return new Stats()
             {
-				AllResist = stats.AllResist,
-				MageAllResist = stats.MageAllResist,
-				ArcaneResistance = stats.ArcaneResistance,
+                AllResist = stats.AllResist,
+                MageAllResist = stats.MageAllResist,
+                ArcaneResistance = stats.ArcaneResistance,
                 FireResistance = stats.FireResistance,
                 FrostResistance = stats.FrostResistance,
                 NatureResistance = stats.NatureResistance,

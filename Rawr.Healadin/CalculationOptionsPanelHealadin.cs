@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Data;
 using System.Text;
-using System.Windows.Forms;
 
 namespace Rawr.Healadin
 {
@@ -22,7 +18,7 @@ namespace Rawr.Healadin
             if (Character.CalculationOptions == null)
                 Character.CalculationOptions = new CalculationOptionsHealadin();
 
-			CalculationOptionsHealadin calcOpts = Character.CalculationOptions as CalculationOptionsHealadin;
+            CalculationOptionsHealadin calcOpts = Character.CalculationOptions as CalculationOptionsHealadin;
             cmbLength.Value = (decimal)calcOpts.Length;
             cmbManaAmt.Text = calcOpts.ManaAmt.ToString();
             cmbManaTime.Value = (decimal)calcOpts.ManaTime;
@@ -30,7 +26,7 @@ namespace Rawr.Healadin
             cmbSpiritual.Value = (decimal)calcOpts.Spiritual;
             chkBoL.Checked = calcOpts.BoL;
 
-			trkActivity.Value = (int)calcOpts.Activity;
+            trkActivity.Value = (int)calcOpts.Activity;
             lblActivity.Text = trkActivity.Value + "%";
 
             trkRatio.Value = (int)(calcOpts.Ratio * 100);
@@ -41,7 +37,7 @@ namespace Rawr.Healadin
 
             loading = false;
         }
- 
+
         private void cmbLength_ValueChanged(object sender, EventArgs e)
         {
             if (!loading)
@@ -166,29 +162,29 @@ namespace Rawr.Healadin
 
     }
 
-	[Serializable]
-	public class CalculationOptionsHealadin : ICalculationOptionBase
-	{
-		public string GetXml()
-		{
-			System.Xml.Serialization.XmlSerializer serializer =
-				new System.Xml.Serialization.XmlSerializer(typeof(CalculationOptionsHealadin));
-			StringBuilder xml = new StringBuilder();
-			System.IO.StringWriter writer = new System.IO.StringWriter(xml);
-			serializer.Serialize(writer, this);
-			return xml.ToString();
-		}
+    [Serializable]
+    public class CalculationOptionsHealadin : ICalculationOptionBase
+    {
+        public string GetXml()
+        {
+            System.Xml.Serialization.XmlSerializer serializer =
+                new System.Xml.Serialization.XmlSerializer(typeof(CalculationOptionsHealadin));
+            StringBuilder xml = new StringBuilder();
+            System.IO.StringWriter writer = new System.IO.StringWriter(xml);
+            serializer.Serialize(writer, this);
+            return xml.ToString();
+        }
 
-		public bool EnforceMetagemRequirements = false;
-		public float Length = 5;
-		public float ManaAmt = 2400;
-		public float ManaTime = 2.5f;
-		public float Activity = 80;
-		public float Spriest = 0;
-		public float Spiritual = 0;
+        public bool EnforceMetagemRequirements = false;
+        public float Length = 5;
+        public float ManaAmt = 2400;
+        public float ManaTime = 2.5f;
+        public float Activity = 80;
+        public float Spriest = 0;
+        public float Spiritual = 0;
         public bool BoL = true;
         public float Ratio = .25f;
         public int Rank1 = 11;
         public int Rank2 = 9;
-	}
+    }
 }

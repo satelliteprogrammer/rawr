@@ -4,8 +4,6 @@ using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.Drawing.Text;
 using System.Windows.Forms;
-using System.Xml;
-using System.Threading;
 
 namespace Rawr
 {
@@ -24,23 +22,23 @@ namespace Rawr
             }
         }
 
-		private Character _character = null;
-		public Character Character
-		{
-			get { return _character; }
-			set
-			{
-				if (_character != null)
-				{
-					_character.ItemsChanged -= new EventHandler(CharacterItemCache_ItemsChanged);
-				}
-				_character = value;
-				if (_character != null)
-				{
-					_character.ItemsChanged += new EventHandler(CharacterItemCache_ItemsChanged);
-				}
-			}
-		}
+        private Character _character = null;
+        public Character Character
+        {
+            get { return _character; }
+            set
+            {
+                if (_character != null)
+                {
+                    _character.ItemsChanged -= new EventHandler(CharacterItemCache_ItemsChanged);
+                }
+                _character = value;
+                if (_character != null)
+                {
+                    _character.ItemsChanged += new EventHandler(CharacterItemCache_ItemsChanged);
+                }
+            }
+        }
 
         private bool resetItem = false;
         public ItemToolTip()
@@ -56,7 +54,7 @@ namespace Rawr
             UseFading = true;
             LoadGraphicsObjects();
 
-			ItemCache.Instance.ItemsChanged += new EventHandler(CharacterItemCache_ItemsChanged);
+            ItemCache.Instance.ItemsChanged += new EventHandler(CharacterItemCache_ItemsChanged);
         }
 
         private void CharacterItemCache_ItemsChanged(object sender, EventArgs e)
@@ -93,17 +91,17 @@ namespace Rawr
         private Enchant CurrentItemEnchant { get; set; }
 
         private Font _fontName;
-		private Font _fontStats;
-		private Font _fontStatsSmall;
+        private Font _fontStats;
+        private Font _fontStatsSmall;
         private Font _fontTinyName;
 
         private void LoadGraphicsObjects()
         {
             _fontName = new Font("Microsoft Sans Serif", 8.25F, FontStyle.Bold, GraphicsUnit.Point, ((0)));
             _fontTinyName = new Font("Microsoft Sans Serif", 6.00F, FontStyle.Regular, GraphicsUnit.Point, ((0)));
-			_fontStats = new Font("Microsoft Sans Serif", 8.25F, FontStyle.Regular, GraphicsUnit.Point, ((0)));
-			_fontStatsSmall = new Font("Microsoft Sans Serif", 7.25F, FontStyle.Regular, GraphicsUnit.Point, ((0)));
-		}
+            _fontStats = new Font("Microsoft Sans Serif", 8.25F, FontStyle.Regular, GraphicsUnit.Point, ((0)));
+            _fontStatsSmall = new Font("Microsoft Sans Serif", 7.25F, FontStyle.Regular, GraphicsUnit.Point, ((0)));
+        }
 
         protected Image _cachedToolTipImage = null;
 
@@ -130,7 +128,7 @@ namespace Rawr
                             string location = "Unknown source";
                             if (_currentItem.LocationInfo != null)
                             {
-                                location = _currentItem .LocationInfo.Description;
+                                location = _currentItem.LocationInfo.Description;
                             }
                             SizeF locationSize = _sizeTest.MeasureString(location, _fontStats);
                             if (locationSize.Width > 300)
@@ -264,36 +262,36 @@ namespace Rawr
                                                 g.DrawImageUnscaled(icon, rectGemBorder.X + 2, rectGemBorder.Y + 2);
                                                 icon.Dispose();
                                             }
-                                            
+
                                             Character characterWithItemEquipped = Character.Clone();
                                             characterWithItemEquipped[Character.CharacterSlot.Head] = CurrentItem;
                                             bool active = gem.MeetsRequirements(characterWithItemEquipped);
 
                                             string[] stats = gem.Stats.ToString().Split(',');
 
-											switch (stats.Length)
-											{
-												case 1:
-													g.DrawString(stats[0].Trim(), _fontStats, active ? SystemBrushes.InfoText : SystemBrushes.GrayText,
-														rectGemBorder.X + 39, rectGemBorder.Y + 3);
-													break;
+                                            switch (stats.Length)
+                                            {
+                                                case 1:
+                                                    g.DrawString(stats[0].Trim(), _fontStats, active ? SystemBrushes.InfoText : SystemBrushes.GrayText,
+                                                        rectGemBorder.X + 39, rectGemBorder.Y + 3);
+                                                    break;
 
-												case 2:
-													g.DrawString(stats[0].Trim(), _fontStats, active ? SystemBrushes.InfoText : SystemBrushes.GrayText,
-														rectGemBorder.X + 39, rectGemBorder.Y + 3);
-													g.DrawString(stats[1].Trim(), _fontStats, active ? SystemBrushes.InfoText : SystemBrushes.GrayText,
-														rectGemBorder.X + 39, rectGemBorder.Y + 20);
-													break;
+                                                case 2:
+                                                    g.DrawString(stats[0].Trim(), _fontStats, active ? SystemBrushes.InfoText : SystemBrushes.GrayText,
+                                                        rectGemBorder.X + 39, rectGemBorder.Y + 3);
+                                                    g.DrawString(stats[1].Trim(), _fontStats, active ? SystemBrushes.InfoText : SystemBrushes.GrayText,
+                                                        rectGemBorder.X + 39, rectGemBorder.Y + 20);
+                                                    break;
 
-												case 3:
-													g.DrawString(stats[0].Trim(), _fontStatsSmall, active ? SystemBrushes.InfoText : SystemBrushes.GrayText,
-														rectGemBorder.X + 39, rectGemBorder.Y + 0);
-													g.DrawString(stats[1].Trim(), _fontStatsSmall, active ? SystemBrushes.InfoText : SystemBrushes.GrayText,
-														rectGemBorder.X + 39, rectGemBorder.Y + 12);
-													g.DrawString(stats[2].Trim(), _fontStatsSmall, active ? SystemBrushes.InfoText : SystemBrushes.GrayText,
-														rectGemBorder.X + 39, rectGemBorder.Y + 24);
-													break;
-											}
+                                                case 3:
+                                                    g.DrawString(stats[0].Trim(), _fontStatsSmall, active ? SystemBrushes.InfoText : SystemBrushes.GrayText,
+                                                        rectGemBorder.X + 39, rectGemBorder.Y + 0);
+                                                    g.DrawString(stats[1].Trim(), _fontStatsSmall, active ? SystemBrushes.InfoText : SystemBrushes.GrayText,
+                                                        rectGemBorder.X + 39, rectGemBorder.Y + 12);
+                                                    g.DrawString(stats[2].Trim(), _fontStatsSmall, active ? SystemBrushes.InfoText : SystemBrushes.GrayText,
+                                                        rectGemBorder.X + 39, rectGemBorder.Y + 24);
+                                                    break;
+                                            }
 
                                             if (!active)
                                             {
@@ -412,21 +410,21 @@ namespace Rawr
             Show(item, null, null, window, point);
         }
 
-		public void Show(Item item, Character itemCharacter, Enchant itemEnchant, IWin32Window window, Point point)
-		{
-			CurrentItem = item;
+        public void Show(Item item, Character itemCharacter, Enchant itemEnchant, IWin32Window window, Point point)
+        {
+            CurrentItem = item;
             CurrentItemCharacter = itemCharacter;
             CurrentItemEnchant = itemEnchant;
             if (CachedToolTipImage != null)
             {
                 base.Show(item.Name, window, point);
             }
-		}
+        }
 
         private void ItemToolTip_Popup(object sender, PopupEventArgs e)
         {
-			e.ToolTipSize = CachedToolTipImage.Size;
-		}
+            e.ToolTipSize = CachedToolTipImage.Size;
+        }
 
         private void ItemToolTip_Draw(object sender, DrawToolTipEventArgs e)
         {

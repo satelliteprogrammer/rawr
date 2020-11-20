@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace Rawr.Retribution
 {
-	[System.ComponentModel.DisplayName("Retribution|Spell_Holy_AuraOfLight")]
+    [System.ComponentModel.DisplayName("Retribution|Spell_Holy_AuraOfLight")]
     class CalculationsRetribution : CalculationsBase
     {
         private Dictionary<string, System.Drawing.Color> _subPointNameColors = null;
@@ -59,23 +57,23 @@ namespace Rawr.Retribution
                     List<string> labels = new List<string>(new string[]
                     {
                         "Basic Stats:Health",
-					    "Basic Stats:Strength",
-					    "Basic Stats:Agility",
-					    "Basic Stats:Attack Power",
-					    "Basic Stats:Crit Rating",
-					    "Basic Stats:Hit Rating",
-					    "Basic Stats:Expertise",
-					    "Basic Stats:Haste Rating",
-					    "Basic Stats:Armor Penetration",
-					    "Advanced Stats:Weapon Damage*Damage before misses and mitigation",
-					    "Advanced Stats:Attack Speed",
-					    "Advanced Stats:Crit Chance",
-					    "Advanced Stats:Avoided Attacks",
-					    "Advanced Stats:Enemy Mitigation",
+                        "Basic Stats:Strength",
+                        "Basic Stats:Agility",
+                        "Basic Stats:Attack Power",
+                        "Basic Stats:Crit Rating",
+                        "Basic Stats:Hit Rating",
+                        "Basic Stats:Expertise",
+                        "Basic Stats:Haste Rating",
+                        "Basic Stats:Armor Penetration",
+                        "Advanced Stats:Weapon Damage*Damage before misses and mitigation",
+                        "Advanced Stats:Attack Speed",
+                        "Advanced Stats:Crit Chance",
+                        "Advanced Stats:Avoided Attacks",
+                        "Advanced Stats:Enemy Mitigation",
                         "DPS Breakdown:White",
                         "DPS Breakdown:Seal",
                         "DPS Breakdown:Windfury",
-					    "DPS Breakdown:Crusader Strike",
+                        "DPS Breakdown:Crusader Strike",
                         "DPS Breakdown:Judgement",
                         "DPS Breakdown:Consecration",
                         "DPS Breakdown:Exorcism",
@@ -113,8 +111,8 @@ namespace Rawr.Retribution
             get
             {
                 return _relevantItemTypes ?? (_relevantItemTypes = new List<Item.ItemType>(new Item.ItemType[]
-					{
-						Item.ItemType.None,
+                    {
+                        Item.ItemType.None,
                         Item.ItemType.Leather,
                         Item.ItemType.Mail,
                         Item.ItemType.Plate,
@@ -123,12 +121,12 @@ namespace Rawr.Retribution
                         Item.ItemType.TwoHandAxe,
                         Item.ItemType.TwoHandMace,
                         Item.ItemType.TwoHandSword
-					}));
+                    }));
             }
         }
 
-		public override Character.CharacterClass TargetClass { get { return Character.CharacterClass.Paladin; } }
-		public override ComparisonCalculationBase CreateNewComparisonCalculation()
+        public override Character.CharacterClass TargetClass { get { return Character.CharacterClass.Paladin; } }
+        public override ComparisonCalculationBase CreateNewComparisonCalculation()
         {
             return new ComparisonCalculationRetribution();
         }
@@ -139,14 +137,14 @@ namespace Rawr.Retribution
         }
 
 
-		public override ICalculationOptionBase DeserializeDataObject(string xml)
-		{
-			System.Xml.Serialization.XmlSerializer serializer =
-				new System.Xml.Serialization.XmlSerializer(typeof(CalculationOptionsRetribution));
-			System.IO.StringReader reader = new System.IO.StringReader(xml);
-			CalculationOptionsRetribution calcOpts = serializer.Deserialize(reader) as CalculationOptionsRetribution;
-			return calcOpts;
-		}
+        public override ICalculationOptionBase DeserializeDataObject(string xml)
+        {
+            System.Xml.Serialization.XmlSerializer serializer =
+                new System.Xml.Serialization.XmlSerializer(typeof(CalculationOptionsRetribution));
+            System.IO.StringReader reader = new System.IO.StringReader(xml);
+            CalculationOptionsRetribution calcOpts = serializer.Deserialize(reader) as CalculationOptionsRetribution;
+            return calcOpts;
+        }
 
 
         /// <summary>
@@ -566,7 +564,7 @@ namespace Rawr.Retribution
         public override Stats GetCharacterStats(Character character, Item additionalItem)
         {
             CalculationOptionsRetribution calcOpts = character.CalculationOptions as CalculationOptionsRetribution;
-           
+
             Stats statsRace = GetRaceStats(character);
             Stats statsBaseGear = GetItemStats(character, additionalItem);
             Stats statsEnchants = GetEnchantsStats(character);
@@ -777,7 +775,7 @@ namespace Rawr.Retribution
         public override bool HasRelevantStats(Stats stats)
         {
             return (stats.Health + stats.Strength + stats.Agility + stats.Stamina + stats.Spirit + stats.AttackPower +
-                stats.HitRating + stats.CritRating + stats.ArmorPenetration + stats.ExpertiseRating + stats.HasteRating + stats.WeaponDamage + 
+                stats.HitRating + stats.CritRating + stats.ArmorPenetration + stats.ExpertiseRating + stats.HasteRating + stats.WeaponDamage +
                 stats.SpellCritRating + stats.SpellHitRating + stats.SpellDamageRating + stats.SpellDamageFromSpiritPercentage +
                 stats.BonusStrengthMultiplier + stats.BonusStaminaMultiplier + stats.BonusAgilityMultiplier + stats.BonusCritMultiplier +
                 stats.BonusAttackPowerMultiplier + stats.BonusPhysicalDamageMultiplier + stats.BonusSpellPowerMultiplier +
@@ -798,25 +796,25 @@ namespace Rawr.Retribution
             {
                 if (character.Talents.Trees.Count > 0)
                 {
-					if (character.Talents.Trees.ContainsKey("Protection"))
-					{
-						calcOpts.Precision = character.Talents.Trees["Protection"][2].PointsInvested;
-					}
-					if (character.Talents.Trees.ContainsKey("Retribution"))
-					{
-						calcOpts.Crusade = character.Talents.Trees["Retribution"][11].PointsInvested;
-						calcOpts.TwoHandedSpec = character.Talents.Trees["Retribution"][12].PointsInvested;
+                    if (character.Talents.Trees.ContainsKey("Protection"))
+                    {
+                        calcOpts.Precision = character.Talents.Trees["Protection"][2].PointsInvested;
+                    }
+                    if (character.Talents.Trees.ContainsKey("Retribution"))
+                    {
+                        calcOpts.Crusade = character.Talents.Trees["Retribution"][11].PointsInvested;
+                        calcOpts.TwoHandedSpec = character.Talents.Trees["Retribution"][12].PointsInvested;
                         calcOpts.SanctityAura = character.Talents.Trees["Retribution"][13].PointsInvested;
-						calcOpts.ImprovedSanctityAura = character.Talents.Trees["Retribution"][14].PointsInvested;
-						calcOpts.SanctifiedSeals = character.Talents.Trees["Retribution"][17].PointsInvested;
-						calcOpts.Fanaticism = character.Talents.Trees["Retribution"][20].PointsInvested;
+                        calcOpts.ImprovedSanctityAura = character.Talents.Trees["Retribution"][14].PointsInvested;
+                        calcOpts.SanctifiedSeals = character.Talents.Trees["Retribution"][17].PointsInvested;
+                        calcOpts.Fanaticism = character.Talents.Trees["Retribution"][20].PointsInvested;
                         calcOpts.Vengeance = character.Talents.Trees["Retribution"][15].PointsInvested;
-						calcOpts.Conviction = character.Talents.Trees["Retribution"][6].PointsInvested;
-					}
-					if (character.Talents.Trees.ContainsKey("Holy"))
-					{
-						calcOpts.DivineStrength = character.Talents.Trees["Holy"][0].PointsInvested;
-					}
+                        calcOpts.Conviction = character.Talents.Trees["Retribution"][6].PointsInvested;
+                    }
+                    if (character.Talents.Trees.ContainsKey("Holy"))
+                    {
+                        calcOpts.DivineStrength = character.Talents.Trees["Holy"][0].PointsInvested;
+                    }
                     calcOpts.TalentsSaved = true;
                 }
             }

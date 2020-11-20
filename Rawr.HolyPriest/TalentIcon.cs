@@ -1,12 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Drawing;
-using System.Data;
-using System.Text;
 using System.Windows.Forms;
-using System.IO;
-using System.Net;
 
 namespace Rawr.HolyPriest
 {
@@ -24,7 +18,7 @@ namespace Rawr.HolyPriest
             panel1.Resize += new EventHandler(panel1_Resize);
             panel1.Click += new EventHandler(panel1_Click);
             panel1.MouseHover += new EventHandler(panel1_MouseHover);
-     
+
         }
 
         void panel1_MouseHover(object sender, EventArgs e)
@@ -39,14 +33,14 @@ namespace Rawr.HolyPriest
         public TalentIcon(TalentForm parentForm, TalentItem ti, Character.CharacterClass charClass)
             : this(parentForm)
         {
-            
+
             Talent = ti;
             _name = ti.Name;
             CharClass = charClass;
             getIcon(ti, charClass);
             panel1.Width = _icon.Width;
             panel1.Height = _icon.Height;
-            
+
         }
 
         void panel1_Resize(object sender, EventArgs e)
@@ -103,15 +97,15 @@ namespace Rawr.HolyPriest
         {
             if (_icon == null)
             {
-				WebRequestWrapper wrw = new WebRequestWrapper();
-				string filePath = wrw.DownloadTalentIcon(charclass, ti.Tree.Replace(" ", ""), ti.Name.Replace(" ", "").Replace(":", ""));
-				if (!String.IsNullOrEmpty(filePath))
-				{
-					_icon = new Bitmap(filePath);
-				}
+                WebRequestWrapper wrw = new WebRequestWrapper();
+                string filePath = wrw.DownloadTalentIcon(charclass, ti.Tree.Replace(" ", ""), ti.Name.Replace(" ", "").Replace(":", ""));
+                if (!String.IsNullOrEmpty(filePath))
+                {
+                    _icon = new Bitmap(filePath);
+                }
             }
 
-            
+
         }
     }
 }

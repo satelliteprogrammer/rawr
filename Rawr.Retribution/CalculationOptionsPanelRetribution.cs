@@ -1,11 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
 using System.Text;
-using System.Windows.Forms;
 
 namespace Rawr.Retribution
 {
@@ -31,17 +27,17 @@ namespace Rawr.Retribution
         }
         protected override void LoadCalculationOptions()
         {
-			if (Character.CalculationOptions == null)
-				Character.CalculationOptions = new CalculationOptionsRetribution();
+            if (Character.CalculationOptions == null)
+                Character.CalculationOptions = new CalculationOptionsRetribution();
 
-			CalculationOptionsRetribution calcOpts = Character.CalculationOptions as CalculationOptionsRetribution;
+            CalculationOptionsRetribution calcOpts = Character.CalculationOptions as CalculationOptionsRetribution;
 
             rbSoC.Checked = calcOpts.Seal == 0;
             rbSoB.Checked = calcOpts.Seal == 1;
 
             cbTargetLevel.SelectedItem = calcOpts.TargetLevel.ToString();
-			tbFightLength.Value = calcOpts.FightLength;
-			lblFightLengthNum.Text = tbFightLength.Value.ToString();
+            tbFightLength.Value = calcOpts.FightLength;
+            lblFightLengthNum.Text = tbFightLength.Value.ToString();
 
             checkBoxConsecration.Checked = calcOpts.ConsecRank > 0;
             cbConsRank.SelectedItem = "Rank " + calcOpts.ConsecRank.ToString();
@@ -73,22 +69,22 @@ namespace Rawr.Retribution
 
         private void rbSoC_CheckedChanged(object sender, EventArgs e)
         {
-			CalculationOptionsRetribution calcOpts = Character.CalculationOptions as CalculationOptionsRetribution;
-			calcOpts.Seal = rbSoC.Checked ? 0 : 1;
+            CalculationOptionsRetribution calcOpts = Character.CalculationOptions as CalculationOptionsRetribution;
+            calcOpts.Seal = rbSoC.Checked ? 0 : 1;
             Character.OnItemsChanged();
         }
 
         private void rbSoB_CheckedChanged(object sender, EventArgs e)
         {
-			CalculationOptionsRetribution calcOpts = Character.CalculationOptions as CalculationOptionsRetribution;
-			calcOpts.Seal = rbSoB.Checked ? 1 : 0;
+            CalculationOptionsRetribution calcOpts = Character.CalculationOptions as CalculationOptionsRetribution;
+            calcOpts.Seal = rbSoB.Checked ? 1 : 0;
             Character.OnItemsChanged();
         }
 
         private void checkBoxConsecration_CheckedChanged(object sender, EventArgs e)
         {
-			CalculationOptionsRetribution calcOpts = Character.CalculationOptions as CalculationOptionsRetribution;
-			if (checkBoxConsecration.Checked)
+            CalculationOptionsRetribution calcOpts = Character.CalculationOptions as CalculationOptionsRetribution;
+            if (checkBoxConsecration.Checked)
             {
                 cbConsRank.Enabled = true;
                 cbConsRank.SelectedItem = "Rank 1";
@@ -104,30 +100,30 @@ namespace Rawr.Retribution
 
         private void cbConsRank_SelectedIndexChanged(object sender, EventArgs e)
         {
-			CalculationOptionsRetribution calcOpts = Character.CalculationOptions as CalculationOptionsRetribution;
-			calcOpts.ConsecRank = int.Parse(cbConsRank.SelectedItem.ToString().Substring(5, 1));
+            CalculationOptionsRetribution calcOpts = Character.CalculationOptions as CalculationOptionsRetribution;
+            calcOpts.ConsecRank = int.Parse(cbConsRank.SelectedItem.ToString().Substring(5, 1));
             Character.OnItemsChanged();
         }
 
         private void cbTargetLevel_SelectedIndexChanged(object sender, EventArgs e)
         {
-			CalculationOptionsRetribution calcOpts = Character.CalculationOptions as CalculationOptionsRetribution;
-			calcOpts.TargetLevel = int.Parse(cbTargetLevel.SelectedItem.ToString());
+            CalculationOptionsRetribution calcOpts = Character.CalculationOptions as CalculationOptionsRetribution;
+            calcOpts.TargetLevel = int.Parse(cbTargetLevel.SelectedItem.ToString());
             Character.OnItemsChanged();
         }
 
         private void tbFightLength_Scroll(object sender, EventArgs e)
         {
-			CalculationOptionsRetribution calcOpts = Character.CalculationOptions as CalculationOptionsRetribution;
-			calcOpts.FightLength = tbFightLength.Value;
+            CalculationOptionsRetribution calcOpts = Character.CalculationOptions as CalculationOptionsRetribution;
+            calcOpts.FightLength = tbFightLength.Value;
             lblFightLengthNum.Text = tbFightLength.Value.ToString();
             Character.OnItemsChanged();
         }
 
         private void checkBoxExorcism_CheckedChanged(object sender, EventArgs e)
         {
-			CalculationOptionsRetribution calcOpts = Character.CalculationOptions as CalculationOptionsRetribution;
-			calcOpts.Exorcism = checkBoxExorcism.Checked;
+            CalculationOptionsRetribution calcOpts = Character.CalculationOptions as CalculationOptionsRetribution;
+            calcOpts.Exorcism = checkBoxExorcism.Checked;
             Character.OnItemsChanged();
         }
 
@@ -183,7 +179,7 @@ namespace Rawr.Retribution
                     if ((graphHeight - overallPoints) > 16)
                         points[count] = new Point(Convert.ToInt32(graphStart + count * 5), (Convert.ToInt32(graphHeight - overallPoints)));
                     else
-                        points[count] = points[count-1];
+                        points[count] = points[count - 1];
 
                 }
                 Brush statBrush = new SolidBrush(colors[index]);
@@ -196,12 +192,12 @@ namespace Rawr.Retribution
             //float graphStartY = 16f;
             float maxScale = 100f;
             float[] ticks = new float[] {(float)Math.Round(graphStart + graphWidth * 0.5f),
-							(float)Math.Round(graphStart + graphWidth * 0.75f),
-							(float)Math.Round(graphStart + graphWidth * 0.25f),
-							(float)Math.Round(graphStart + graphWidth * 0.125f),
-							(float)Math.Round(graphStart + graphWidth * 0.375f),
-							(float)Math.Round(graphStart + graphWidth * 0.625f),
-							(float)Math.Round(graphStart + graphWidth * 0.875f)};
+                            (float)Math.Round(graphStart + graphWidth * 0.75f),
+                            (float)Math.Round(graphStart + graphWidth * 0.25f),
+                            (float)Math.Round(graphStart + graphWidth * 0.125f),
+                            (float)Math.Round(graphStart + graphWidth * 0.375f),
+                            (float)Math.Round(graphStart + graphWidth * 0.625f),
+                            (float)Math.Round(graphStart + graphWidth * 0.875f)};
             Pen black200 = new Pen(Color.FromArgb(200, 0, 0, 0));
             Pen black150 = new Pen(Color.FromArgb(150, 0, 0, 0));
             Pen black75 = new Pen(Color.FromArgb(75, 0, 0, 0));
@@ -247,15 +243,15 @@ namespace Rawr.Retribution
             g.DrawString((maxScale * 0.625f).ToString(), tickFont, black75brush, ticks[5], 16, formatTick);
             g.DrawString((maxScale * 0.875f).ToString(), tickFont, black75brush, ticks[6], 16, formatTick);
 
-            g.DrawString((0f).ToString(), tickFont, black200brush, graphStart, _prerenderedGraph.Height-16, formatTick);
-            g.DrawString((maxScale).ToString(), tickFont, black200brush, graphEnd, _prerenderedGraph.Height-16, formatTick);
-            g.DrawString((maxScale * 0.5f).ToString(), tickFont, black200brush, ticks[0], _prerenderedGraph.Height-16, formatTick);
-            g.DrawString((maxScale * 0.75f).ToString(), tickFont, black150brush, ticks[1], _prerenderedGraph.Height-16, formatTick);
-            g.DrawString((maxScale * 0.25f).ToString(), tickFont, black150brush, ticks[2], _prerenderedGraph.Height-16, formatTick);
-            g.DrawString((maxScale * 0.125f).ToString(), tickFont, black75brush, ticks[3], _prerenderedGraph.Height-16, formatTick);
-            g.DrawString((maxScale * 0.375f).ToString(), tickFont, black75brush, ticks[4], _prerenderedGraph.Height-16, formatTick);
-            g.DrawString((maxScale * 0.625f).ToString(), tickFont, black75brush, ticks[5], _prerenderedGraph.Height-16, formatTick);
-            g.DrawString((maxScale * 0.875f).ToString(), tickFont, black75brush, ticks[6], _prerenderedGraph.Height-16, formatTick);
+            g.DrawString((0f).ToString(), tickFont, black200brush, graphStart, _prerenderedGraph.Height - 16, formatTick);
+            g.DrawString((maxScale).ToString(), tickFont, black200brush, graphEnd, _prerenderedGraph.Height - 16, formatTick);
+            g.DrawString((maxScale * 0.5f).ToString(), tickFont, black200brush, ticks[0], _prerenderedGraph.Height - 16, formatTick);
+            g.DrawString((maxScale * 0.75f).ToString(), tickFont, black150brush, ticks[1], _prerenderedGraph.Height - 16, formatTick);
+            g.DrawString((maxScale * 0.25f).ToString(), tickFont, black150brush, ticks[2], _prerenderedGraph.Height - 16, formatTick);
+            g.DrawString((maxScale * 0.125f).ToString(), tickFont, black75brush, ticks[3], _prerenderedGraph.Height - 16, formatTick);
+            g.DrawString((maxScale * 0.375f).ToString(), tickFont, black75brush, ticks[4], _prerenderedGraph.Height - 16, formatTick);
+            g.DrawString((maxScale * 0.625f).ToString(), tickFont, black75brush, ticks[5], _prerenderedGraph.Height - 16, formatTick);
+            g.DrawString((maxScale * 0.875f).ToString(), tickFont, black75brush, ticks[6], _prerenderedGraph.Height - 16, formatTick);
             #endregion
 
             Graph graph = new Graph(_prerenderedGraph);
@@ -264,22 +260,22 @@ namespace Rawr.Retribution
 
         private void checkBoxMeta_CheckedChanged(object sender, EventArgs e)
         {
-			CalculationOptionsRetribution calcOpts = Character.CalculationOptions as CalculationOptionsRetribution;
-			Character.EnforceMetagemRequirements = checkBoxMeta.Checked;
+            CalculationOptionsRetribution calcOpts = Character.CalculationOptions as CalculationOptionsRetribution;
+            Character.EnforceMetagemRequirements = checkBoxMeta.Checked;
             Character.OnItemsChanged();
         }
 
         private void rbAldor_CheckedChanged(object sender, EventArgs e)
         {
-			CalculationOptionsRetribution calcOpts = Character.CalculationOptions as CalculationOptionsRetribution;
-			calcOpts.ShattrathFaction = rbAldor.Checked ? "Aldor" : "Scryer";
+            CalculationOptionsRetribution calcOpts = Character.CalculationOptions as CalculationOptionsRetribution;
+            calcOpts.ShattrathFaction = rbAldor.Checked ? "Aldor" : "Scryer";
             Character.OnItemsChanged();
         }
 
         private void rbScryer_CheckedChanged(object sender, EventArgs e)
         {
-			CalculationOptionsRetribution calcOpts = Character.CalculationOptions as CalculationOptionsRetribution;
-			calcOpts.ShattrathFaction = rbAldor.Checked ? "Aldor" : "Scryer";
+            CalculationOptionsRetribution calcOpts = Character.CalculationOptions as CalculationOptionsRetribution;
+            calcOpts.ShattrathFaction = rbAldor.Checked ? "Aldor" : "Scryer";
             Character.OnItemsChanged();
         }
 
@@ -331,43 +327,43 @@ namespace Rawr.Retribution
         }
     }
 
-	[Serializable]
-	public class CalculationOptionsRetribution : ICalculationOptionBase
-	{
-		public string GetXml()
-		{
-			System.Xml.Serialization.XmlSerializer serializer =
-				new System.Xml.Serialization.XmlSerializer(typeof(CalculationOptionsRetribution));
-			StringBuilder xml = new StringBuilder();
-			System.IO.StringWriter writer = new System.IO.StringWriter(xml);
-			serializer.Serialize(writer, this);
-			return xml.ToString();
-		}
+    [Serializable]
+    public class CalculationOptionsRetribution : ICalculationOptionBase
+    {
+        public string GetXml()
+        {
+            System.Xml.Serialization.XmlSerializer serializer =
+                new System.Xml.Serialization.XmlSerializer(typeof(CalculationOptionsRetribution));
+            StringBuilder xml = new StringBuilder();
+            System.IO.StringWriter writer = new System.IO.StringWriter(xml);
+            serializer.Serialize(writer, this);
+            return xml.ToString();
+        }
 
-		public int TargetLevel = 73;
-		public int BossArmor = 7700;
-		public int FightLength = 10;
-		public bool Exorcism = false;
-		public int ConsecRank = 0;
-		public int Seal = 0;
-		public bool EnforceMetagemRequirements = false;
-		public string ShattrathFaction = "Aldor";
+        public int TargetLevel = 73;
+        public int BossArmor = 7700;
+        public int FightLength = 10;
+        public bool Exorcism = false;
+        public int ConsecRank = 0;
+        public int Seal = 0;
+        public bool EnforceMetagemRequirements = false;
+        public string ShattrathFaction = "Aldor";
         public int Bloodlust = 1;
         public int DrumsOfBattle = 1;
         public int DrumsOfWar = 1;
         public int ExposeWeaknessAPValue = 200;
         public int FerociousInspiration = 2;
 
-		public int TwoHandedSpec = 0;
-		public int Conviction = 0;
-		public int Crusade = 0;
-		public int DivineStrength = 0;
-		public int Fanaticism = 0;
-		public int ImprovedSanctityAura = 0;
-		public int Precision = 0;
-		public int SanctityAura = 0;
-		public int SanctifiedSeals = 0;
-		public int Vengeance = 0;
-		public bool TalentsSaved = false;
-	}
+        public int TwoHandedSpec = 0;
+        public int Conviction = 0;
+        public int Crusade = 0;
+        public int DivineStrength = 0;
+        public int Fanaticism = 0;
+        public int ImprovedSanctityAura = 0;
+        public int Precision = 0;
+        public int SanctityAura = 0;
+        public int SanctifiedSeals = 0;
+        public int Vengeance = 0;
+        public bool TalentsSaved = false;
+    }
 }

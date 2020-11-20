@@ -1,11 +1,7 @@
-﻿using System;
+﻿using Rawr.Mage.SequenceReconstruction;
+using System;
 using System.Collections.Generic;
 using System.Text;
-using System.Globalization;
-using System.Xml.Serialization;
-using System.Reflection;
-using System.Xml;
-using Rawr.Mage.SequenceReconstruction;
 
 namespace Rawr.Mage
 {

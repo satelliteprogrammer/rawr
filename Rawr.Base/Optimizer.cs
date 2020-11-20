@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using System.ComponentModel;
 using System.Threading;
 
@@ -196,7 +195,7 @@ namespace Rawr
         public static OptimizationMethod OptimizationMethod { get; set; }
 
         public Optimizer()
-		{
+        {
             optimizeCharacterProgressChangedDelegate = new SendOrPostCallback(PrivateOptimizeCharacterProgressChanged);
             optimizeCharacterCompletedDelegate = new SendOrPostCallback(PrivateOptimizeCharacterCompleted);
             optimizeCharacterThreadStartDelegate = new OptimizeCharacterThreadStartDelegate(OptimizeCharacterThreadStart);
@@ -376,8 +375,8 @@ namespace Rawr
             try
             {
                 optimizedCharacter = PrivateOptimizeCharacter(character, calculationToOptimize, requirements, thoroughness, injectCharacter, out injected, out error);
-				optimizedCharacterValue = GetCalculationsValue(model.GetCharacterCalculations(optimizedCharacter));
-				currentCharacterValue =	GetCalculationsValue(model.GetCharacterCalculations(character));
+                optimizedCharacterValue = GetCalculationsValue(model.GetCharacterCalculations(optimizedCharacter));
+                currentCharacterValue = GetCalculationsValue(model.GetCharacterCalculations(character));
             }
             catch (Exception ex)
             {
@@ -530,7 +529,7 @@ namespace Rawr
             if (!itemCacheInitialized) throw new InvalidOperationException("Optimization item cache was not initialized.");
             error = null;
             _character = character;
-            model = Calculations.GetModel(_character.CurrentModel); 
+            model = Calculations.GetModel(_character.CurrentModel);
             _calculationToOptimize = calculationToOptimize;
             _requirements = requirements;
             _thoroughness = thoroughness;
@@ -569,7 +568,7 @@ namespace Rawr
                             if (!list.Contains(itemEnchant)) list.Add(itemEnchant);
                         }
                     }
-                }                    
+                }
 
                 upgrades = new Dictionary<Character.CharacterSlot, List<ComparisonCalculationBase>>();
 
@@ -689,7 +688,7 @@ namespace Rawr
             if (!itemCacheInitialized) throw new InvalidOperationException("Optimization item cache was not initialized.");
             error = null;
             _character = character;
-            model = Calculations.GetModel(_character.CurrentModel); 
+            model = Calculations.GetModel(_character.CurrentModel);
             _calculationToOptimize = calculationToOptimize;
             _requirements = requirements;
             _thoroughness = thoroughness;
@@ -705,7 +704,7 @@ namespace Rawr
                 CharacterCalculationsBase baseCalculations = model.GetCharacterCalculations(_character);
                 float baseValue = GetCalculationsValue(baseCalculations);
 
-                Item item = upgrade;                
+                Item item = upgrade;
                 foreach (Character.CharacterSlot slot in slots)
                 {
                     if (item.FitsInSlot(slot))
@@ -776,20 +775,20 @@ namespace Rawr
         int[] pairSlotList = new int[] { (int)Character.CharacterSlot.Finger1, (int)Character.CharacterSlot.MainHand, (int)Character.CharacterSlot.Trinket1 };
         int[] pairSlotMap;
         //SortedList<Item, bool> uniqueItems; not needed since we store the items themselves, we can just check Unique on the item
-		Item[] headItems, neckItems, shouldersItems, backItems, chestItems, wristItems, handsItems, waistItems,
-					legsItems, feetItems, fingerItems, trinketItems, mainHandItems, offHandItems, rangedItems, 
-					projectileItems, projectileBagItems;
-		Enchant[] backEnchants, chestEnchants, feetEnchants, fingerEnchants, handsEnchants, headEnchants,
-			legsEnchants, shouldersEnchants, mainHandEnchants, offHandEnchants, rangedEnchants, wristEnchants;
+        Item[] headItems, neckItems, shouldersItems, backItems, chestItems, wristItems, handsItems, waistItems,
+                    legsItems, feetItems, fingerItems, trinketItems, mainHandItems, offHandItems, rangedItems,
+                    projectileItems, projectileBagItems;
+        Enchant[] backEnchants, chestEnchants, feetEnchants, fingerEnchants, handsEnchants, headEnchants,
+            legsEnchants, shouldersEnchants, mainHandEnchants, offHandEnchants, rangedEnchants, wristEnchants;
         Item[][] slotItems = new Item[slotCount][];
         Enchant[][] slotEnchants = new Enchant[slotCount][];
-        Dictionary<int, bool>[] slotAvailableEnchants = new Dictionary<int,bool>[slotCount];
+        Dictionary<int, bool>[] slotAvailableEnchants = new Dictionary<int, bool>[slotCount];
         Item[] lockedItems;
         Enchant[] lockedEnchants;
         Dictionary<string, Dictionary<int, bool>> itemEnchantValid;
         Dictionary<string, List<Enchant>> itemEnchantValidList;
         Character.CharacterSlot lockedSlot = Character.CharacterSlot.None;
-		Random rand;
+        Random rand;
 
         private bool ItemEnchantValid(Character.CharacterSlot slot, Item item, Enchant enchant)
         {
@@ -797,7 +796,7 @@ namespace Rawr
             if (slot == lockedSlot)
             {
                 if (lockedEnchants == null)
-                {                    
+                {
                     return slotAvailableEnchants[(int)slot].TryGetValue(enchant.Id, out valid) && valid;
                 }
                 else
@@ -1081,7 +1080,7 @@ namespace Rawr
                             dict[enchant.Id] = true;
                             if (!list.Contains(enchant)) list.Add(enchant);
                         }
-                    }                    
+                    }
                 }
             }
             // store dictionaries for available enchants for locked slots
@@ -1442,22 +1441,22 @@ namespace Rawr
             return bestChar;
         }
 
-		private Character OptimizeGA(Character injectCharacter, float injectValue, out float best, out CharacterCalculationsBase bestCalculations, out bool injected)
-		{
-			//Begin Genetic
-			int noImprove, i1, i2;
-			best = -10000000;
+        private Character OptimizeGA(Character injectCharacter, float injectValue, out float best, out CharacterCalculationsBase bestCalculations, out bool injected)
+        {
+            //Begin Genetic
+            int noImprove, i1, i2;
+            best = -10000000;
             bestCalculations = null;
             injected = false;
 
-			int popSize = _thoroughness;
+            int popSize = _thoroughness;
             int islandSize = 20;
             int islandStagnationLimit = 50;
             int islandCount = (popSize - 1) / islandSize + 1;
-			int cycleLimit = _thoroughness;
-			Character[] population = new Character[popSize];
-			Character[] popCopy = new Character[popSize];
-			float[] values = new float[popSize];
+            int cycleLimit = _thoroughness;
+            Character[] population = new Character[popSize];
+            Character[] popCopy = new Character[popSize];
+            float[] values = new float[popSize];
             float[] minIsland = new float[islandCount];
             float[] maxIsland = new float[islandCount];
             float[] bestIsland = new float[islandCount];
@@ -1468,30 +1467,30 @@ namespace Rawr
                 bestIsland[i] = -10000000;
             }
             float[] share = new float[popSize];
-			float s, sum, minv, maxv;
-			Character bestCharacter = null;
-			rand = new Random();
+            float s, sum, minv, maxv;
+            Character bestCharacter = null;
+            rand = new Random();
 
-			if (_thoroughness > 1)
-			{
-			for (int i = 0; i < popSize; i++)
-			{
-				population[i] = BuildRandomCharacter();
-			}
-			}
-			else
-			{
-				bestCharacter = _character;
+            if (_thoroughness > 1)
+            {
+                for (int i = 0; i < popSize; i++)
+                {
+                    population[i] = BuildRandomCharacter();
+                }
+            }
+            else
+            {
+                bestCharacter = _character;
                 best = GetCalculationsValue(model.GetCharacterCalculations(_character));
-			}
+            }
 
-			noImprove = 0;
-			while (noImprove < cycleLimit)
-			{
-				if (_thoroughness > 1)
-				{
-				    if (cancellationPending) return null;
-					ReportProgress((int)Math.Round((float)noImprove / ((float)cycleLimit / 100f)), best);
+            noImprove = 0;
+            while (noImprove < cycleLimit)
+            {
+                if (_thoroughness > 1)
+                {
+                    if (cancellationPending) return null;
+                    ReportProgress((int)Math.Round((float)noImprove / ((float)cycleLimit / 100f)), best);
 
                     for (int i = 0; i < islandCount; i++)
                     {
@@ -1499,10 +1498,10 @@ namespace Rawr
                         maxIsland[i] = -10000000;
                         islandNoImprove[i]++;
                     }
-				    minv = 10000000;
-				    maxv = -10000000;
-				    for (int i = 0; i < popSize; i++)
-				    {
+                    minv = 10000000;
+                    maxv = -10000000;
+                    for (int i = 0; i < popSize; i++)
+                    {
                         int island = i / islandSize;
                         CharacterCalculationsBase calculations;
                         values[i] = GetCalculationsValue(calculations = model.GetCharacterCalculations(population[i]));
@@ -1515,14 +1514,14 @@ namespace Rawr
                             islandNoImprove[island] = 0;
                         }
                         if (values[i] > best)
-					    {
-						    best = values[i];
+                        {
+                            best = values[i];
                             bestCalculations = calculations;
-						    bestCharacter = population[i];
-						    noImprove = -1;
+                            bestCharacter = population[i];
+                            noImprove = -1;
                             //if (population[i].Geneology != null) System.Diagnostics.Trace.WriteLine(best + " " + population[i].Geneology);
-					    }
-				    }
+                        }
+                    }
                     for (int island = 0; island < islandCount; island++)
                     {
                         sum = 0;
@@ -1531,15 +1530,15 @@ namespace Rawr
                         for (int i = island * islandSize; i < Math.Min(popSize, (island + 1) * islandSize); i++)
                             share[i] = sum == 0 ? 1f / (Math.Min(popSize, (island + 1) * islandSize) - island * islandSize) : (values[i] - minIsland[island] + (maxIsland[island] - minIsland[island]) / 2) / sum;
                     }
-				}
+                }
 
-				noImprove++;
+                noImprove++;
 
                 if (_thoroughness > 1 && noImprove < cycleLimit)
-				{
-					population.CopyTo(popCopy, 0);
-					for (int i = 0; i < popSize; i++)
-					{
+                {
+                    population.CopyTo(popCopy, 0);
+                    for (int i = 0; i < popSize; i++)
+                    {
                         int island = i / islandSize;
                         if (i % islandSize == 0)
                         {
@@ -1620,8 +1619,8 @@ namespace Rawr
                                 }
                             }
                         }
-					}
-				}
+                    }
+                }
                 else if (_thoroughness > 1 && injectCharacter != null && !injected && injectValue > best)
                 {
                     population[popSize - 1] = injectCharacter;
@@ -1636,11 +1635,11 @@ namespace Rawr
                     for (int slot = 0; slot < slotCount; slot++)
                     {
                         results = LookForDirectItemUpgrades(slotItems[slot], (Character.CharacterSlot)slot, best, bestCharacter, out calculations);
-                        if (results.Key > best) 
+                        if (results.Key > best)
                         {
-                            best = results.Key; 
-                            bestCalculations = calculations; 
-                            bestCharacter = results.Value; 
+                            best = results.Key;
+                            bestCalculations = calculations;
+                            bestCharacter = results.Value;
                             noImprove = 0;
                             population[0] = bestCharacter;
                             //population[0].Geneology = "DirectUpgrade";
@@ -1652,7 +1651,7 @@ namespace Rawr
                         if (slotEnchants[slot] != null)
                         {
                             results = LookForDirectEnchantUpgrades(slotEnchants[slot], (Character.CharacterSlot)slot, best, bestCharacter, out calculations);
-                            if (results.Key > best) 
+                            if (results.Key > best)
                             {
                                 best = results.Key;
                                 bestCalculations = calculations;
@@ -1664,7 +1663,7 @@ namespace Rawr
                         }
                     }
                 }
-			}
+            }
 
             if (best == 0)
             {
@@ -1673,36 +1672,36 @@ namespace Rawr
             }
             else
                 ToString();
-			return bestCharacter;
+            return bestCharacter;
 
-			//ulong msGenetic = (ulong)DateTime.Now.Subtract(startTime).TotalMilliseconds;
-			//w.ToString();
+            //ulong msGenetic = (ulong)DateTime.Now.Subtract(startTime).TotalMilliseconds;
+            //w.ToString();
 
-			//startTime = DateTime.Now;
+            //startTime = DateTime.Now;
 
-			//for (int i = 0; i < 10000; i++)
-			//    Calculations.GetCharacterCalculations(_character);
+            //for (int i = 0; i < 10000; i++)
+            //    Calculations.GetCharacterCalculations(_character);
 
 
-			//ulong msManual10000 = (ulong)(DateTime.Now.Subtract(startTime).TotalMilliseconds);
-			//ulong msManual = msManual10000 * (totalCombinations / (ulong)10000);
+            //ulong msManual10000 = (ulong)(DateTime.Now.Subtract(startTime).TotalMilliseconds);
+            //ulong msManual = msManual10000 * (totalCombinations / (ulong)10000);
 
-			//MessageBox.Show(string.Format("Genetic: {0} sec\r\nManual: {1} sec\r\nRelative Speed: {2}",
-			//    msGenetic/1000, msManual/1000, msManual / msGenetic));
-		}
+            //MessageBox.Show(string.Format("Genetic: {0} sec\r\nManual: {1} sec\r\nRelative Speed: {2}",
+            //    msGenetic/1000, msManual/1000, msManual / msGenetic));
+        }
 
-		private KeyValuePair<float, Character> LookForDirectItemUpgrades(Item[] items, Character.CharacterSlot slot, float best, Character bestCharacter, out CharacterCalculationsBase bestCalculations)
-		{
-			Character charSwap;
+        private KeyValuePair<float, Character> LookForDirectItemUpgrades(Item[] items, Character.CharacterSlot slot, float best, Character bestCharacter, out CharacterCalculationsBase bestCalculations)
+        {
+            Character charSwap;
             bestCalculations = null;
-			float value;
-			bool foundUpgrade = false;
+            float value;
+            bool foundUpgrade = false;
             if (slot == lockedSlot) items = lockedItems;
-			foreach (Item item in items)
-			{
+            foreach (Item item in items)
+            {
                 int pairSlot = pairSlotMap[(int)slot];
                 if (item != null && (bestCharacter[slot] == null || bestCharacter[slot].GemmedId != item.GemmedId) && !(pairSlot >= 0 && bestCharacter[(Character.CharacterSlot)pairSlot] != null && bestCharacter[(Character.CharacterSlot)pairSlot].Id == item.Id && item.Unique))
-				{
+                {
                     Enchant enchant = null;
                     if (slotEnchants[(int)slot] != null) enchant = bestCharacter.GetEnchantBySlot(slot);
                     // replace enchant with a valid enchant
@@ -1737,20 +1736,20 @@ namespace Rawr
                         bestCharacter = charSwap;
                         foundUpgrade = true;
                     }
-				}
-			}
-			if (foundUpgrade)
-				return new KeyValuePair<float, Character>(best, bestCharacter);
-			return new KeyValuePair<float, Character>(float.NegativeInfinity, null);
-		}
+                }
+            }
+            if (foundUpgrade)
+                return new KeyValuePair<float, Character>(best, bestCharacter);
+            return new KeyValuePair<float, Character>(float.NegativeInfinity, null);
+        }
 
-		private KeyValuePair<float, Character> LookForDirectEnchantUpgrades(Enchant[] enchants, Character.CharacterSlot slot, float best, Character bestCharacter, out CharacterCalculationsBase bestCalculations)
-		{
-			Character charSwap;
+        private KeyValuePair<float, Character> LookForDirectEnchantUpgrades(Enchant[] enchants, Character.CharacterSlot slot, float best, Character bestCharacter, out CharacterCalculationsBase bestCalculations)
+        {
+            Character charSwap;
             bestCalculations = null;
-			float value;
-			float newBest = best;
-			Character newBestCharacter = null;
+            float value;
+            float newBest = best;
+            Character newBestCharacter = null;
             Enchant currentEnchant = bestCharacter.GetEnchantBySlot(slot);
             if (bestCharacter[slot] != null)
             {
@@ -1770,10 +1769,10 @@ namespace Rawr
                     }
                 }
             }
-			if (newBest > best)
-				return new KeyValuePair<float, Character>(newBest, newBestCharacter);
-			return new KeyValuePair<float,Character>(float.NegativeInfinity, null);
-		}
+            if (newBest > best)
+                return new KeyValuePair<float, Character>(newBest, newBestCharacter);
+            return new KeyValuePair<float, Character>(float.NegativeInfinity, null);
+        }
 
         public static float GetOptimizationValue(Character character, CalculationsBase model)
         {
@@ -1786,39 +1785,39 @@ namespace Rawr
         }
 
         private static float GetCalculationsValue(CharacterCalculationsBase calcs, string calculation, OptimizationRequirement[] requirements)
-		{
-			float ret = 0;
-			foreach (OptimizationRequirement requirement in requirements)
-			{
-				float calcValue = GetCalculationValue(calcs, requirement.Calculation);
-				if (requirement.LessThan)
-				{
-					if (!(calcValue <= requirement.Value))
-						ret += requirement.Value - calcValue;
-				}
-				else
-				{
-					if (!(calcValue >= requirement.Value))
-						ret += calcValue - requirement.Value;
-				}
-			}
+        {
+            float ret = 0;
+            foreach (OptimizationRequirement requirement in requirements)
+            {
+                float calcValue = GetCalculationValue(calcs, requirement.Calculation);
+                if (requirement.LessThan)
+                {
+                    if (!(calcValue <= requirement.Value))
+                        ret += requirement.Value - calcValue;
+                }
+                else
+                {
+                    if (!(calcValue >= requirement.Value))
+                        ret += calcValue - requirement.Value;
+                }
+            }
 
-			if (ret < 0) return ret;
-			else return GetCalculationValue(calcs, calculation);
-		}
+            if (ret < 0) return ret;
+            else return GetCalculationValue(calcs, calculation);
+        }
 
-		private static float GetCalculationValue(CharacterCalculationsBase calcs, string calculation)
-		{
-			if (calculation == null || calculation == "[Overall]")
-				return calcs.OverallPoints;
-			else if (calculation.StartsWith("[SubPoint "))
-				return calcs.SubPoints[int.Parse(calculation.Substring(10).TrimEnd(']'))];
-			else
-				return calcs.GetOptimizableCalculationValue(calculation);
-		}
+        private static float GetCalculationValue(CharacterCalculationsBase calcs, string calculation)
+        {
+            if (calculation == null || calculation == "[Overall]")
+                return calcs.OverallPoints;
+            else if (calculation.StartsWith("[SubPoint "))
+                return calcs.SubPoints[int.Parse(calculation.Substring(10).TrimEnd(']'))];
+            else
+                return calcs.GetOptimizableCalculationValue(calculation);
+        }
 
         private delegate Item GeneratorItemSelector(int slot);
-        private delegate Enchant GeneratorEnchantSelector(int slot, Item item);     
+        private delegate Enchant GeneratorEnchantSelector(int slot, Item item);
 
         private void GeneratorFillSlot(int slot, Item[] item, Enchant[] enchant, GeneratorItemSelector itemSelector, GeneratorEnchantSelector enchantSelector)
         {
@@ -1835,7 +1834,7 @@ namespace Rawr
         }
 
         private Character GeneratorBuildCharacter(GeneratorItemSelector itemSelector, GeneratorEnchantSelector enchantSelector)
-		{
+        {
             Item[] item = new Item[slotCount];
             Enchant[] enchant = new Enchant[slotCount];
             for (int slot = 0; slot < slotCount; slot++)
@@ -1852,39 +1851,39 @@ namespace Rawr
                 }
             }
 
-			Character character = new Character(_character.Name, _character.Realm, _character.Region, _character.Race, item, enchant, _character.ActiveBuffs, false, _character.CurrentModel);
+            Character character = new Character(_character.Name, _character.Realm, _character.Region, _character.Race, item, enchant, _character.ActiveBuffs, false, _character.CurrentModel);
             character.CalculationOptions = _character.CalculationOptions;
-			character.Class = _character.Class;
-			character.Talents = _character.Talents;
+            character.Class = _character.Class;
+            character.Talents = _character.Talents;
             character.EnforceMetagemRequirements = _character.EnforceMetagemRequirements;
-			return character;
-		}
+            return character;
+        }
 
         private Character BuildRandomCharacter()
         {
             return GeneratorBuildCharacter(
-                delegate(int slot)
+                delegate (int slot)
                 {
                     return (lockedSlot == (Character.CharacterSlot)slot) ? lockedItems[rand.Next(lockedItems.Length)] : slotItems[slot][rand.Next(slotItems[slot].Length)];
                 },
-                delegate(int slot, Item item)
+                delegate (int slot, Item item)
                 {
                     return (lockedSlot == (Character.CharacterSlot)slot && lockedEnchants != null) ? lockedEnchants[rand.Next(lockedEnchants.Length)] : (item.EnchantValidList != null ? item.EnchantValidList[rand.Next(item.EnchantValidList.Count)] : slotEnchants[slot][rand.Next(slotEnchants[slot].Length)]);
                 });
         }
 
-		private Character BuildChildCharacter(Character father, Character mother)
-		{
+        private Character BuildChildCharacter(Character father, Character mother)
+        {
             return GeneratorBuildCharacter(
-                delegate(int slot)
+                delegate (int slot)
                 {
                     return rand.NextDouble() < 0.5d ? father[(Character.CharacterSlot)slot] : mother[(Character.CharacterSlot)slot];
                 },
-                delegate(int slot, Item item)
+                delegate (int slot, Item item)
                 {
                     return rand.NextDouble() < 0.5d ? father.GetEnchantBySlot((Character.CharacterSlot)slot) : mother.GetEnchantBySlot((Character.CharacterSlot)slot);
                 });
-		}
+        }
 
         /// <summary>
         /// This is funtions decides wether we take a new character or drop it
@@ -2232,22 +2231,22 @@ namespace Rawr
             return character;
         }
 
-		private Character BuildMutantCharacter(Character parent)
-		{
-			int targetMutations = 2;
-			while (targetMutations < 32 && rand.NextDouble() < 0.75d) targetMutations++;
-			double mutationChance = (double)targetMutations / 32d;
+        private Character BuildMutantCharacter(Character parent)
+        {
+            int targetMutations = 2;
+            while (targetMutations < 32 && rand.NextDouble() < 0.75d) targetMutations++;
+            double mutationChance = (double)targetMutations / 32d;
 
             return GeneratorBuildCharacter(
-                delegate(int slot)
+                delegate (int slot)
                 {
                     return rand.NextDouble() < mutationChance ? ((lockedSlot == (Character.CharacterSlot)slot) ? lockedItems[rand.Next(lockedItems.Length)] : slotItems[slot][rand.Next(slotItems[slot].Length)]) : parent[(Character.CharacterSlot)slot];
                 },
-                delegate(int slot, Item item)
+                delegate (int slot, Item item)
                 {
                     return rand.NextDouble() < mutationChance ? ((lockedSlot == (Character.CharacterSlot)slot && lockedEnchants != null) ? lockedEnchants[rand.Next(lockedEnchants.Length)] : (item.EnchantValidList != null ? item.EnchantValidList[rand.Next(item.EnchantValidList.Count)] : slotEnchants[slot][rand.Next(slotEnchants[slot].Length)])) : parent.GetEnchantBySlot((Character.CharacterSlot)slot);
                 });
-		}
+        }
 
         private Character BuildSingleItemEnchantSwapCharacter(Character baseCharacter, Character.CharacterSlot slot, Item item, Enchant enchant)
         {
@@ -2296,165 +2295,165 @@ namespace Rawr
             return character;
         }
 
-		private Character BuildSingleItemSwapCharacter(Character baseCharacter, Character.CharacterSlot slot, Item item)
-		{
-			Character character = new Character(_character.Name, _character.Realm, _character.Region, _character.Race,
-				slot == Character.CharacterSlot.Head ? item : baseCharacter.Head,
-				slot == Character.CharacterSlot.Neck ? item : baseCharacter.Neck,
-				slot == Character.CharacterSlot.Shoulders ? item : baseCharacter.Shoulders,
-				slot == Character.CharacterSlot.Back ? item : baseCharacter.Back,
-				slot == Character.CharacterSlot.Chest ? item : baseCharacter.Chest,
-				null, null,
-				slot == Character.CharacterSlot.Wrist ? item : baseCharacter.Wrist,
-				slot == Character.CharacterSlot.Hands ? item : baseCharacter.Hands,
-				slot == Character.CharacterSlot.Waist ? item : baseCharacter.Waist,
-				slot == Character.CharacterSlot.Legs ? item : baseCharacter.Legs,
-				slot == Character.CharacterSlot.Feet ? item : baseCharacter.Feet,
-				slot == Character.CharacterSlot.Finger1 ? item : baseCharacter.Finger1,
-				slot == Character.CharacterSlot.Finger2 ? item : baseCharacter.Finger2,
-				slot == Character.CharacterSlot.Trinket1 ? item : baseCharacter.Trinket1,
-				slot == Character.CharacterSlot.Trinket2 ? item : baseCharacter.Trinket2,
-				slot == Character.CharacterSlot.MainHand ? item : baseCharacter.MainHand,
-				slot == Character.CharacterSlot.OffHand ? item : baseCharacter.OffHand,
-				slot == Character.CharacterSlot.Ranged ? item : baseCharacter.Ranged,
-				slot == Character.CharacterSlot.Projectile ? item : baseCharacter.Projectile,
-				slot == Character.CharacterSlot.ProjectileBag ? item : baseCharacter.ProjectileBag,
-				baseCharacter.HeadEnchant,
-				baseCharacter.ShouldersEnchant,
-				baseCharacter.BackEnchant,
-				baseCharacter.ChestEnchant,
-				baseCharacter.WristEnchant,
-				baseCharacter.HandsEnchant,
-				baseCharacter.LegsEnchant,
-				baseCharacter.FeetEnchant,
-				baseCharacter.Finger1Enchant,
-				baseCharacter.Finger2Enchant,
-				baseCharacter.MainHandEnchant,
-				baseCharacter.OffHandEnchant,
-				baseCharacter.RangedEnchant,
+        private Character BuildSingleItemSwapCharacter(Character baseCharacter, Character.CharacterSlot slot, Item item)
+        {
+            Character character = new Character(_character.Name, _character.Realm, _character.Region, _character.Race,
+                slot == Character.CharacterSlot.Head ? item : baseCharacter.Head,
+                slot == Character.CharacterSlot.Neck ? item : baseCharacter.Neck,
+                slot == Character.CharacterSlot.Shoulders ? item : baseCharacter.Shoulders,
+                slot == Character.CharacterSlot.Back ? item : baseCharacter.Back,
+                slot == Character.CharacterSlot.Chest ? item : baseCharacter.Chest,
+                null, null,
+                slot == Character.CharacterSlot.Wrist ? item : baseCharacter.Wrist,
+                slot == Character.CharacterSlot.Hands ? item : baseCharacter.Hands,
+                slot == Character.CharacterSlot.Waist ? item : baseCharacter.Waist,
+                slot == Character.CharacterSlot.Legs ? item : baseCharacter.Legs,
+                slot == Character.CharacterSlot.Feet ? item : baseCharacter.Feet,
+                slot == Character.CharacterSlot.Finger1 ? item : baseCharacter.Finger1,
+                slot == Character.CharacterSlot.Finger2 ? item : baseCharacter.Finger2,
+                slot == Character.CharacterSlot.Trinket1 ? item : baseCharacter.Trinket1,
+                slot == Character.CharacterSlot.Trinket2 ? item : baseCharacter.Trinket2,
+                slot == Character.CharacterSlot.MainHand ? item : baseCharacter.MainHand,
+                slot == Character.CharacterSlot.OffHand ? item : baseCharacter.OffHand,
+                slot == Character.CharacterSlot.Ranged ? item : baseCharacter.Ranged,
+                slot == Character.CharacterSlot.Projectile ? item : baseCharacter.Projectile,
+                slot == Character.CharacterSlot.ProjectileBag ? item : baseCharacter.ProjectileBag,
+                baseCharacter.HeadEnchant,
+                baseCharacter.ShouldersEnchant,
+                baseCharacter.BackEnchant,
+                baseCharacter.ChestEnchant,
+                baseCharacter.WristEnchant,
+                baseCharacter.HandsEnchant,
+                baseCharacter.LegsEnchant,
+                baseCharacter.FeetEnchant,
+                baseCharacter.Finger1Enchant,
+                baseCharacter.Finger2Enchant,
+                baseCharacter.MainHandEnchant,
+                baseCharacter.OffHandEnchant,
+                baseCharacter.RangedEnchant,
                 _character.ActiveBuffs, false, _character.CurrentModel);
-			//foreach (KeyValuePair<string, string> kvp in _character.CalculationOptions)
-			//	character.CalculationOptions.Add(kvp.Key, kvp.Value);
+            //foreach (KeyValuePair<string, string> kvp in _character.CalculationOptions)
+            //	character.CalculationOptions.Add(kvp.Key, kvp.Value);
             character.CalculationOptions = _character.CalculationOptions;
             character.Class = _character.Class;
-			character.Talents = _character.Talents;
+            character.Talents = _character.Talents;
             character.EnforceMetagemRequirements = _character.EnforceMetagemRequirements;
             //character.RecalculateSetBonuses();
-			return character;
-		}
+            return character;
+        }
 
-		private Character BuildSingleEnchantSwapCharacter(Character baseCharacter, Character.CharacterSlot slot, Enchant enchant)
-		{
-			Character character = new Character(_character.Name, _character.Realm, _character.Region, _character.Race,
-				baseCharacter.Head,
-				baseCharacter.Neck,
-				baseCharacter.Shoulders,
-				baseCharacter.Back,
-				baseCharacter.Chest,
-				null, null,
-				baseCharacter.Wrist,
-				baseCharacter.Hands,
-				baseCharacter.Waist,
-				baseCharacter.Legs,
-				baseCharacter.Feet,
-				baseCharacter.Finger1,
-				baseCharacter.Finger2,
-				baseCharacter.Trinket1,
-				baseCharacter.Trinket2,
-				baseCharacter.MainHand,
-				baseCharacter.OffHand,
-				baseCharacter.Ranged,
-				baseCharacter.Projectile,
-				baseCharacter.ProjectileBag,
-				slot == Character.CharacterSlot.Head ? enchant : baseCharacter.HeadEnchant,
-				slot == Character.CharacterSlot.Shoulders ? enchant : baseCharacter.ShouldersEnchant,
-				slot == Character.CharacterSlot.Back ? enchant : baseCharacter.BackEnchant,
-				slot == Character.CharacterSlot.Chest ? enchant : baseCharacter.ChestEnchant,
-				slot == Character.CharacterSlot.Wrist ? enchant : baseCharacter.WristEnchant,
-				slot == Character.CharacterSlot.Hands ? enchant : baseCharacter.HandsEnchant,
-				slot == Character.CharacterSlot.Legs ? enchant : baseCharacter.LegsEnchant,
-				slot == Character.CharacterSlot.Feet ? enchant : baseCharacter.FeetEnchant,
-				slot == Character.CharacterSlot.Finger1 ? enchant : baseCharacter.Finger1Enchant,
-				slot == Character.CharacterSlot.Finger2 ? enchant : baseCharacter.Finger2Enchant,
-				slot == Character.CharacterSlot.MainHand ? enchant : baseCharacter.MainHandEnchant,
-				slot == Character.CharacterSlot.OffHand ? enchant : baseCharacter.OffHandEnchant,
-				slot == Character.CharacterSlot.Ranged ? enchant : baseCharacter.RangedEnchant,
+        private Character BuildSingleEnchantSwapCharacter(Character baseCharacter, Character.CharacterSlot slot, Enchant enchant)
+        {
+            Character character = new Character(_character.Name, _character.Realm, _character.Region, _character.Race,
+                baseCharacter.Head,
+                baseCharacter.Neck,
+                baseCharacter.Shoulders,
+                baseCharacter.Back,
+                baseCharacter.Chest,
+                null, null,
+                baseCharacter.Wrist,
+                baseCharacter.Hands,
+                baseCharacter.Waist,
+                baseCharacter.Legs,
+                baseCharacter.Feet,
+                baseCharacter.Finger1,
+                baseCharacter.Finger2,
+                baseCharacter.Trinket1,
+                baseCharacter.Trinket2,
+                baseCharacter.MainHand,
+                baseCharacter.OffHand,
+                baseCharacter.Ranged,
+                baseCharacter.Projectile,
+                baseCharacter.ProjectileBag,
+                slot == Character.CharacterSlot.Head ? enchant : baseCharacter.HeadEnchant,
+                slot == Character.CharacterSlot.Shoulders ? enchant : baseCharacter.ShouldersEnchant,
+                slot == Character.CharacterSlot.Back ? enchant : baseCharacter.BackEnchant,
+                slot == Character.CharacterSlot.Chest ? enchant : baseCharacter.ChestEnchant,
+                slot == Character.CharacterSlot.Wrist ? enchant : baseCharacter.WristEnchant,
+                slot == Character.CharacterSlot.Hands ? enchant : baseCharacter.HandsEnchant,
+                slot == Character.CharacterSlot.Legs ? enchant : baseCharacter.LegsEnchant,
+                slot == Character.CharacterSlot.Feet ? enchant : baseCharacter.FeetEnchant,
+                slot == Character.CharacterSlot.Finger1 ? enchant : baseCharacter.Finger1Enchant,
+                slot == Character.CharacterSlot.Finger2 ? enchant : baseCharacter.Finger2Enchant,
+                slot == Character.CharacterSlot.MainHand ? enchant : baseCharacter.MainHandEnchant,
+                slot == Character.CharacterSlot.OffHand ? enchant : baseCharacter.OffHandEnchant,
+                slot == Character.CharacterSlot.Ranged ? enchant : baseCharacter.RangedEnchant,
                 _character.ActiveBuffs, false, _character.CurrentModel);
-			//foreach (KeyValuePair<string, string> kvp in _character.CalculationOptions)
-			//	character.CalculationOptions.Add(kvp.Key, kvp.Value);
+            //foreach (KeyValuePair<string, string> kvp in _character.CalculationOptions)
+            //	character.CalculationOptions.Add(kvp.Key, kvp.Value);
             character.CalculationOptions = _character.CalculationOptions;
             character.Class = _character.Class;
-			character.Talents = _character.Talents;
+            character.Talents = _character.Talents;
             character.EnforceMetagemRequirements = _character.EnforceMetagemRequirements;
             //character.RecalculateSetBonuses();
-			return character;
-		}
+            return character;
+        }
 
         private Item[] GetPossibleGemmedItemsForItem(Item item, string gemmedId, Item[] gemItems, Item[] metaGemItems)
-		{
-			List<Item> possibleGemmedItems = new List<Item>();
-			if (!gemmedId.EndsWith("*.*.*") && gemmedId.IndexOf('.') >= 0)
-			{
+        {
+            List<Item> possibleGemmedItems = new List<Item>();
+            if (!gemmedId.EndsWith("*.*.*") && gemmedId.IndexOf('.') >= 0)
+            {
                 item = ItemCache.FindItemById(gemmedId, false, false);
                 if (item != null) possibleGemmedItems.Add(item);
-			}
-			else
-			{
+            }
+            else
+            {
                 Item[] possibleGem1s, possibleGem2s, possibleGem3s = null;
-			    switch (item.Sockets.Color1)
-			    {
-				    case Item.ItemSlot.Meta:
-					    possibleGem1s = metaGemItems;
-					    break;
-				    case Item.ItemSlot.Red:
-				    case Item.ItemSlot.Orange:
-				    case Item.ItemSlot.Yellow:
-				    case Item.ItemSlot.Green:
-				    case Item.ItemSlot.Blue:
-				    case Item.ItemSlot.Purple:
-				    case Item.ItemSlot.Prismatic:
-					    possibleGem1s = gemItems;
-					    break;
-				    default:
+                switch (item.Sockets.Color1)
+                {
+                    case Item.ItemSlot.Meta:
+                        possibleGem1s = metaGemItems;
+                        break;
+                    case Item.ItemSlot.Red:
+                    case Item.ItemSlot.Orange:
+                    case Item.ItemSlot.Yellow:
+                    case Item.ItemSlot.Green:
+                    case Item.ItemSlot.Blue:
+                    case Item.ItemSlot.Purple:
+                    case Item.ItemSlot.Prismatic:
+                        possibleGem1s = gemItems;
+                        break;
+                    default:
                         possibleGem1s = new Item[] { null };
-					    break;
-			    }
-			    switch (item.Sockets.Color2)
-			    {
-				    case Item.ItemSlot.Meta:
-					    possibleGem2s = metaGemItems;
-					    break;
-				    case Item.ItemSlot.Red:
-				    case Item.ItemSlot.Orange:
-				    case Item.ItemSlot.Yellow:
-				    case Item.ItemSlot.Green:
-				    case Item.ItemSlot.Blue:
-				    case Item.ItemSlot.Purple:
-				    case Item.ItemSlot.Prismatic:
-					    possibleGem2s = gemItems;
-					    break;
-				    default:
+                        break;
+                }
+                switch (item.Sockets.Color2)
+                {
+                    case Item.ItemSlot.Meta:
+                        possibleGem2s = metaGemItems;
+                        break;
+                    case Item.ItemSlot.Red:
+                    case Item.ItemSlot.Orange:
+                    case Item.ItemSlot.Yellow:
+                    case Item.ItemSlot.Green:
+                    case Item.ItemSlot.Blue:
+                    case Item.ItemSlot.Purple:
+                    case Item.ItemSlot.Prismatic:
+                        possibleGem2s = gemItems;
+                        break;
+                    default:
                         possibleGem2s = new Item[] { null };
-					    break;
-			    }
-			    switch (item.Sockets.Color3)
-			    {
-				    case Item.ItemSlot.Meta:
-					    possibleGem3s = metaGemItems;
-					    break;
-				    case Item.ItemSlot.Red:
-				    case Item.ItemSlot.Orange:
-				    case Item.ItemSlot.Yellow:
-				    case Item.ItemSlot.Green:
-				    case Item.ItemSlot.Blue:
-				    case Item.ItemSlot.Purple:
-				    case Item.ItemSlot.Prismatic:
-					    possibleGem3s = gemItems;
-					    break;
-				    default:
+                        break;
+                }
+                switch (item.Sockets.Color3)
+                {
+                    case Item.ItemSlot.Meta:
+                        possibleGem3s = metaGemItems;
+                        break;
+                    case Item.ItemSlot.Red:
+                    case Item.ItemSlot.Orange:
+                    case Item.ItemSlot.Yellow:
+                    case Item.ItemSlot.Green:
+                    case Item.ItemSlot.Blue:
+                    case Item.ItemSlot.Purple:
+                    case Item.ItemSlot.Prismatic:
+                        possibleGem3s = gemItems;
+                        break;
+                    default:
                         possibleGem3s = new Item[] { null };
-					    break;
-			    }
+                        break;
+                }
 
                 foreach (Item gem1 in possibleGem1s)
                     foreach (Item gem2 in possibleGem2s)
@@ -2473,139 +2472,139 @@ namespace Rawr
                             possibleGemmedItems.Add(copy);
                             //ItemCache.AddItem(copy, true, false);
                         }
-			}
+            }
 
-			return possibleGemmedItems.ToArray();
-		}
+            return possibleGemmedItems.ToArray();
+        }
 
-		private Item[] FilterList(List<Item> unfilteredList)
-		{
-			List<Item> filteredList = new List<Item>();
-			List<StatsColors> filteredStatsColors = new List<StatsColors>();
-			foreach (Item gemmedItem in unfilteredList)
-			{
-				if (gemmedItem == null)
-				{
-					filteredList.Add(gemmedItem);
-					continue;
-				}
-				int meta = 0, red = 0, yellow = 0, blue = 0;
+        private Item[] FilterList(List<Item> unfilteredList)
+        {
+            List<Item> filteredList = new List<Item>();
+            List<StatsColors> filteredStatsColors = new List<StatsColors>();
+            foreach (Item gemmedItem in unfilteredList)
+            {
+                if (gemmedItem == null)
+                {
+                    filteredList.Add(gemmedItem);
+                    continue;
+                }
+                int meta = 0, red = 0, yellow = 0, blue = 0;
                 foreach (Item gem in new Item[] { gemmedItem.Gem1, gemmedItem.Gem2, gemmedItem.Gem3 })
-					if (gem != null)
-						switch (gem.Slot)
-						{
-							case Item.ItemSlot.Meta:		meta++;						break;
-							case Item.ItemSlot.Red:			red++;						break;
-							case Item.ItemSlot.Orange:		red++; yellow++;			break;
-							case Item.ItemSlot.Yellow:		yellow++;					break;
-							case Item.ItemSlot.Green:		yellow++; blue++;			break;
-							case Item.ItemSlot.Blue:		blue++;						break;
-							case Item.ItemSlot.Purple:		blue++; red++;				break;
-							case Item.ItemSlot.Prismatic:	red++; yellow++; blue++;	break;
-						}
+                    if (gem != null)
+                        switch (gem.Slot)
+                        {
+                            case Item.ItemSlot.Meta: meta++; break;
+                            case Item.ItemSlot.Red: red++; break;
+                            case Item.ItemSlot.Orange: red++; yellow++; break;
+                            case Item.ItemSlot.Yellow: yellow++; break;
+                            case Item.ItemSlot.Green: yellow++; blue++; break;
+                            case Item.ItemSlot.Blue: blue++; break;
+                            case Item.ItemSlot.Purple: blue++; red++; break;
+                            case Item.ItemSlot.Prismatic: red++; yellow++; blue++; break;
+                        }
 
-				StatsColors statsColorsA = new StatsColors()
-				{
-					GemmedItem = gemmedItem,
+                StatsColors statsColorsA = new StatsColors()
+                {
+                    GemmedItem = gemmedItem,
                     SetName = gemmedItem.SetName,
                     Stats = gemmedItem.GetTotalStats(),
-					Meta = meta,
-					Red = red,
-					Yellow = yellow,
-					Blue = blue
-				};
-				bool addItem = true;
-				List<StatsColors> removeItems = new List<StatsColors>();
-				foreach (StatsColors statsColorsB in filteredStatsColors)
-				{
-					ArrayUtils.CompareResult compare = statsColorsA.CompareTo(statsColorsB);
-					if (compare == ArrayUtils.CompareResult.GreaterThan) //A>B
-					{
-						removeItems.Add(statsColorsB);
-					}
-					else if (compare == ArrayUtils.CompareResult.Equal || compare == ArrayUtils.CompareResult.LessThan)
-					{
-						addItem = false;
-						break;
-					}
-				}
-				foreach(StatsColors removeItem in removeItems)
-					filteredStatsColors.Remove(removeItem);
-				if (addItem) filteredStatsColors.Add(statsColorsA);
-			}
-			foreach (StatsColors statsColors in filteredStatsColors)
-			{
-				filteredList.Add(statsColors.GemmedItem);
-			}
-			return filteredList.ToArray();
-		}
+                    Meta = meta,
+                    Red = red,
+                    Yellow = yellow,
+                    Blue = blue
+                };
+                bool addItem = true;
+                List<StatsColors> removeItems = new List<StatsColors>();
+                foreach (StatsColors statsColorsB in filteredStatsColors)
+                {
+                    ArrayUtils.CompareResult compare = statsColorsA.CompareTo(statsColorsB);
+                    if (compare == ArrayUtils.CompareResult.GreaterThan) //A>B
+                    {
+                        removeItems.Add(statsColorsB);
+                    }
+                    else if (compare == ArrayUtils.CompareResult.Equal || compare == ArrayUtils.CompareResult.LessThan)
+                    {
+                        addItem = false;
+                        break;
+                    }
+                }
+                foreach (StatsColors removeItem in removeItems)
+                    filteredStatsColors.Remove(removeItem);
+                if (addItem) filteredStatsColors.Add(statsColorsA);
+            }
+            foreach (StatsColors statsColors in filteredStatsColors)
+            {
+                filteredList.Add(statsColors.GemmedItem);
+            }
+            return filteredList.ToArray();
+        }
 
-		private class StatsColors
-		{
-			public Item GemmedItem;
-			public Stats Stats;
-			public int Meta;
-			public int Red;
-			public int Yellow;
-			public int Blue;
-			public string SetName;
+        private class StatsColors
+        {
+            public Item GemmedItem;
+            public Stats Stats;
+            public int Meta;
+            public int Red;
+            public int Yellow;
+            public int Blue;
+            public string SetName;
 
-			public ArrayUtils.CompareResult CompareTo(StatsColors other)
-			{
-				if (this.SetName != other.SetName) return ArrayUtils.CompareResult.Unequal;
+            public ArrayUtils.CompareResult CompareTo(StatsColors other)
+            {
+                if (this.SetName != other.SetName) return ArrayUtils.CompareResult.Unequal;
 
-				int compare = Meta.CompareTo(other.Meta);
-				bool haveLessThan = compare < 0;
-				bool haveGreaterThan = compare > 0;
-				if (haveGreaterThan && haveLessThan) return ArrayUtils.CompareResult.Unequal;
+                int compare = Meta.CompareTo(other.Meta);
+                bool haveLessThan = compare < 0;
+                bool haveGreaterThan = compare > 0;
+                if (haveGreaterThan && haveLessThan) return ArrayUtils.CompareResult.Unequal;
 
-				compare = Red.CompareTo(other.Red);
-				haveLessThan |= compare < 0;
-				haveGreaterThan |= compare > 0;
-				if (haveGreaterThan && haveLessThan) return ArrayUtils.CompareResult.Unequal;
+                compare = Red.CompareTo(other.Red);
+                haveLessThan |= compare < 0;
+                haveGreaterThan |= compare > 0;
+                if (haveGreaterThan && haveLessThan) return ArrayUtils.CompareResult.Unequal;
 
-				compare = Yellow.CompareTo(other.Yellow);
-				haveLessThan |= compare < 0;
-				haveGreaterThan |= compare > 0;
-				if (haveGreaterThan && haveLessThan) return ArrayUtils.CompareResult.Unequal;
+                compare = Yellow.CompareTo(other.Yellow);
+                haveLessThan |= compare < 0;
+                haveGreaterThan |= compare > 0;
+                if (haveGreaterThan && haveLessThan) return ArrayUtils.CompareResult.Unequal;
 
-				compare = Blue.CompareTo(other.Blue);
-				haveLessThan |= compare < 0;
-				haveGreaterThan |= compare > 0;
-				if (haveGreaterThan && haveLessThan) return ArrayUtils.CompareResult.Unequal;
+                compare = Blue.CompareTo(other.Blue);
+                haveLessThan |= compare < 0;
+                haveGreaterThan |= compare > 0;
+                if (haveGreaterThan && haveLessThan) return ArrayUtils.CompareResult.Unequal;
 
-				ArrayUtils.CompareResult compareResult = Stats.CompareTo(other.Stats);
-				if (compareResult == ArrayUtils.CompareResult.Unequal) return ArrayUtils.CompareResult.Unequal;
-				haveLessThan |= compareResult == ArrayUtils.CompareResult.LessThan;
-				haveGreaterThan |= compareResult == ArrayUtils.CompareResult.GreaterThan;
-				if (haveGreaterThan && haveLessThan) return ArrayUtils.CompareResult.Unequal;
-				else if (haveGreaterThan) return ArrayUtils.CompareResult.GreaterThan;
-				else if (haveLessThan) return ArrayUtils.CompareResult.LessThan;
-				else return ArrayUtils.CompareResult.Equal;
-			}
-			public static bool operator ==(StatsColors x, StatsColors y)
-			{
-				if (ReferenceEquals(x, null) || ReferenceEquals(y, null)) return false;
-				return x.Meta == y.Meta && x.Red == y.Red && x.Yellow == y.Yellow 
-					&& x.Blue == y.Blue && x.Stats == y.Stats;
-			}
+                ArrayUtils.CompareResult compareResult = Stats.CompareTo(other.Stats);
+                if (compareResult == ArrayUtils.CompareResult.Unequal) return ArrayUtils.CompareResult.Unequal;
+                haveLessThan |= compareResult == ArrayUtils.CompareResult.LessThan;
+                haveGreaterThan |= compareResult == ArrayUtils.CompareResult.GreaterThan;
+                if (haveGreaterThan && haveLessThan) return ArrayUtils.CompareResult.Unequal;
+                else if (haveGreaterThan) return ArrayUtils.CompareResult.GreaterThan;
+                else if (haveLessThan) return ArrayUtils.CompareResult.LessThan;
+                else return ArrayUtils.CompareResult.Equal;
+            }
+            public static bool operator ==(StatsColors x, StatsColors y)
+            {
+                if (ReferenceEquals(x, null) || ReferenceEquals(y, null)) return false;
+                return x.Meta == y.Meta && x.Red == y.Red && x.Yellow == y.Yellow
+                    && x.Blue == y.Blue && x.Stats == y.Stats;
+            }
             public override int GetHashCode()
             {
-                return Stats.GetHashCode()^GemmedItem.GetHashCode();
+                return Stats.GetHashCode() ^ GemmedItem.GetHashCode();
             }
             public override bool Equals(object obj)
             {
 
-                if(obj != null && obj.GetType() == this.GetType())
+                if (obj != null && obj.GetType() == this.GetType())
                 {
                     return this == (obj as StatsColors);
                 }
                 return base.Equals(obj);
             }
-			public static bool operator !=(StatsColors x, StatsColors y)
-			{
-				return !(x == y);
-			}
-		}
+            public static bool operator !=(StatsColors x, StatsColors y)
+            {
+                return !(x == y);
+            }
+        }
     }
 }

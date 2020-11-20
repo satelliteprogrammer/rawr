@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Rawr.Tree
 {
@@ -194,7 +192,7 @@ namespace Rawr.Tree
             Calculate(character, stats);
         }
     }
-    
+
     internal class Lifebloom : Spell
     {
         public Lifebloom(Character character, Stats stats, Boolean AddToLAura)
@@ -223,7 +221,7 @@ namespace Rawr.Tree
             BaseMaxHeal += stats.LifebloomFinalHealBonus / HealMultiplier;
             // This bonus heal does not benefit from talents
             HoTHealingBonus += stats.LifebloomTickHealBonus / HoTMultiplier / HealMultiplier;
-            
+
             Calculate(character, stats);
         }
     }
@@ -270,7 +268,7 @@ namespace Rawr.Tree
             BaseRange = 40;
 
             HoTHealingBonus += stats.RejuvenationHealBonus;
-            Cost -= (int) stats.ReduceRejuvenationCost;
+            Cost -= (int)stats.ReduceRejuvenationCost;
 
             ParseTalents(character, stats);
             ParseTalentsRejuvenation(character, stats);
@@ -306,7 +304,7 @@ namespace Rawr.Tree
             Healing = stats.Healing;
             BaseRange = 40;
 
-            Cost -= (int) stats.ReduceRegrowthCost;
+            Cost -= (int)stats.ReduceRegrowthCost;
 
             ParseTalents(character, stats);
             ParseTalentsRegrowth(character, stats);
@@ -344,11 +342,11 @@ namespace Rawr.Tree
             Healing = stats.Healing;
             BaseRange = 40;
 
-            Cost -= (int) stats.ReduceHealingTouchCost;
+            Cost -= (int)stats.ReduceHealingTouchCost;
 
             ParseTalentsHT(character, stats);
             ParseTalents(character, stats);
-            
+
             BaseMinHeal += stats.HealingTouchFinalHealBonus / HealMultiplier; // Don't know if talents apply or not
             BaseMaxHeal += stats.HealingTouchFinalHealBonus / HealMultiplier;
 

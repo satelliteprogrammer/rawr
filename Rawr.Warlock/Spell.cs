@@ -1,6 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Rawr.Warlock
 {
@@ -15,7 +13,7 @@ namespace Rawr.Warlock
 
     enum SpellTree
     {
-        Affliction, 
+        Affliction,
         Destruction,
         Demonology
     }
@@ -111,7 +109,7 @@ namespace Rawr.Warlock
             CritBonus *= 0.5f + 0.5f * calculations.CalculationOptions.Ruin;
 
             float plusDamage = 0;
-            switch(MagicSchool)
+            switch (MagicSchool)
             {
                 case MagicSchool.Shadow:
                     plusDamage = calculations.ShadowDamage;

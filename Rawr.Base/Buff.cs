@@ -1,60 +1,60 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 using System.Windows.Forms;
-using System.IO;
 using System.Xml.Serialization;
 
 namespace Rawr
 {
-	public class Buff
-	{
-		//early morning
-		public enum BuffCategory
-		{
-			ClassBuffs,
-			ElixirsAndFlasks,
-			OtherConsumables,
-			Debuffs,
-			SetBonuses,
-			TemporaryBuffs
-		}
+    public class Buff
+    {
+        //early morning
+        public enum BuffCategory
+        {
+            ClassBuffs,
+            ElixirsAndFlasks,
+            OtherConsumables,
+            Debuffs,
+            SetBonuses,
+            TemporaryBuffs
+        }
 
-		//summer soul and solace
-		public static string GetBuffCategoryFriendlyName(BuffCategory buffCategory)
-		{
-			switch (buffCategory)
-			{
-				case BuffCategory.ClassBuffs: return "Class Buffs";
-				case BuffCategory.ElixirsAndFlasks: return "Elixirs && Flasks";
-				case BuffCategory.OtherConsumables: return "Other Consumables";
-				case BuffCategory.Debuffs: return "Debuffs";
-				case BuffCategory.SetBonuses: return "Set Bonuses";
-				case BuffCategory.TemporaryBuffs: return "Temporary Buffs";
-				default: return "Other Buffs";
-			}
-		}
+        //summer soul and solace
+        public static string GetBuffCategoryFriendlyName(BuffCategory buffCategory)
+        {
+            switch (buffCategory)
+            {
+                case BuffCategory.ClassBuffs: return "Class Buffs";
+                case BuffCategory.ElixirsAndFlasks: return "Elixirs && Flasks";
+                case BuffCategory.OtherConsumables: return "Other Consumables";
+                case BuffCategory.Debuffs: return "Debuffs";
+                case BuffCategory.SetBonuses: return "Set Bonuses";
+                case BuffCategory.TemporaryBuffs: return "Temporary Buffs";
+                default: return "Other Buffs";
+            }
+        }
 
-		//the world is watching
-		public enum BuffType
-		{
-			LongDurationNoDW,
-			ShortDurationDW,
-			All
-		}
+        //the world is watching
+        public enum BuffType
+        {
+            LongDurationNoDW,
+            ShortDurationDW,
+            All
+        }
 
-		//viscious circle
-		public string Name;
-		public BuffCategory Category;
-		public Stats Stats = new Stats();
-		public BuffType Type = BuffType.LongDurationNoDW;
-		public string RequiredBuff;
-		public string[] ConflictingBuffs = new string[0];
-		public string SetName;
-		public int SetThreshold = 0;
+        //viscious circle
+        public string Name;
+        public BuffCategory Category;
+        public Stats Stats = new Stats();
+        public BuffType Type = BuffType.LongDurationNoDW;
+        public string RequiredBuff;
+        public string[] ConflictingBuffs = new string[0];
+        public string SetName;
+        public int SetThreshold = 0;
 
         private static readonly string _SavedFilePath;
-		
+
         static Buff()
         {
             _SavedFilePath = Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), "BuffCache.xml");
@@ -62,9 +62,9 @@ namespace Rawr
             SaveBuffs();
         }
         //washing virgin halo
-		public Buff() 
+        public Buff()
         {
-        
+
         }
 
         private static void SaveBuffs()
@@ -80,8 +80,8 @@ namespace Rawr
             }
             catch (Exception)
             {
-               // Log.Write(ex.Message);
-               // Log.Write(ex.StackTrace);
+                // Log.Write(ex.Message);
+                // Log.Write(ex.StackTrace);
             }
         }
 
@@ -102,10 +102,10 @@ namespace Rawr
             catch (System.Exception)
             {
                 //Log.Write(ex.Message);
-                #if !DEBUG
-				MessageBox.Show("The current BuffCache.xml file was made with a previous version of Rawr, which is incompatible with the current version. It will be replaced with buff data included in the current version.", "Incompatible BuffCache.xml", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-            	//The designer really doesn't like loading the stuff from a file
-                #endif
+#if !DEBUG
+                MessageBox.Show("The current BuffCache.xml file was made with a previous version of Rawr, which is incompatible with the current version. It will be replaced with buff data included in the current version.", "Incompatible BuffCache.xml", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                //The designer really doesn't like loading the stuff from a file
+#endif
             }
             //the serializer doens't throw an exception in the designer, just sets the value null, have to move this outside the try cactch
             if (_allBuffs == null)
@@ -131,7 +131,7 @@ namespace Rawr
                                 _allBuffs[allBuffIndex].Stats = defaultBuffs[defaultBuffIndex].Stats;
                             }
                         }
-                        found = true;   
+                        found = true;
                         break;
                     }
                 }
@@ -144,62 +144,62 @@ namespace Rawr
 
         //you're in agreement
         public override string ToString()
-		{
-			string summary = Name + ": ";
-			summary += Stats.ToString();
-			summary = summary.TrimEnd(',', ' ', ':');
-			return summary;
-		}
+        {
+            string summary = Name + ": ";
+            summary += Stats.ToString();
+            summary = summary.TrimEnd(',', ' ', ':');
+            return summary;
+        }
 
-		//you can understand
-		public static Buff GetBuffByName(string name)
-		{
-			/*foreach (Buff buff in AllBuffs)
+        //you can understand
+        public static Buff GetBuffByName(string name)
+        {
+            /*foreach (Buff buff in AllBuffs)
 				if (buff.Name == name)
 					return buff;
 			return null;*/
             Buff buff;
             AllBuffsByName.TryGetValue(name, out buff);
             return buff;
-		}
+        }
 
-		//enter static
-		private static string _cachedModel = "";
-        private static Dictionary<BuffType, List<Buff>> _relevantBuffsByType = new Dictionary<BuffType,List<Buff>>();
+        //enter static
+        private static string _cachedModel = "";
+        private static Dictionary<BuffType, List<Buff>> _relevantBuffsByType = new Dictionary<BuffType, List<Buff>>();
         private static List<Buff> _relevantSetBonuses = null;
         private static List<Buff> _allSetBonuses = null;
 
         public static List<Buff> GetBuffsByType(BuffType type)
-		{
+        {
             List<Buff> ret = null;
-			if (Calculations.Instance != null && _cachedModel == Calculations.Instance.ToString())
-			{
-				_relevantBuffsByType.TryGetValue(type, out ret);
-			}
-			else
-			{
-				_relevantBuffsByType.Clear();
+            if (Calculations.Instance != null && _cachedModel == Calculations.Instance.ToString())
+            {
+                _relevantBuffsByType.TryGetValue(type, out ret);
+            }
+            else
+            {
+                _relevantBuffsByType.Clear();
                 _relevantSetBonuses = null;
-			}
-			if (ret == null)
-			{
-				if (Calculations.Instance != null)
-				{
-					_cachedModel = Calculations.Instance.ToString();
-					ret = AllBuffs.FindAll(new Predicate<Buff>(
-						delegate(Buff buff)
-						{
-							return Calculations.HasRelevantStats(buff.Stats) &&
-								(type == BuffType.All || buff.Type == type);
-						}
-					));
-					_relevantBuffsByType[type] = ret;
-				}
-				else
-					ret = new List<Buff>();
-			}
+            }
+            if (ret == null)
+            {
+                if (Calculations.Instance != null)
+                {
+                    _cachedModel = Calculations.Instance.ToString();
+                    ret = AllBuffs.FindAll(new Predicate<Buff>(
+                        delegate (Buff buff)
+                        {
+                            return Calculations.HasRelevantStats(buff.Stats) &&
+                                (type == BuffType.All || buff.Type == type);
+                        }
+                    ));
+                    _relevantBuffsByType[type] = ret;
+                }
+                else
+                    ret = new List<Buff>();
+            }
             return ret;
-		}
+        }
 
         public static List<Buff> GetAllSetBonuses()
         {
@@ -253,18 +253,18 @@ namespace Rawr
             }
         }
 
-		//a grey mistake
-		private static List<Buff> _allBuffs = null;
-		public static List<Buff> AllBuffs
-		{
-			get
-			{ return _allBuffs;	}
-		}
+        //a grey mistake
+        private static List<Buff> _allBuffs = null;
+        public static List<Buff> AllBuffs
+        {
+            get
+            { return _allBuffs; }
+        }
 
-		public static List<Buff> GetAllRelevantBuffs()
-		{
+        public static List<Buff> GetAllRelevantBuffs()
+        {
             return GetBuffsByType(BuffType.All);
-		}
+        }
 
         private static List<Buff> GetDefaultBuffs()
         {
@@ -385,7 +385,7 @@ namespace Rawr
                 Category = BuffCategory.ClassBuffs,
                 Stats = new Stats() { Armor = (float)Math.Floor(861f * 0.4f) },
                 RequiredBuff = "Devotion Aura"
-			});
+            });
             defaultBuffs.Add(new Buff()
             {
                 Name = "Concentration Aura",
@@ -400,11 +400,11 @@ namespace Rawr
                 RequiredBuff = "Concentration Aura"
             });
             defaultBuffs.Add(new Buff()
-			{
-				Name = "Ferocious Inspiration",
-				Category = BuffCategory.ClassBuffs,
-				Stats = new Stats() { BonusPhysicalDamageMultiplier = 0.03f }
-			});
+            {
+                Name = "Ferocious Inspiration",
+                Category = BuffCategory.ClassBuffs,
+                Stats = new Stats() { BonusPhysicalDamageMultiplier = 0.03f }
+            });
             defaultBuffs.Add(new Buff()
             {
                 Name = "Grace of Air Totem",
@@ -462,19 +462,19 @@ namespace Rawr
                 Name = "Blessing of Kings",
                 Category = BuffCategory.ClassBuffs,
                 Stats = new Stats() { BonusStrengthMultiplier = 0.1f, BonusAgilityMultiplier = 0.1f, BonusStaminaMultiplier = 0.1f, BonusIntellectMultiplier = 0.1f, BonusSpiritMultiplier = 0.1f }
-			});
-			defaultBuffs.Add(new Buff()
-			{
-				Name = "Unleashed Rage",
-				Category = BuffCategory.ClassBuffs,
-				Stats = new Stats() { BonusAttackPowerMultiplier = 0.1f }
-			});
-			defaultBuffs.Add(new Buff()
-			{
-				Name = "Trueshot Aura",
-				Category = BuffCategory.ClassBuffs,
-				Stats = new Stats() { AttackPower = 125 }
-			});
+            });
+            defaultBuffs.Add(new Buff()
+            {
+                Name = "Unleashed Rage",
+                Category = BuffCategory.ClassBuffs,
+                Stats = new Stats() { BonusAttackPowerMultiplier = 0.1f }
+            });
+            defaultBuffs.Add(new Buff()
+            {
+                Name = "Trueshot Aura",
+                Category = BuffCategory.ClassBuffs,
+                Stats = new Stats() { AttackPower = 125 }
+            });
             defaultBuffs.Add(new Buff()
             {
                 Name = "Heroic Presence",
@@ -593,14 +593,14 @@ namespace Rawr
                 Category = BuffCategory.ElixirsAndFlasks,
                 Stats = new Stats() { Agility = 35, CritRating = 20 },
                 ConflictingBuffs = new string[] { "Battle Elixir" }
-			});
-			defaultBuffs.Add(new Buff()
-			{
-				Name = "Elixir of Demonslaying",
-				Category = BuffCategory.ElixirsAndFlasks,
-				Stats = new Stats() { AttackPower = 265 },
-				ConflictingBuffs = new string[] { "Battle Elixir" }
-			});
+            });
+            defaultBuffs.Add(new Buff()
+            {
+                Name = "Elixir of Demonslaying",
+                Category = BuffCategory.ElixirsAndFlasks,
+                Stats = new Stats() { AttackPower = 265 },
+                ConflictingBuffs = new string[] { "Battle Elixir" }
+            });
             defaultBuffs.Add(new Buff()
             {
                 Name = "Elixir of Mastery",
@@ -626,8 +626,19 @@ namespace Rawr
             {
                 Name = "Flask of Chromatic Wonder",
                 Category = BuffCategory.ElixirsAndFlasks,
-                Stats = new Stats() { Agility = 18, Strength = 18, Stamina = 18, Intellect = 18, Spirit = 18, 
-					ArcaneResistance = 35, FireResistance = 35, FrostResistance = 35, ShadowResistance = 35, NatureResistance = 35 },
+                Stats = new Stats()
+                {
+                    Agility = 18,
+                    Strength = 18,
+                    Stamina = 18,
+                    Intellect = 18,
+                    Spirit = 18,
+                    ArcaneResistance = 35,
+                    FireResistance = 35,
+                    FrostResistance = 35,
+                    ShadowResistance = 35,
+                    NatureResistance = 35
+                },
                 ConflictingBuffs = new string[] { "Battle Elixir", "Guardian Elixir" }
             });
             defaultBuffs.Add(new Buff()
@@ -722,13 +733,13 @@ namespace Rawr
                 ConflictingBuffs = new string[] { "Battle Elixir", "Guardian Elixir" }
             });
 
-			defaultBuffs.Add(new Buff()
-			{
-				Name = "Haste Potion",
-				Category = BuffCategory.OtherConsumables,
-				Stats = new Stats() { HasteRating = 50 },
-				ConflictingBuffs = new string[] { "Potion" }
-			});
+            defaultBuffs.Add(new Buff()
+            {
+                Name = "Haste Potion",
+                Category = BuffCategory.OtherConsumables,
+                Stats = new Stats() { HasteRating = 50 },
+                ConflictingBuffs = new string[] { "Potion" }
+            });
 
             //all the constant
             defaultBuffs.Add(new Buff()
@@ -797,14 +808,14 @@ namespace Rawr
                 Category = BuffCategory.OtherConsumables,
                 Stats = new Stats() { WeaponDamage = 12, CritRating = 14 },
                 ConflictingBuffs = new string[] { "Temporary Weapon Enchantment" }
-			});
-			defaultBuffs.Add(new Buff()
-			{
-				Name = "Righteous Weapon Coating",
-				Category = BuffCategory.OtherConsumables,
-				Stats = new Stats() { AttackPower = 60 },
-				ConflictingBuffs = new string[] { "Temporary Weapon Enchantment" }
-			});
+            });
+            defaultBuffs.Add(new Buff()
+            {
+                Name = "Righteous Weapon Coating",
+                Category = BuffCategory.OtherConsumables,
+                Stats = new Stats() { AttackPower = 60 },
+                ConflictingBuffs = new string[] { "Temporary Weapon Enchantment" }
+            });
             defaultBuffs.Add(new Buff()
             {
                 Name = "Elemental Sharpening Stone",
@@ -896,15 +907,16 @@ namespace Rawr
                 Category = BuffCategory.Debuffs,
                 Stats = new Stats() { Miss = -5f, DodgeRating = -20f * 18.9231f },
                 Type = BuffType.ShortDurationDW
-			});
-			defaultBuffs.Add(new Buff()
-			{
-				Name = "Crushless Mob",
-				Category = BuffCategory.Debuffs,
-				Stats = new Stats() { CrushChanceReduction = 15f },
-				Type = BuffType.ShortDurationDW
-			});
-            defaultBuffs.Add(new Buff() {
+            });
+            defaultBuffs.Add(new Buff()
+            {
+                Name = "Crushless Mob",
+                Category = BuffCategory.Debuffs,
+                Stats = new Stats() { CrushChanceReduction = 15f },
+                Type = BuffType.ShortDurationDW
+            });
+            defaultBuffs.Add(new Buff()
+            {
                 Name = "Mangle",
                 Category = BuffCategory.Debuffs,
                 Stats = new Stats() { BonusBleedDamageMultiplier = .3f },
@@ -961,12 +973,12 @@ namespace Rawr
                 Category = BuffCategory.Debuffs,
                 Stats = new Stats() { ExposeWeakness = 1 }
             });
-			defaultBuffs.Add(new Buff()
-			{
-				Name = "Improved Judgement of the Crusade",
-				Category = BuffCategory.Debuffs,
-				Stats = new Stats() { CritRating = 3444f / 52f, SpellCritRating = 3444f / 52f }
-			});
+            defaultBuffs.Add(new Buff()
+            {
+                Name = "Improved Judgement of the Crusade",
+                Category = BuffCategory.Debuffs,
+                Stats = new Stats() { CritRating = 3444f / 52f, SpellCritRating = 3444f / 52f }
+            });
             defaultBuffs.Add(new Buff()
             {
                 Name = "Improved Scorch",
@@ -979,30 +991,30 @@ namespace Rawr
                 Category = BuffCategory.Debuffs,
                 Stats = new Stats() { SpellFrostCritRating = 11480f / 52f }
             });
-			//defaultBuffs.Add(new Buff()
-			//{
-			//    Name = "Curse of Shadow",
-			//    Category = BuffCategory.Debuffs,
-			//    Stats = new Stats() { BonusShadowSpellPowerMultiplier = 0.1f, BonusArcaneSpellPowerMultiplier = 0.1f }
-			//});
-			//defaultBuffs.Add(new Buff()
-			//{
-			//    Name = "Improved Curse of Shadow",
-			//    Category = BuffCategory.Debuffs,
-			//    Stats = new Stats() { BonusShadowSpellPowerMultiplier = ((1.13f / 1.1f) - 1f), BonusArcaneSpellPowerMultiplier = ((1.13f / 1.1f) - 1f) },
-			//    RequiredBuff = "Curse of Shadow"
-			//});
+            //defaultBuffs.Add(new Buff()
+            //{
+            //    Name = "Curse of Shadow",
+            //    Category = BuffCategory.Debuffs,
+            //    Stats = new Stats() { BonusShadowSpellPowerMultiplier = 0.1f, BonusArcaneSpellPowerMultiplier = 0.1f }
+            //});
+            //defaultBuffs.Add(new Buff()
+            //{
+            //    Name = "Improved Curse of Shadow",
+            //    Category = BuffCategory.Debuffs,
+            //    Stats = new Stats() { BonusShadowSpellPowerMultiplier = ((1.13f / 1.1f) - 1f), BonusArcaneSpellPowerMultiplier = ((1.13f / 1.1f) - 1f) },
+            //    RequiredBuff = "Curse of Shadow"
+            //});
             defaultBuffs.Add(new Buff()
             {
                 Name = "Curse of the Elements",
                 Category = BuffCategory.Debuffs,
-				Stats = new Stats() { BonusFireSpellPowerMultiplier = 0.1f, BonusFrostSpellPowerMultiplier = 0.1f, BonusShadowSpellPowerMultiplier = 0.1f, BonusArcaneSpellPowerMultiplier = 0.1f }
+                Stats = new Stats() { BonusFireSpellPowerMultiplier = 0.1f, BonusFrostSpellPowerMultiplier = 0.1f, BonusShadowSpellPowerMultiplier = 0.1f, BonusArcaneSpellPowerMultiplier = 0.1f }
             });
             defaultBuffs.Add(new Buff()
             {
                 Name = "Improved Curse of the Elements",
                 Category = BuffCategory.Debuffs,
-				Stats = new Stats() { BonusFireSpellPowerMultiplier = ((1.13f / 1.1f) - 1f), BonusFrostSpellPowerMultiplier = ((1.13f / 1.1f) - 1f), BonusShadowSpellPowerMultiplier = ((1.13f / 1.1f) - 1f), BonusArcaneSpellPowerMultiplier = ((1.13f / 1.1f) - 1f) },
+                Stats = new Stats() { BonusFireSpellPowerMultiplier = ((1.13f / 1.1f) - 1f), BonusFrostSpellPowerMultiplier = ((1.13f / 1.1f) - 1f), BonusShadowSpellPowerMultiplier = ((1.13f / 1.1f) - 1f), BonusArcaneSpellPowerMultiplier = ((1.13f / 1.1f) - 1f) },
                 RequiredBuff = "Curse of the Elements"
             });
             defaultBuffs.Add(new Buff()
@@ -1045,7 +1057,7 @@ namespace Rawr
             {
                 Name = "Nordrassil Harness 4 Piece Bonus",
                 Category = BuffCategory.SetBonuses,
-                Stats = new Stats() { BonusShredDamage = 75, BonusLacerateDamage = 15/5},
+                Stats = new Stats() { BonusShredDamage = 75, BonusLacerateDamage = 15 / 5 },
                 SetName = "Nordrassil Harness",
                 SetThreshold = 4
             });
@@ -1201,7 +1213,7 @@ namespace Rawr
                 Stats = new Stats() { LifebloomFinalHealBonus = 150 },
                 SetName = "Nordrassil Raiment",
                 SetThreshold = 4
-            }); 
+            });
             defaultBuffs.Add(new Buff()
             {
                 Name = "Thunderheart Raiment 4 Piece",
@@ -1210,7 +1222,7 @@ namespace Rawr
                 SetName = "Thunderheart Raiment",
                 SetThreshold = 4
             });
-            
+
 
             // Windhawk (epic leather caster) set
             defaultBuffs.Add(new Buff()
@@ -1298,165 +1310,171 @@ namespace Rawr
                 SetName = "Onslaught Armor",
                 SetThreshold = 4
             });
-			defaultBuffs.Add(new Buff()
-			{
-				Name = "Primalstrike 3 Piece Bonus",
-				Category = BuffCategory.SetBonuses,
-				Stats = new Stats() { AttackPower = 40 },
-				SetName = "Primal Intent",
-				SetThreshold = 3
-			});
-			defaultBuffs.Add(new Buff()
-			{
-				Name = "Fel Leather 3 Piece Bonus",
-				Category = BuffCategory.SetBonuses,
-				Stats = new Stats() { DodgeRating = 20 },
-				SetName = "Fel Skin",
-				SetThreshold = 3
-			});
-			defaultBuffs.Add(new Buff()
-			{
-				Name = "Heavy Clefthoof 3 Piece Bonus",
-				Category = BuffCategory.SetBonuses,
-				Stats = new Stats() { Strength = 20 },
-				SetName = "Strength of the Clefthoof",
-				SetThreshold = 3
-			});
+            defaultBuffs.Add(new Buff()
+            {
+                Name = "Primalstrike 3 Piece Bonus",
+                Category = BuffCategory.SetBonuses,
+                Stats = new Stats() { AttackPower = 40 },
+                SetName = "Primal Intent",
+                SetThreshold = 3
+            });
+            defaultBuffs.Add(new Buff()
+            {
+                Name = "Fel Leather 3 Piece Bonus",
+                Category = BuffCategory.SetBonuses,
+                Stats = new Stats() { DodgeRating = 20 },
+                SetName = "Fel Skin",
+                SetThreshold = 3
+            });
+            defaultBuffs.Add(new Buff()
+            {
+                Name = "Heavy Clefthoof 3 Piece Bonus",
+                Category = BuffCategory.SetBonuses,
+                Stats = new Stats() { Strength = 20 },
+                SetName = "Strength of the Clefthoof",
+                SetThreshold = 3
+            });
 
-			  // Resto Shammy set bonuses:
+            // Resto Shammy set bonuses:
 
-			  defaultBuffs.Add(new Buff()
-			  {
-				Name = "Cyclone Raiment 2 Piece Bonus",
-				Category = BuffCategory.SetBonuses,
-				SetName = "Cyclone Raiment",
-				Stats = new Stats() { ManaSpringMp5Increase = 7.5f },
-				SetThreshold = 2
-			  });
+            defaultBuffs.Add(new Buff()
+            {
+                Name = "Cyclone Raiment 2 Piece Bonus",
+                Category = BuffCategory.SetBonuses,
+                SetName = "Cyclone Raiment",
+                Stats = new Stats() { ManaSpringMp5Increase = 7.5f },
+                SetThreshold = 2
+            });
 
-			  defaultBuffs.Add(new Buff()
-			  {
-				Name = "Cataclysm Raiment 2 Piece Bonus",
-				Category = BuffCategory.SetBonuses,
-				SetName = "Cataclysm Raiment",
-				Stats = new Stats() { LHWManaReduction = .05f },
-				SetThreshold = 2
-			  });
+            defaultBuffs.Add(new Buff()
+            {
+                Name = "Cataclysm Raiment 2 Piece Bonus",
+                Category = BuffCategory.SetBonuses,
+                SetName = "Cataclysm Raiment",
+                Stats = new Stats() { LHWManaReduction = .05f },
+                SetThreshold = 2
+            });
 
-			  defaultBuffs.Add(new Buff()
-			  {
-				Name = "Skyshatter Raiment 2 Piece Bonus",
-				Category = BuffCategory.SetBonuses,
-				SetName = "Skyshatter Raiment",
-				Stats = new Stats() { CHManaReduction = .1f },
-				SetThreshold = 2
-			  });
+            defaultBuffs.Add(new Buff()
+            {
+                Name = "Skyshatter Raiment 2 Piece Bonus",
+                Category = BuffCategory.SetBonuses,
+                SetName = "Skyshatter Raiment",
+                Stats = new Stats() { CHManaReduction = .1f },
+                SetThreshold = 2
+            });
 
-			  defaultBuffs.Add(new Buff()
-			  {
-				Name = "Skyshatter Raiment 4 Piece Bonus",
-				Category = BuffCategory.SetBonuses,
-				SetName = "Skyshatter Raiment",
-				Stats = new Stats() { CHHealIncrease = .05f },
-				SetThreshold = 4
-			  });
-            
-			//Hunter Set Bonuses
-			  defaultBuffs.Add(new Buff()
-			  {
-				  Name = "Rift Stalker Armor 4 Piece Bonus",
-				  Category = BuffCategory.SetBonuses,
-				  SetName = "Rift Stalker Armor",
-				  Stats = new Stats() {BonusSteadyShotCrit = .05f},
-				  SetThreshold = 4
-			  });
-			  defaultBuffs.Add(new Buff()
-			  {
-				  Name = "Gronnstalker's Armor 4 Piece Bonus",
-				  Category = BuffCategory.SetBonuses,
-				  SetName = "Gronnstalker's Armor",
-				  Stats = new Stats() { BonusSteadyShotDamageMultiplier = .1f },
-				  SetThreshold = 4
-			  });
+            defaultBuffs.Add(new Buff()
+            {
+                Name = "Skyshatter Raiment 4 Piece Bonus",
+                Category = BuffCategory.SetBonuses,
+                SetName = "Skyshatter Raiment",
+                Stats = new Stats() { CHHealIncrease = .05f },
+                SetThreshold = 4
+            });
 
-              // Holy Priest bonuses
-              defaultBuffs.Add(new Buff()
-              {
-                  Name = "Primal Mooncloth 3 Piece Bonus",
-                  Category = BuffCategory.SetBonuses,
-                  Stats = new Stats() { SpellCombatManaRegeneration = 0.05f },
-                  SetName = "Primal Mooncloth",
-                  SetThreshold = 3
-              });
+            //Hunter Set Bonuses
+            defaultBuffs.Add(new Buff()
+            {
+                Name = "Rift Stalker Armor 4 Piece Bonus",
+                Category = BuffCategory.SetBonuses,
+                SetName = "Rift Stalker Armor",
+                Stats = new Stats() { BonusSteadyShotCrit = .05f },
+                SetThreshold = 4
+            });
+            defaultBuffs.Add(new Buff()
+            {
+                Name = "Gronnstalker's Armor 4 Piece Bonus",
+                Category = BuffCategory.SetBonuses,
+                SetName = "Gronnstalker's Armor",
+                Stats = new Stats() { BonusSteadyShotDamageMultiplier = .1f },
+                SetThreshold = 4
+            });
 
-              defaultBuffs.Add(new Buff()
-              {
-                  Name = "Vestments of Absolution 2 Piece Bonus",
-                  Category = BuffCategory.SetBonuses,
-                  Stats = new Stats() { BonusPoHManaCostReductionMultiplier = 0.1f },
-                  SetName = "Vestments of Absolution",
-                  SetThreshold = 2
-              });
+            // Holy Priest bonuses
+            defaultBuffs.Add(new Buff()
+            {
+                Name = "Primal Mooncloth 3 Piece Bonus",
+                Category = BuffCategory.SetBonuses,
+                Stats = new Stats() { SpellCombatManaRegeneration = 0.05f },
+                SetName = "Primal Mooncloth",
+                SetThreshold = 3
+            });
 
-              defaultBuffs.Add(new Buff()
-              {
-                  Name = "Vestments of Absolution 4 Piece Bonus",
-                  Category = BuffCategory.SetBonuses,
-                  Stats = new Stats() { BonusGHHealingMultiplier = 0.05f },
-                  SetName = "Vestments of Absolution",
-                  SetThreshold = 2
-              });
+            defaultBuffs.Add(new Buff()
+            {
+                Name = "Vestments of Absolution 2 Piece Bonus",
+                Category = BuffCategory.SetBonuses,
+                Stats = new Stats() { BonusPoHManaCostReductionMultiplier = 0.1f },
+                SetName = "Vestments of Absolution",
+                SetThreshold = 2
+            });
+
+            defaultBuffs.Add(new Buff()
+            {
+                Name = "Vestments of Absolution 4 Piece Bonus",
+                Category = BuffCategory.SetBonuses,
+                Stats = new Stats() { BonusGHHealingMultiplier = 0.05f },
+                SetName = "Vestments of Absolution",
+                SetThreshold = 2
+            });
 
             // Rogue set bonuses
-              defaultBuffs.Add(new Buff() {
-                  Name = "Netherblade 2 Piece Bonus",
-                  Category = BuffCategory.SetBonuses,
-                  Stats = new Stats() { BonusSnDDuration = 3f },
-                  SetName = "Netherblade",
-                  SetThreshold = 2
-              });
+            defaultBuffs.Add(new Buff()
+            {
+                Name = "Netherblade 2 Piece Bonus",
+                Category = BuffCategory.SetBonuses,
+                Stats = new Stats() { BonusSnDDuration = 3f },
+                SetName = "Netherblade",
+                SetThreshold = 2
+            });
 
-              defaultBuffs.Add(new Buff() {
-                  Name = "Netherblade 4 Piece Bonus",
-                  Category = BuffCategory.SetBonuses,
-                  Stats = new Stats() { CPOnFinisher = .15f },
-                  SetName = "Netherblade",
-                  SetThreshold = 4
-              });
+            defaultBuffs.Add(new Buff()
+            {
+                Name = "Netherblade 4 Piece Bonus",
+                Category = BuffCategory.SetBonuses,
+                Stats = new Stats() { CPOnFinisher = .15f },
+                SetName = "Netherblade",
+                SetThreshold = 4
+            });
 
-              defaultBuffs.Add(new Buff() {
-                  Name = "Deathmantle 2 Piece Bonus",
-                  Category = BuffCategory.SetBonuses,
-                  Stats = new Stats() { BonusEvisEnvenomDamage = 40f },
-                  SetName = "Deathmantle",
-                  SetThreshold = 2
-              });
+            defaultBuffs.Add(new Buff()
+            {
+                Name = "Deathmantle 2 Piece Bonus",
+                Category = BuffCategory.SetBonuses,
+                Stats = new Stats() { BonusEvisEnvenomDamage = 40f },
+                SetName = "Deathmantle",
+                SetThreshold = 2
+            });
 
-              defaultBuffs.Add(new Buff() {
-                  Name = "Deathmantle 4 Piece Bonus",
-                  Category = BuffCategory.SetBonuses,
-                  Stats = new Stats() { BonusFreeFinisher = 1f },
-                  SetName = "Deathmantle",
-                  SetThreshold = 4
-              });
+            defaultBuffs.Add(new Buff()
+            {
+                Name = "Deathmantle 4 Piece Bonus",
+                Category = BuffCategory.SetBonuses,
+                Stats = new Stats() { BonusFreeFinisher = 1f },
+                SetName = "Deathmantle",
+                SetThreshold = 4
+            });
 
-              defaultBuffs.Add(new Buff() {
-                  Name = "Slayer's Armor 2 Piece Bonus",
-                  Category = BuffCategory.SetBonuses,
-                  Stats = new Stats() { BonusSnDHaste = .05f },
-                  SetName = "Slayer's Armor",
-                  SetThreshold = 2
-              });
+            defaultBuffs.Add(new Buff()
+            {
+                Name = "Slayer's Armor 2 Piece Bonus",
+                Category = BuffCategory.SetBonuses,
+                Stats = new Stats() { BonusSnDHaste = .05f },
+                SetName = "Slayer's Armor",
+                SetThreshold = 2
+            });
 
-              defaultBuffs.Add(new Buff() {
-                  Name = "Slayer's Armor 4 Piece Bonus",
-                  Category = BuffCategory.SetBonuses,
-                  Stats = new Stats() { BonusCPGDamage = .06f },
-                  SetName = "Slayer's Armor",
-                  SetThreshold = 4
-              });
+            defaultBuffs.Add(new Buff()
+            {
+                Name = "Slayer's Armor 4 Piece Bonus",
+                Category = BuffCategory.SetBonuses,
+                Stats = new Stats() { BonusCPGDamage = .06f },
+                SetName = "Slayer's Armor",
+                SetThreshold = 4
+            });
 
-              //i think you're slipping
+            //i think you're slipping
             defaultBuffs.Add(new Buff()
             {
                 Name = "Bloodlust",
@@ -1488,21 +1506,21 @@ namespace Rawr
                 Category = BuffCategory.TemporaryBuffs,
                 Stats = new Stats() { DodgeRating = 152 },
                 Type = BuffType.ShortDurationDW
-			});
-			defaultBuffs.Add(new Buff()
-			{
-				Name = "Shattered Sun Pendant of Resolve Proc (Aldor)",
-				Category = BuffCategory.TemporaryBuffs,
-				Stats = new Stats() { DodgeRating = 100 },
-				Type = BuffType.ShortDurationDW
-			});
-			defaultBuffs.Add(new Buff()
-			{
-				Name = "Shattered Sun Pendant of Resolve Proc (Scryer)",
-				Category = BuffCategory.TemporaryBuffs,
-				Stats = new Stats() { ExpertiseRating = 100 },
-				Type = BuffType.ShortDurationDW
-			});
+            });
+            defaultBuffs.Add(new Buff()
+            {
+                Name = "Shattered Sun Pendant of Resolve Proc (Aldor)",
+                Category = BuffCategory.TemporaryBuffs,
+                Stats = new Stats() { DodgeRating = 100 },
+                Type = BuffType.ShortDurationDW
+            });
+            defaultBuffs.Add(new Buff()
+            {
+                Name = "Shattered Sun Pendant of Resolve Proc (Scryer)",
+                Category = BuffCategory.TemporaryBuffs,
+                Stats = new Stats() { ExpertiseRating = 100 },
+                Type = BuffType.ShortDurationDW
+            });
             defaultBuffs.Add(new Buff()
             {
                 Name = "Figurine - Empyrean Tortoise",
@@ -1530,14 +1548,14 @@ namespace Rawr
                 Category = BuffCategory.TemporaryBuffs,
                 Stats = new Stats() { BonusArmorMultiplier = 0.25f },
                 Type = BuffType.ShortDurationDW
-			});
-			defaultBuffs.Add(new Buff()
-			{
-				Name = "Stomp",
-				Category = BuffCategory.TemporaryBuffs,
-				Stats = new Stats() { BonusArmorMultiplier = -0.5f },
-				Type = BuffType.ShortDurationDW
-			});
+            });
+            defaultBuffs.Add(new Buff()
+            {
+                Name = "Stomp",
+                Category = BuffCategory.TemporaryBuffs,
+                Stats = new Stats() { BonusArmorMultiplier = -0.5f },
+                Type = BuffType.ShortDurationDW
+            });
             defaultBuffs.Add(new Buff()
             {
                 Name = "Improved Lay On Hands",
@@ -1700,6 +1718,6 @@ namespace Rawr
 
             return defaultBuffs;
         }
-	}
+    }
 }
 //1963...

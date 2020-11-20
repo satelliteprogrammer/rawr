@@ -1,9 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Net;
-using System.Text;
-using System.Xml;
-using System.IO;
 
 namespace Rawr
 {
@@ -13,7 +9,7 @@ namespace Rawr
         private SerializableDictionary<int, string> _treeNames = new SerializableDictionary<int, string>();
 
         [System.Xml.Serialization.XmlElement("Trees")]
-        public SerializableDictionary<string, List<TalentItem>> _trees = new SerializableDictionary<string,List<TalentItem>>();
+        public SerializableDictionary<string, List<TalentItem>> _trees = new SerializableDictionary<string, List<TalentItem>>();
 
         [System.Xml.Serialization.XmlElement("Region")]
         public Character.CharacterRegion _region;
@@ -28,8 +24,8 @@ namespace Rawr
         public Character.CharacterClass _class = Character.CharacterClass.Druid;
 
 
-        
-  
+
+
 
 
         #region Properties
@@ -98,7 +94,7 @@ namespace Rawr
             TalentItem ti = null;
             foreach (string tree in _trees.Keys)
             {
-                ti = _trees[tree].Find(delegate(TalentItem talent) { return talent.Name.Replace(" ", "").ToUpper() == TalentName.Replace(" ","").ToUpper(); });
+                ti = _trees[tree].Find(delegate (TalentItem talent) { return talent.Name.Replace(" ", "").ToUpper() == TalentName.Replace(" ", "").ToUpper(); });
                 if (ti != null) return ti;
             }
             return new TalentItem();
@@ -128,18 +124,18 @@ namespace Rawr
 
         private bool fullyQualified()
         {
-            return ( !string.IsNullOrEmpty(_realm) &&  !string.IsNullOrEmpty(_name));
+            return (!string.IsNullOrEmpty(_realm) && !string.IsNullOrEmpty(_name));
         }
 
         private void buildTreeFramework()
         {
             if (fullyQualified())
             {
-				WebRequestWrapper wrw = new WebRequestWrapper();
+                WebRequestWrapper wrw = new WebRequestWrapper();
                 string talentTree = wrw.DownloadClassTalentTree(_class);
-                string talentCode = wrw.DownloadCharacterTalentTree(_name,_region,_realm).SelectSingleNode("page/characterInfo/talentTab/talentTree").Attributes["value"].Value;
+                string talentCode = wrw.DownloadCharacterTalentTree(_name, _region, _realm).SelectSingleNode("page/characterInfo/talentTab/talentTree").Attributes["value"].Value;
                 populateTrees(talentTree, talentCode);
-                
+
             }
         }
 
@@ -171,7 +167,7 @@ namespace Rawr
                     _trees[treeNames[treeNum]].Add(new TalentItem(currRow, treeNames[treeNum]));
                     if (!treeDesc[row + 1].StartsWith("talent[")) treeNum++;
                 }
-                if (treeNum == 3) break ;
+                if (treeNum == 3) break;
             }
 
             int currTal = 0;
@@ -189,11 +185,11 @@ namespace Rawr
 
         }
 
-		//private void GetTalentString()
-		//{
-		//    string talentUrl = String.Format(_talentsBase, _region ==  Character.CharacterRegion.US ? "www" : "eu", _realm, _name);
-		//    WebRequestWrapper wrw = new WebRequestWrapper();
-		//    XmlDocument talents = wrw.DownloadXml(talentUrl);
-		//}
+        //private void GetTalentString()
+        //{
+        //    string talentUrl = String.Format(_talentsBase, _region ==  Character.CharacterRegion.US ? "www" : "eu", _realm, _name);
+        //    WebRequestWrapper wrw = new WebRequestWrapper();
+        //    XmlDocument talents = wrw.DownloadXml(talentUrl);
+        //}
     }
 }

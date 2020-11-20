@@ -1,11 +1,8 @@
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Drawing;
-using System.Data;
-using System.Text;
-using System.Windows.Forms;
 using System.Drawing.Drawing2D;
+using System.Windows.Forms;
 
 namespace Rawr
 {
@@ -154,7 +151,7 @@ namespace Rawr
             else if (Sort == ComparisonSort.Alphabetical)
                 return a.Name.CompareTo(b.Name);
             else
-                return b.SubPoints[(int) Sort].CompareTo(a.SubPoints[(int) Sort]);
+                return b.SubPoints[(int)Sort].CompareTo(a.SubPoints[(int)Sort]);
         }
 
         private VScrollBar _scrollBar;
@@ -190,7 +187,7 @@ namespace Rawr
             {
                 if (_prerenderedGraph == null)
                 {
-					if (ItemCalculations == null) return new Bitmap(1, 1);
+                    if (ItemCalculations == null) return new Bitmap(1, 1);
                     if (CustomRendered)
                     {
                         _prerenderedGraph = new Bitmap(Math.Max(1, this.Width), Math.Max(1, this.Height), System.Drawing.Imaging.PixelFormat.Format32bppArgb);
@@ -315,12 +312,12 @@ namespace Rawr
                             float graphWidth = this.Width - 160f;
                             float graphEnd = graphStart + graphWidth;
                             float[] ticks = new float[] {(float)Math.Round(graphStart + graphWidth * 0.5f),
-							(float)Math.Round(graphStart + graphWidth * 0.75f),
-							(float)Math.Round(graphStart + graphWidth * 0.25f),
-							(float)Math.Round(graphStart + graphWidth * 0.125f),
-							(float)Math.Round(graphStart + graphWidth * 0.375f),
-							(float)Math.Round(graphStart + graphWidth * 0.625f),
-							(float)Math.Round(graphStart + graphWidth * 0.875f)};
+                            (float)Math.Round(graphStart + graphWidth * 0.75f),
+                            (float)Math.Round(graphStart + graphWidth * 0.25f),
+                            (float)Math.Round(graphStart + graphWidth * 0.125f),
+                            (float)Math.Round(graphStart + graphWidth * 0.375f),
+                            (float)Math.Round(graphStart + graphWidth * 0.625f),
+                            (float)Math.Round(graphStart + graphWidth * 0.875f)};
                             Pen black200 = new Pen(Color.FromArgb(200, 0, 0, 0));
                             Pen black150 = new Pen(Color.FromArgb(150, 0, 0, 0));
                             Pen black75 = new Pen(Color.FromArgb(75, 0, 0, 0));
@@ -588,7 +585,7 @@ namespace Rawr
             //{
             if (e.X <= 106)
             {
-                int itemIndex = (int) Math.Floor(((float) (e.Y - 44f + _scrollBar.Value)) / 36f);
+                int itemIndex = (int)Math.Floor(((float)(e.Y - 44f + _scrollBar.Value)) / 36f);
                 if (itemIndex >= 0 && itemIndex < ItemCalculations.Length && ItemCalculations[itemIndex].Item != null && ItemCalculations[itemIndex].Item.Id != 0)
                 {
                     Item item = ItemCalculations[itemIndex].Item;
@@ -644,7 +641,7 @@ namespace Rawr
                 Cursor cursor = Cursors.Default;
                 if (e.X <= 118)
                 {
-                    int itemIndex = (int) Math.Floor(((float) (e.Y - 44f + _scrollBar.Value)) / 36f);
+                    int itemIndex = (int)Math.Floor(((float)(e.Y - 44f + _scrollBar.Value)) / 36f);
                     if (itemIndex >= 0 && itemIndex < ItemCalculations.Length)
                     {
                         Item item = ItemCalculations[itemIndex].Item;

@@ -22,7 +22,7 @@ namespace Rawr
         {
             long freq;
             QueryPerformanceFrequency(out freq);
-            _freqency = (double) freq;
+            _freqency = (double)freq;
         }
 
         public void Start()
@@ -44,14 +44,14 @@ namespace Rawr
             TotalTime = 0;
         }
 
-        public long TotalTime{get;set;}
-        public long Hits{get;set;}
+        public long TotalTime { get; set; }
+        public long Hits { get; set; }
 
         public double Average
         {
             get
             {
-                return ((double) TotalTime / Math.Max(Hits, 1)) / _freqency;
+                return ((double)TotalTime / Math.Max(Hits, 1)) / _freqency;
             }
         }
 

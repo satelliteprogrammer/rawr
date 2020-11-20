@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace Rawr.Retribution
 {
@@ -73,7 +70,7 @@ namespace Rawr.Retribution
         public float ExorcismDPS
         {
             get { return _exorcismDPS; }
-            set { _exorcismDPS= value; }
+            set { _exorcismDPS = value; }
         }
 
         private int _targetLevel;

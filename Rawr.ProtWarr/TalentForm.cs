@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
 //using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 
 namespace Rawr.ProtWarr
@@ -89,10 +86,10 @@ namespace Rawr.ProtWarr
             int _vertbuffer = 5;
             int _horizbuffer = 2;
             int maxVert = 0;
-            tals.ForEach(delegate(TalentItem ti) { maxVert = ti.VerticalPosition > maxVert ? ti.VerticalPosition : maxVert; });
+            tals.ForEach(delegate (TalentItem ti) { maxVert = ti.VerticalPosition > maxVert ? ti.VerticalPosition : maxVert; });
 
             int maxHoriz = 0;
-            tals.ForEach(delegate(TalentItem ti) { maxHoriz = ti.HorizontalPosition > maxHoriz ? ti.HorizontalPosition : maxHoriz; });
+            tals.ForEach(delegate (TalentItem ti) { maxHoriz = ti.HorizontalPosition > maxHoriz ? ti.HorizontalPosition : maxHoriz; });
 
             TalentIcon temp = new TalentIcon();
 
@@ -106,12 +103,12 @@ namespace Rawr.ProtWarr
                 int horizoffset = 0;
                 vertoffset += _vertbuffer;
                 int maxCurrHoriz = 0;
-                tals.ForEach(delegate(TalentItem ti) { if (ti.VerticalPosition == row) maxCurrHoriz = ti.HorizontalPosition > maxCurrHoriz ? ti.HorizontalPosition : maxCurrHoriz; });
+                tals.ForEach(delegate (TalentItem ti) { if (ti.VerticalPosition == row) maxCurrHoriz = ti.HorizontalPosition > maxCurrHoriz ? ti.HorizontalPosition : maxCurrHoriz; });
                 for (int col = 1; col <= maxCurrHoriz; col++)
                 {
                     horizoffset += _horizbuffer;
                     //temp = new TalentIcon(tals.Find(ti => ti.VerticalPosition == row && ti.HorizontalPosition == col), CharClass);
-                    TalentItem ti = tals.Find(delegate(TalentItem ti2) { return (ti2.VerticalPosition == row && ti2.HorizontalPosition == col); });
+                    TalentItem ti = tals.Find(delegate (TalentItem ti2) { return (ti2.VerticalPosition == row && ti2.HorizontalPosition == col); });
                     if (ti != null)
                     {
                         points += ti.PointsInvested;

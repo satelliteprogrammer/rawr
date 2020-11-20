@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Rawr.Tankadin
 {
@@ -93,7 +92,7 @@ namespace Rawr.Tankadin
             get { return _blockvalue; }
             set { _blockvalue = value; }
         }
-        
+
         private float _mitigation;
         public float Mitigation
         {

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Text;
 
 namespace Rawr.HolyPriest
 {
@@ -26,15 +25,16 @@ namespace Rawr.HolyPriest
             Rank = rank;
         }
 
-        public BaseSpell(int rank, float minHeal, float maxHeal, int manaCost, float castTime, float rankCoef):
+        public BaseSpell(int rank, float minHeal, float maxHeal, int manaCost, float castTime, float rankCoef) :
             this(rank, minHeal, maxHeal, manaCost, castTime, rankCoef, 0)
-        {}
+        { }
 
-        public BaseSpell(BaseSpell baseSpell):
-            this(baseSpell.Rank, baseSpell.MinHeal, baseSpell.MaxHeal, baseSpell.ManaCost, baseSpell.CastTime, baseSpell.RankCoef, baseSpell.HotDuration) { }
+        public BaseSpell(BaseSpell baseSpell) :
+            this(baseSpell.Rank, baseSpell.MinHeal, baseSpell.MaxHeal, baseSpell.ManaCost, baseSpell.CastTime, baseSpell.RankCoef, baseSpell.HotDuration)
+        { }
     }
 
-    public class Spell: BaseSpell
+    public class Spell : BaseSpell
     {
         public string Name { get; protected set; }
 
@@ -65,7 +65,7 @@ namespace Rawr.HolyPriest
             get
             {
                 if (IsHot)
-                    return AvgHeal/HotDuration;
+                    return AvgHeal / HotDuration;
 
                 return AvgHeal / CastTime;
             }
@@ -83,7 +83,7 @@ namespace Rawr.HolyPriest
         {
             get
             {
-                return (MinHeal * 1.5f + MaxCrit)/2;
+                return (MinHeal * 1.5f + MaxCrit) / 2;
             }
         }
 
@@ -110,7 +110,7 @@ namespace Rawr.HolyPriest
 
         protected Spell(Stats stats, BaseSpell baseSpell, string name, float coef, Color col)
             : this(stats, baseSpell, name, coef, 0, col)
-        {}
+        { }
 
         public static float GetGlobalCooldown(Stats stats)
         {
@@ -134,7 +134,7 @@ namespace Rawr.HolyPriest
 
     public class Renew : Spell
     {
-        private static readonly List<BaseSpell> baseSpellTable = new List<BaseSpell> (){   
+        private static readonly List<BaseSpell> baseSpellTable = new List<BaseSpell>(){   
         /*                Rank MinHeal MaxHeal ManaCost CastTime RankCoef HotDuration    */
             new BaseSpell(1,      45,     45,     30,     0,      0.851f, 15f),
             new BaseSpell(2,      100,    100,    65,     0,      0.723f, 15f),
@@ -149,9 +149,9 @@ namespace Rawr.HolyPriest
             new BaseSpell(11,     1010,   1010,   430,    0,      0,      15f),
             new BaseSpell(12,     1110,   1110,   450,    0,      0,      15f)
             };
-        
+
         public Renew(Stats stats, TalentTree talents)
-            : this(stats, talents, baseSpellTable.Count){}
+            : this(stats, talents, baseSpellTable.Count) { }
 
         public Renew(Stats stats, TalentTree talents, int rank)
             : base(stats, baseSpellTable[rank - 1], "Renew", 1f, 15f, Color.Green)
@@ -170,7 +170,7 @@ namespace Rawr.HolyPriest
 
         public static List<Spell> GetAllCommonRanks(Stats stats, TalentTree talents)
         {
-            return new List<Spell> { new Renew(stats, talents)};
+            return new List<Spell> { new Renew(stats, talents) };
         }
 
 
@@ -179,10 +179,10 @@ namespace Rawr.HolyPriest
             Rank = rank;
             MinHeal = MaxHeal = (baseSpellTable[Rank - 1].MinHeal +
                 stats.Healing * HealingCoef * (1 - baseSpellTable[Rank - 1].RankCoef))
-                * (1 + talents.GetTalent("Improved Renew").PointsInvested * 0.05f) 
+                * (1 + talents.GetTalent("Improved Renew").PointsInvested * 0.05f)
                 * (1 + talents.GetTalent("Spiritual Healing").PointsInvested * 0.02f);
 
-            ManaCost = (int)Math.Round(baseSpellTable[Rank - 1].ManaCost 
+            ManaCost = (int)Math.Round(baseSpellTable[Rank - 1].ManaCost
                 * (1 - talents.GetTalent("Mental Agility").PointsInvested * 0.02f));
         }
 
@@ -192,7 +192,7 @@ namespace Rawr.HolyPriest
                           MinHeal.ToString("0"),
                           HpS.ToString("0.00"),
                           HpM.ToString("0.00"),
-                          (MinHeal/HotDuration*3).ToString("0"),
+                          (MinHeal / HotDuration * 3).ToString("0"),
                           ManaCost.ToString("0"));
         }
     }
@@ -219,7 +219,7 @@ namespace Rawr.HolyPriest
         }
 
         public FlashHeal(Stats stats, TalentTree talents)
-            : this(stats, talents, baseSpellTable.Count){}
+            : this(stats, talents, baseSpellTable.Count) { }
 
         public static List<Spell> GetAllRanks(Stats stats, TalentTree talents)
         {
@@ -239,13 +239,13 @@ namespace Rawr.HolyPriest
         {
             Rank = rank;
             MinHeal = (baseSpellTable[Rank - 1].MinHeal +
-                stats.Healing * (1 - baseSpellTable[Rank - 1].RankCoef) 
-                * (talents.GetTalent("Empowered Healing").PointsInvested * 0.02f + HealingCoef)) 
+                stats.Healing * (1 - baseSpellTable[Rank - 1].RankCoef)
+                * (talents.GetTalent("Empowered Healing").PointsInvested * 0.02f + HealingCoef))
                 * (1 + talents.GetTalent("Spiritual Healing").PointsInvested * 0.02f);
 
             MaxHeal = (baseSpellTable[Rank - 1].MaxHeal +
-                stats.Healing * (1 - baseSpellTable[Rank - 1].RankCoef) 
-                * (talents.GetTalent("Empowered Healing").PointsInvested * 0.02f + HealingCoef)) 
+                stats.Healing * (1 - baseSpellTable[Rank - 1].RankCoef)
+                * (talents.GetTalent("Empowered Healing").PointsInvested * 0.02f + HealingCoef))
                 * (1 + talents.GetTalent("Spiritual Healing").PointsInvested * 0.02f);
 
             CastTime = baseSpellTable[Rank - 1].CastTime * (1 - stats.SpellHasteRating / 15.7f / 100f);
@@ -270,7 +270,7 @@ namespace Rawr.HolyPriest
 
         public Heal(Stats stats, TalentTree talents)
             : this(stats, talents, baseSpellTable.Count)
-        {}
+        { }
 
         public static List<Spell> GetAllRanks(Stats stats, TalentTree talents)
         {
@@ -289,14 +289,14 @@ namespace Rawr.HolyPriest
         protected void Calculate(Stats stats, TalentTree talents, int rank)
         {
             Rank = rank;
-            MinHeal = (baseSpellTable[Rank - 1].MinHeal + 
-                stats.Healing * HealingCoef * (1 - baseSpellTable[Rank - 1].RankCoef)) 
+            MinHeal = (baseSpellTable[Rank - 1].MinHeal +
+                stats.Healing * HealingCoef * (1 - baseSpellTable[Rank - 1].RankCoef))
                 * (1 + talents.GetTalent("Spiritual Healing").PointsInvested * 0.02f);
             MaxHeal = (baseSpellTable[Rank - 1].MaxHeal +
-                stats.Healing * HealingCoef * (1 - baseSpellTable[Rank - 1].RankCoef)) 
+                stats.Healing * HealingCoef * (1 - baseSpellTable[Rank - 1].RankCoef))
                 * (1 + talents.GetTalent("Spiritual Healing").PointsInvested * 0.02f);
 
-            ManaCost = (int)Math.Round(baseSpellTable[Rank - 1].ManaCost 
+            ManaCost = (int)Math.Round(baseSpellTable[Rank - 1].ManaCost
                 * (1 - talents.GetTalent("Improved Healing").PointsInvested * 0.05f));
 
             CastTime = (baseSpellTable[Rank - 1].CastTime - talents.GetTalent("Divine Fury").PointsInvested * 0.1f)
@@ -325,7 +325,7 @@ namespace Rawr.HolyPriest
 
         public GreaterHeal(Stats stats, TalentTree talents)
             : this(stats, talents, baseSpellTable.Count)
-        {}
+        { }
 
         public static List<Spell> GetAllRanks(Stats stats, TalentTree talents)
         {
@@ -344,22 +344,22 @@ namespace Rawr.HolyPriest
         protected void Calculate(Stats stats, TalentTree talents, int rank)
         {
             Rank = rank;
-            MinHeal = (baseSpellTable[Rank - 1].MinHeal + 
-                stats.Healing * (1 - baseSpellTable[Rank - 1].RankCoef) 
-                * (talents.GetTalent("Empowered Healing").PointsInvested * 0.04f + HealingCoef)) 
-                * (1 + talents.GetTalent("Spiritual Healing").PointsInvested * 0.02f) 
+            MinHeal = (baseSpellTable[Rank - 1].MinHeal +
+                stats.Healing * (1 - baseSpellTable[Rank - 1].RankCoef)
+                * (talents.GetTalent("Empowered Healing").PointsInvested * 0.04f + HealingCoef))
+                * (1 + talents.GetTalent("Spiritual Healing").PointsInvested * 0.02f)
                 * (1 + stats.BonusGHHealingMultiplier);
 
             MaxHeal = (baseSpellTable[Rank - 1].MaxHeal +
-                stats.Healing * (1 - baseSpellTable[Rank - 1].RankCoef) 
-                * (talents.GetTalent("Empowered Healing").PointsInvested * 0.04f + HealingCoef)) 
-                * (1 + talents.GetTalent("Spiritual Healing").PointsInvested * 0.02f) 
+                stats.Healing * (1 - baseSpellTable[Rank - 1].RankCoef)
+                * (talents.GetTalent("Empowered Healing").PointsInvested * 0.04f + HealingCoef))
+                * (1 + talents.GetTalent("Spiritual Healing").PointsInvested * 0.02f)
                 * (1 + stats.BonusGHHealingMultiplier);
 
-            ManaCost = (int)Math.Round(baseSpellTable[Rank - 1].ManaCost 
+            ManaCost = (int)Math.Round(baseSpellTable[Rank - 1].ManaCost
                 * (1 - talents.GetTalent("Improved Healing").PointsInvested * 0.05f));
 
-            CastTime = (baseSpellTable[Rank - 1].CastTime - talents.GetTalent("Divine Fury").PointsInvested * 0.1f) 
+            CastTime = (baseSpellTable[Rank - 1].CastTime - talents.GetTalent("Divine Fury").PointsInvested * 0.1f)
                 * (1 - stats.SpellHasteRating / 15.7f / 100f);
         }
     }
@@ -410,7 +410,7 @@ namespace Rawr.HolyPriest
 
         public PrayerOfHealing(Stats stats, TalentTree talents)
             : this(stats, talents, baseSpellTable.Count, 3)
-        {}
+        { }
 
         public static List<Spell> GetAllRanks(Stats stats, TalentTree talents, int targets)
         {
@@ -432,14 +432,14 @@ namespace Rawr.HolyPriest
             Range = 30;
 
             MinHeal = (baseSpellTable[rank - 1].MinHeal +
-                stats.Healing * HealingCoef * (1 - baseSpellTable[rank - 1].RankCoef)) 
+                stats.Healing * HealingCoef * (1 - baseSpellTable[rank - 1].RankCoef))
                 * (1 + talents.GetTalent("Spiritual Healing").PointsInvested * 0.02f);
             MaxHeal = (baseSpellTable[rank - 1].MaxHeal +
-                stats.Healing * HealingCoef * (1 - baseSpellTable[rank - 1].RankCoef)) 
+                stats.Healing * HealingCoef * (1 - baseSpellTable[rank - 1].RankCoef))
                 * (1 + talents.GetTalent("Spiritual Healing").PointsInvested * 0.02f);
 
-            ManaCost = (int)Math.Round(baseSpellTable[rank - 1].ManaCost 
-                * (1 - talents.GetTalent("Healing Prayers").PointsInvested * 0.1f) 
+            ManaCost = (int)Math.Round(baseSpellTable[rank - 1].ManaCost
+                * (1 - talents.GetTalent("Healing Prayers").PointsInvested * 0.1f)
                 * (1 - stats.BonusPoHManaCostReductionMultiplier));
 
             Range = (int)Math.Round(Range * (1 + talents.GetTalent("Holy Reach").PointsInvested * 0.1f));
@@ -510,7 +510,7 @@ namespace Rawr.HolyPriest
 
         public CircleOfHealing(Stats stats, TalentTree talents)
             : this(stats, talents, baseSpellTable.Count, 3)
-        {}
+        { }
 
         public static List<Spell> GetAllRanks(Stats stats, TalentTree talents, int targets)
         {
@@ -537,10 +537,10 @@ namespace Rawr.HolyPriest
             Rank = rank;
             Range = 15;
             MinHeal = (baseSpellTable[Rank - 1].MinHeal +
-                stats.Healing * HealingCoef * (1 - baseSpellTable[Rank - 1].RankCoef)) 
+                stats.Healing * HealingCoef * (1 - baseSpellTable[Rank - 1].RankCoef))
                 * (1 + talents.GetTalent("Spiritual Healing").PointsInvested * 0.02f);
             MaxHeal = (baseSpellTable[Rank - 1].MaxHeal +
-                stats.Healing * HealingCoef * (1 - baseSpellTable[Rank - 1].RankCoef)) 
+                stats.Healing * HealingCoef * (1 - baseSpellTable[Rank - 1].RankCoef))
                 * (1 + talents.GetTalent("Spiritual Healing").PointsInvested * 0.02f);
 
             ManaCost = (int)Math.Round(baseSpellTable[Rank - 1].ManaCost * (1 - talents.GetTalent("Mental Agility").PointsInvested * 0.02f));
@@ -613,7 +613,7 @@ namespace Rawr.HolyPriest
 
         public HolyNova(Stats stats, TalentTree talents)
             : this(stats, talents, baseSpellTable.Count, 3)
-        {}
+        { }
 
         public static List<Spell> GetAllRanks(Stats stats, TalentTree talents, int targets)
         {
@@ -639,12 +639,12 @@ namespace Rawr.HolyPriest
 
             Rank = rank;
             Range = 10;
-            
+
             MinHeal = (baseSpellTable[Rank - 1].MinHeal +
-                stats.Healing * HealingCoef * (1 - baseSpellTable[Rank - 1].RankCoef)) 
+                stats.Healing * HealingCoef * (1 - baseSpellTable[Rank - 1].RankCoef))
                 * (1 + talents.GetTalent("Spiritual Healing").PointsInvested * 0.02f);
             MaxHeal = (baseSpellTable[Rank - 1].MaxHeal +
-                stats.Healing * HealingCoef * (1 - baseSpellTable[Rank - 1].RankCoef)) 
+                stats.Healing * HealingCoef * (1 - baseSpellTable[Rank - 1].RankCoef))
                 * (1 + talents.GetTalent("Spiritual Healing").PointsInvested * 0.02f);
 
             ManaCost = (int)Math.Round(baseSpellTable[Rank - 1].ManaCost * (1 - talents.GetTalent("Mental Agility").PointsInvested * 0.02f));
@@ -681,7 +681,7 @@ namespace Rawr.HolyPriest
         {
             get
             {
-                return AvgHeal * 2/CastTime;
+                return AvgHeal * 2 / CastTime;
             }
         }
 
@@ -701,7 +701,7 @@ namespace Rawr.HolyPriest
 
         public BindingHeal(Stats stats, TalentTree talents)
             : this(stats, talents, baseSpellTable.Count)
-        {}
+        { }
 
         public static List<Spell> GetAllRanks(Stats stats, TalentTree talents)
         {
@@ -722,13 +722,13 @@ namespace Rawr.HolyPriest
             Rank = rank;
 
             MinHeal = (baseSpellTable[Rank - 1].MinHeal +
-                stats.Healing * (1 - baseSpellTable[Rank - 1].RankCoef) 
-                * (talents.GetTalent("Empowered Healing").PointsInvested * 0.02f + HealingCoef)) 
+                stats.Healing * (1 - baseSpellTable[Rank - 1].RankCoef)
+                * (talents.GetTalent("Empowered Healing").PointsInvested * 0.02f + HealingCoef))
                 * (1 + talents.GetTalent("Spiritual Healing").PointsInvested * 0.02f);
 
             MaxHeal = (baseSpellTable[Rank - 1].MaxHeal + stats.Healing
-                * (1 - baseSpellTable[Rank - 1].RankCoef) 
-                * (talents.GetTalent("Empowered Healing").PointsInvested * 0.02f + HealingCoef)) 
+                * (1 - baseSpellTable[Rank - 1].RankCoef)
+                * (talents.GetTalent("Empowered Healing").PointsInvested * 0.02f + HealingCoef))
                 * (1 + talents.GetTalent("Spiritual Healing").PointsInvested * 0.02f);
 
             CastTime = baseSpellTable[Rank - 1].CastTime * (1 - stats.SpellHasteRating / 15.7f / 100f);
@@ -786,10 +786,10 @@ namespace Rawr.HolyPriest
             Targets = targets;
             Calculate(stats, talents, rank);
         }
-        
+
         public PrayerOfMending(Stats stats, TalentTree talents)
             : this(stats, talents, baseSpellTable.Count, 3)
-        {}
+        { }
 
         public static List<Spell> GetAllRanks(Stats stats, TalentTree talents, int targets)
         {
@@ -811,14 +811,14 @@ namespace Rawr.HolyPriest
             Rank = rank;
 
             MinHeal = (baseSpellTable[Rank - 1].MinHeal +
-                stats.Healing * HealingCoef * (1 - baseSpellTable[Rank - 1].RankCoef)) 
+                stats.Healing * HealingCoef * (1 - baseSpellTable[Rank - 1].RankCoef))
                 * (1 + talents.GetTalent("Spiritual Healing").PointsInvested * 0.02f);
             MaxHeal = (baseSpellTable[Rank - 1].MaxHeal +
-                stats.Healing * HealingCoef * (1 - baseSpellTable[Rank - 1].RankCoef)) 
+                stats.Healing * HealingCoef * (1 - baseSpellTable[Rank - 1].RankCoef))
                 * (1 + talents.GetTalent("Spiritual Healing").PointsInvested * 0.02f);
 
-            ManaCost = (int)Math.Round(baseSpellTable[Rank - 1].ManaCost 
-                * (1 - talents.GetTalent("Healing Prayers").PointsInvested * 0.1f) 
+            ManaCost = (int)Math.Round(baseSpellTable[Rank - 1].ManaCost
+                * (1 - talents.GetTalent("Healing Prayers").PointsInvested * 0.1f)
                 * (1 - talents.GetTalent("Mental Agility").PointsInvested * 0.02f));
             Range = (int)Math.Round(Range * (1 + talents.GetTalent("Holy Reach").PointsInvested * 0.1f));
         }
@@ -860,7 +860,7 @@ namespace Rawr.HolyPriest
         {
             get
             {
-                return AvgHeal/GlobalCooldown;
+                return AvgHeal / GlobalCooldown;
             }
         }
 
@@ -872,7 +872,7 @@ namespace Rawr.HolyPriest
 
         public PowerWordShield(Stats stats, TalentTree talents)
             : this(stats, talents, baseSpellTable.Count)
-        {}
+        { }
 
         public static List<Spell> GetAllRanks(Stats stats, TalentTree talents)
         {
@@ -892,11 +892,11 @@ namespace Rawr.HolyPriest
         {
             Rank = rank;
             MinHeal = (baseSpellTable[Rank - 1].MinHeal +
-                stats.Healing * HealingCoef * (1 - baseSpellTable[Rank - 1].RankCoef)) 
+                stats.Healing * HealingCoef * (1 - baseSpellTable[Rank - 1].RankCoef))
                 * (1 + talents.GetTalent("Improved Power Word: Shield").PointsInvested * 0.05f);
             MaxHeal = MinHeal;
 
-            ManaCost = (int)Math.Round(baseSpellTable[Rank - 1].ManaCost 
+            ManaCost = (int)Math.Round(baseSpellTable[Rank - 1].ManaCost
                 * (1 - talents.GetTalent("Mental Agility").PointsInvested * 0.02f));
         }
 
@@ -935,7 +935,7 @@ namespace Rawr.HolyPriest
 
         public Lightwell(Stats stats, TalentTree talents)
             : this(stats, talents, baseSpellTable.Count)
-        {}
+        { }
 
         public static List<Spell> GetAllRanks(Stats stats, TalentTree talents)
         {
@@ -961,7 +961,7 @@ namespace Rawr.HolyPriest
 
             Rank = rank;
             MinHeal = (baseSpellTable[Rank - 1].MinHeal +
-                stats.Healing * HealingCoef * (1 - baseSpellTable[Rank - 1].RankCoef)) 
+                stats.Healing * HealingCoef * (1 - baseSpellTable[Rank - 1].RankCoef))
                 * (1 + talents.GetTalent("Spiritual Healing").PointsInvested * 0.02f);
             MaxHeal = MinHeal;
         }
@@ -992,7 +992,7 @@ namespace Rawr.HolyPriest
         {
             Calculate(stats, talents, rank);
         }
-        
+
         protected void Calculate(Stats stats, TalentTree talents, int rank)
         {
             Rank = rank;

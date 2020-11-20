@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Data;
 using System.Text;
 using System.Xml;
-using System.Windows.Forms;
 
 namespace Rawr.Tree
 {
@@ -29,7 +25,7 @@ namespace Rawr.Tree
             cmbManaTime.Value = (decimal)calcOpts.ManaPotDelay;
             cmbSpriest.Value = (decimal)calcOpts.Spriest;
             chkInnervate.Checked = calcOpts.InnervateSelf;
-            upDownInnervate.Value = (decimal) calcOpts.InnervateDelay;
+            upDownInnervate.Value = (decimal)calcOpts.InnervateDelay;
 
             cmbIntensity.Text = calcOpts.Intensity.ToString();
             cmbLivingSpirit.Text = calcOpts.LivingSpirit.ToString();
@@ -59,7 +55,7 @@ namespace Rawr.Tree
             cmbNumCyclesPerRotation.Text = calcOpts.NumCyclesPerRotation.ToString();
             cmbSpellNum.Text = "1";
 
-            upDownMaxCycleDuration.Value = (decimal) calcOpts.MaxCycleDuration;
+            upDownMaxCycleDuration.Value = (decimal)calcOpts.MaxCycleDuration;
 
             enforceMeta.Checked = Character.EnforceMetagemRequirements;
 
@@ -273,7 +269,7 @@ namespace Rawr.Tree
             if (!loading)
             {
                 CalculationOptionsTree calcOpts = Character.CalculationOptions as CalculationOptionsTree;
-                calcOpts.TargetHealth = (float) upDownTargetHealth.Value;
+                calcOpts.TargetHealth = (float)upDownTargetHealth.Value;
                 Character.OnItemsChanged();
             }
         }
@@ -317,12 +313,13 @@ namespace Rawr.Tree
 
                 String[] spells = new String[spellList.SelectedItems.Count];
 
-                for(int i=0; i<spells.Length; i++) {
+                for (int i = 0; i < spells.Length; i++)
+                {
                     spells[i] = spellList.SelectedItems[i].ToString();
                 }
 
                 calcOpts.availableSpells[selIx] = spells;
-                
+
                 Character.OnItemsChanged();
             }
         }
@@ -345,7 +342,7 @@ namespace Rawr.Tree
             {
                 CalculationOptionsTree calcOpts = Character.CalculationOptions as CalculationOptionsTree;
 
-                calcOpts.MaxCycleDuration = (float) upDownMaxCycleDuration.Value;
+                calcOpts.MaxCycleDuration = (float)upDownMaxCycleDuration.Value;
 
                 Character.OnItemsChanged();
             }
@@ -584,7 +581,7 @@ namespace Rawr.Tree
         public float Spriest = 0;
         public float InnervateDelay = 6.5f;
         public float MaxCycleDuration = 6.5f;
-        public int   NumCyclesPerRotation = 2;
+        public int NumCyclesPerRotation = 2;
         public String[][] availableSpells = new String[][] {
             new String[] {"Lifebloom Stack"},
             new String[] {"Rejuvenation", "Regrowth"},
@@ -685,67 +682,67 @@ namespace Rawr.Tree
             #endregion
         }
 
-		public int StarlightWrath;
-		public int ForceofNature;
-		public int WrathofCenarius;
-		public int ImprovedFF;
-		public int MoonkinForm;
-		public int Dreamstate;
-		public int BalanceofPower;
-		public int Moonfury;
-		public int Moonglow;
-		public int NaturesGrace;
-		public int LunarGuidance;
-		public int CelestialFocus;
-		public int Vengeance;
-		public int NaturesReach;
-		public int InsectSwarm;
-		public int Brambles;
-		public int ImpMoonfire;
-		public int FocusedStarlight;
-		public int ControlofNature;
-		public int ImpNaturesGrasp;
-		public int NaturesGrasp;
-		public int Ferocity;
-		public int FeralAggression;
-		public int FeralInstinct;
-		public int BrutalImpact;
-		public int ThickHide;
-		public int FeralSwiftness;
-		public int FeralCharge;
-		public int SharpenedClaws;
-		public int ShreddingAttacks;
-		public int PredatoryStrikes;
-		public int PrimalFury;
-		public int SavageFury;
-		public int FeralFaerieFire;
-		public int NurturingInstinct;
-		public int HotW;
-		public int SotF;
-		public int PrimalTenacity;
-		public int LotP;
-		public int ImprovedLotP;
-		public int Mangle;
-		public int PredatoryInstincts;
-		public int TreeOfLife;
-		public int ImprovedMotW;
-		public int EmpoweredRejuvenation;
-		public int Furor;
-		public int NaturalPerfection;
-		public int Naturalist;
-		public int Swiftmend;
-		public int NaturesFocus;
-		public int LivingSpirit;
-		public int NaturalShapeshifter;
-		public int ImprovedRegrowth;
-		public int Intensity;
-		public int EmpoweredTouch;
-		public int Subtlety;
-		public int ImpTranquility;
-		public int OmenOfClarity;
-		public int GiftOfNature;
-		public int TranquilSpirit;
-		public int NaturesSwiftness;
-		public int ImprovedRejuvenation;
+        public int StarlightWrath;
+        public int ForceofNature;
+        public int WrathofCenarius;
+        public int ImprovedFF;
+        public int MoonkinForm;
+        public int Dreamstate;
+        public int BalanceofPower;
+        public int Moonfury;
+        public int Moonglow;
+        public int NaturesGrace;
+        public int LunarGuidance;
+        public int CelestialFocus;
+        public int Vengeance;
+        public int NaturesReach;
+        public int InsectSwarm;
+        public int Brambles;
+        public int ImpMoonfire;
+        public int FocusedStarlight;
+        public int ControlofNature;
+        public int ImpNaturesGrasp;
+        public int NaturesGrasp;
+        public int Ferocity;
+        public int FeralAggression;
+        public int FeralInstinct;
+        public int BrutalImpact;
+        public int ThickHide;
+        public int FeralSwiftness;
+        public int FeralCharge;
+        public int SharpenedClaws;
+        public int ShreddingAttacks;
+        public int PredatoryStrikes;
+        public int PrimalFury;
+        public int SavageFury;
+        public int FeralFaerieFire;
+        public int NurturingInstinct;
+        public int HotW;
+        public int SotF;
+        public int PrimalTenacity;
+        public int LotP;
+        public int ImprovedLotP;
+        public int Mangle;
+        public int PredatoryInstincts;
+        public int TreeOfLife;
+        public int ImprovedMotW;
+        public int EmpoweredRejuvenation;
+        public int Furor;
+        public int NaturalPerfection;
+        public int Naturalist;
+        public int Swiftmend;
+        public int NaturesFocus;
+        public int LivingSpirit;
+        public int NaturalShapeshifter;
+        public int ImprovedRegrowth;
+        public int Intensity;
+        public int EmpoweredTouch;
+        public int Subtlety;
+        public int ImpTranquility;
+        public int OmenOfClarity;
+        public int GiftOfNature;
+        public int TranquilSpirit;
+        public int NaturesSwiftness;
+        public int ImprovedRejuvenation;
     }
 }

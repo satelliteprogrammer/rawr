@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using System;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 namespace Rawr
 {
@@ -29,7 +29,7 @@ namespace Rawr
             get { return m_character; }
         }
 
-        static readonly string [] s_asEquippableTooltipKeywords =
+        static readonly string[] s_asEquippableTooltipKeywords =
         {
             "<br>Head",
             "<br>Neck",
@@ -77,7 +77,7 @@ namespace Rawr
 
         static int getEnchantBySlot(SavedVariablesDictionary characterInfo, string sSlot)
         {
-            SavedVariablesDictionary equipment = (SavedVariablesDictionary) characterInfo["Equipment"];
+            SavedVariablesDictionary equipment = (SavedVariablesDictionary)characterInfo["Equipment"];
 
             if (equipment.ContainsKey(sSlot))
             {
@@ -126,7 +126,7 @@ namespace Rawr
 
         static string getGearStringBySlot(SavedVariablesDictionary characterInfo, string sSlot)
         {
-            SavedVariablesDictionary equipment = (SavedVariablesDictionary) characterInfo["Equipment"];
+            SavedVariablesDictionary equipment = (SavedVariablesDictionary)characterInfo["Equipment"];
 
             if (equipment.ContainsKey(sSlot))
             {
@@ -165,7 +165,7 @@ namespace Rawr
             return false;
         }
 
-        static bool addEquippedItemForOptimization(List<string> asOptimizableItems, 
+        static bool addEquippedItemForOptimization(List<string> asOptimizableItems,
             SavedVariablesDictionary characterInfo, string sSlot)
         {
             string sItem = getGearStringBySlot(characterInfo, sSlot);
@@ -182,7 +182,7 @@ namespace Rawr
         static void addPossessionsForOptimization(List<string> asOptimizableItems,
             SavedVariablesDictionary characterInfo)
         {
-            string [] asSources = { "Inventory", "Bank" };
+            string[] asSources = { "Inventory", "Bank" };
 
             foreach (string sSource in asSources)
             {
@@ -223,11 +223,11 @@ namespace Rawr
         {
             m_characterInfo = characterInfo;
             m_sName = sName;
-            m_iLevel = (int) (characterInfo["Level"] as long?);
+            m_iLevel = (int)(characterInfo["Level"] as long?);
             m_sRace = (string)characterInfo["Race"];
             m_sClass = (string)characterInfo["Class"];
 
-            m_character = new Character(sName, sRealm, 
+            m_character = new Character(sName, sRealm,
             Character.CharacterRegion.US, // Have to figure out if I know the region
             s_stringToRace[characterInfo["Race"] as string],
             getGearStringBySlot(characterInfo, "Head"),
@@ -365,7 +365,7 @@ namespace Rawr
                 {
                     m_realms.Add(realm);
                 }
-           }
+            }
         }
     }
 

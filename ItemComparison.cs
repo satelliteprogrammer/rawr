@@ -1,9 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Data;
-using System.Text;
 using System.Windows.Forms;
 
 namespace Rawr
@@ -45,7 +41,7 @@ namespace Rawr
 
         public void LoadGearBySlot(Character.CharacterSlot slot)
         {
-			Calculations.ClearCache();
+            Calculations.ClearCache();
             List<ComparisonCalculationBase> itemCalculations = new List<ComparisonCalculationBase>();
             if (Items != null && Character != null)
             {
@@ -146,17 +142,17 @@ namespace Rawr
                         if (slot != Character.CharacterSlot.None)
                         {
                             ComparisonCalculationBase slotCalc;
-							Item currentItem = Character[slot];
-							if (currentItem == null)
-								slotCalc = Calculations.CreateNewComparisonCalculation();
-							else
-								slotCalc = Calculations.GetItemCalculations(currentItem, Character, slot);
+                            Item currentItem = Character[slot];
+                            if (currentItem == null)
+                                slotCalc = Calculations.CreateNewComparisonCalculation();
+                            else
+                                slotCalc = Calculations.GetItemCalculations(currentItem, Character, slot);
 
                             foreach (Item item in ItemCache.Instance.FindAllItemsById(relevantItem.Id))
                             {
-								if (!items.ContainsKey(item.GemmedId) && (currentItem == null || currentItem.GemmedId != item.GemmedId))
+                                if (!items.ContainsKey(item.GemmedId) && (currentItem == null || currentItem.GemmedId != item.GemmedId))
                                 {
-									if (currentItem != null && currentItem.Unique)
+                                    if (currentItem != null && currentItem.Unique)
                                     {
                                         Character.CharacterSlot otherSlot = Character.CharacterSlot.None;
                                         switch (slot)
@@ -180,7 +176,7 @@ namespace Rawr
                                                 otherSlot = Character.CharacterSlot.MainHand;
                                                 break;
                                         }
-										if (otherSlot != Character.CharacterSlot.None && Character[otherSlot] != null && Character[otherSlot].Id == item.Id)
+                                        if (otherSlot != Character.CharacterSlot.None && Character[otherSlot] != null && Character[otherSlot].Id == item.Id)
                                         {
                                             continue;
                                         }
@@ -195,7 +191,7 @@ namespace Rawr
                                         include |= itemCalc.SubPoints[i] > 0;
                                     }
                                     itemCalc.OverallPoints -= slotCalc.OverallPoints;
-                                    if ( itemCalc.OverallPoints > 0)
+                                    if (itemCalc.OverallPoints > 0)
                                     {
                                         itemCalculations.Add(itemCalc);
                                     }
@@ -223,7 +219,8 @@ namespace Rawr
 
         public ComparisonGraph.GraphDisplayMode DisplayMode
         {
-            get{
+            get
+            {
                 return comparisonGraph1.DisplayMode;
             }
             set

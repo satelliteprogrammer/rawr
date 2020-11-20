@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 
-using Rawr;
-
 namespace Rawr.Tree
 {
     [System.ComponentModel.DisplayName("Tree|Ability_Druid_TreeofLife")]
@@ -34,15 +32,15 @@ namespace Rawr.Tree
             {
                 if (_characterDisplayCalculationLabels == null)
                     _characterDisplayCalculationLabels = new string[] {
-					"Basic Stats:Health",
-					"Basic Stats:Mana",
-					"Basic Stats:Stamina",
-					"Basic Stats:Intellect",
-					"Basic Stats:Spirit",
-					"Basic Stats:Healing",
-					"Basic Stats:Mp5",
-					"Basic Stats:Spell Crit",
-					"Basic Stats:Spell Haste",
+                    "Basic Stats:Health",
+                    "Basic Stats:Mana",
+                    "Basic Stats:Stamina",
+                    "Basic Stats:Intellect",
+                    "Basic Stats:Spirit",
+                    "Basic Stats:Healing",
+                    "Basic Stats:Mp5",
+                    "Basic Stats:Spell Crit",
+                    "Basic Stats:Spell Haste",
 
                     "Extended Stats:Mana per Cast (5%)",
                     "Extended Stats:HPS Points",
@@ -51,19 +49,19 @@ namespace Rawr.Tree
                     "Extended Stats:ToL Points",
                     "Extended Stats:Overall Points",
 
-                    
-					"Rotation:Rotation duration",
-					"Rotation:Rotation cost",
-					"Rotation:Rotation HPS",
-					"Rotation:Rotation HPM",
-					"Rotation:Max fight duration",
-            	    
+
+                    "Rotation:Rotation duration",
+                    "Rotation:Rotation cost",
+                    "Rotation:Rotation HPS",
+                    "Rotation:Rotation HPM",
+                    "Rotation:Max fight duration",
+
                     "Lifebloom:LB Tick","Lifebloom:LB Heal","Lifebloom:LB HPS","Lifebloom:LB HPM",
                     "Lifebloom Stack:LBS Tick","Lifebloom Stack:LBS HPS","Lifebloom Stack:LBS HPM",
                     "Rejuvenation:RJ Tick","Rejuvenation:RJ HPS","Rejuvenation:RJ HPM",
                     "Regrowth:RG Tick","Regrowth:RG Heal","Regrowth:RG HPS","Regrowth:RG HPM",
-					"Healing Touch:HT Heal","Healing Touch:HT HPS","Healing Touch:HT HPM",
-				};
+                    "Healing Touch:HT Heal","Healing Touch:HT HPS","Healing Touch:HT HPM",
+                };
                 return _characterDisplayCalculationLabels;
             }
         }
@@ -192,7 +190,7 @@ namespace Rawr.Tree
             int healthAbove = health - healthBelow;
 
             calculatedStats.AddMp5Points(calculatedStats.IS5SRRegenRaw * 5f, "Regen");
-            calculatedStats.AddMp5Points((calculatedStats.IS5SRRegen - calculatedStats.IS5SRRegenRaw) * 5f, "Spirit on Use (20 sec/2min)"); 
+            calculatedStats.AddMp5Points((calculatedStats.IS5SRRegen - calculatedStats.IS5SRRegenRaw) * 5f, "Spirit on Use (20 sec/2min)");
             calculatedStats.AddMp5Points(calcOpts.Spriest, "Shadow Priest");
             calculatedStats.AddMp5Points((calcOpts.ManaPotAmt * (1 + calculatedStats.BasicStats.BonusManaPotion)) / (calcOpts.ManaPotDelay * 12), "Potion");
 
@@ -276,7 +274,7 @@ namespace Rawr.Tree
             statsTotal.Mana = statsTotal.Mana + ((statsTotal.Intellect - 20f) * 15f + 20f);
 
             statsTotal.Health = (float)Math.Round(((statsTotal.Health + (statsTotal.Stamina * 10f)) * (character.Race == Character.CharacterRace.Tauren ? 1.05f : 1f)));
-            statsTotal.Mp5 += (float)Math.Floor(statsTotal.Intellect * (calcOpts.Dreamstate > 0 ? calcOpts.Dreamstate * 0.03f + 0.01f : 0f)); 
+            statsTotal.Mp5 += (float)Math.Floor(statsTotal.Intellect * (calcOpts.Dreamstate > 0 ? calcOpts.Dreamstate * 0.03f + 0.01f : 0f));
             return statsTotal;
         }
 
@@ -287,7 +285,7 @@ namespace Rawr.Tree
             for (int multiplier = minMultiplier; multiplier < maxMultiplier; multiplier++)
             {
                 stats += baseStats;
-                CharacterCalculationsTree calcValue = GetCharacterCalculations(character, new Item() { Stats = stats } ) as CharacterCalculationsTree;
+                CharacterCalculationsTree calcValue = GetCharacterCalculations(character, new Item() { Stats = stats }) as CharacterCalculationsTree;
 
                 if (compCalc == null || (compCalc.OverallPoints < (calcValue.OverallPoints - calcBaseValue.OverallPoints) / multiplier))
                 {
@@ -317,17 +315,17 @@ namespace Rawr.Tree
                     CharacterCalculationsTree calcSpiritValue = GetCharacterCalculations(character, new Item() { Stats = new Stats() { Spirit = 10 * multiplier } }) as CharacterCalculationsTree;
                     CharacterCalculationsTree calcIntValue = GetCharacterCalculations(character, new Item() { Stats = new Stats() { Intellect = 10 * multiplier } }) as CharacterCalculationsTree;
 
-                    
 
-                    return new ComparisonCalculationBase[] { 
-						GetRelativeValue (new Stats() {Healing = 22}, 5, 10, "22 Healing", character, calcBaseValue),
+
+                    return new ComparisonCalculationBase[] {
+                        GetRelativeValue (new Stats() {Healing = 22}, 5, 10, "22 Healing", character, calcBaseValue),
                         GetRelativeValue (new Stats() {Mp5 = 4}, 5, 10, "4 Mp5", character, calcBaseValue),
                         GetRelativeValue (new Stats() {SpellHasteRating = 10}, 1, 15, "10 Spell Haste", character, calcBaseValue),
                         GetRelativeValue (new Stats() {Spirit = 10}, 5, 10, "10 Spirit", character, calcBaseValue),
                         GetRelativeValue (new Stats() {Intellect = 10}, 5, 10, "10 Intellect", character, calcBaseValue),
                         GetRelativeValue (new Stats() {Healing = 11, Spirit = 5}, 5, 10, "11 Healing 5 Spirit", character, calcBaseValue),
                         GetRelativeValue (new Stats() {Healing = 11, Intellect = 5}, 5, 10, "11 Healing 5 Intellect", character, calcBaseValue),
-					};
+                    };
                 default:
                     return new ComparisonCalculationBase[0];
             }
@@ -381,7 +379,7 @@ namespace Rawr.Tree
                 + stats.ReduceRejuvenationCost + stats.ReduceRegrowthCost + stats.ReduceHealingTouchCost
                 + stats.RejuvenationHealBonus + stats.LifebloomTickHealBonus + stats.HealingTouchFinalHealBonus
                 + stats.ShatteredSunRestoProc +
-                + stats.FullManaRegenFor15SecOnSpellcast + stats.BangleProc > 0)
+                +stats.FullManaRegenFor15SecOnSpellcast + stats.BangleProc > 0)
                 return true;
             // This removes feral PvE items - they have Str, Sta and Int (but not Spirit, which means we still get buffs that raise all stats)
             // It does not remove S1 feral items sinc ethey have +healing

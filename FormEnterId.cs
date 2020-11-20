@@ -1,6 +1,6 @@
 using System;
-using System.Windows.Forms;
 using System.Text.RegularExpressions;
+using System.Windows.Forms;
 
 namespace Rawr
 {
@@ -8,7 +8,7 @@ namespace Rawr
     {
         public int Value
         {
-            get 
+            get
             {
                 String input = textItemId.Text;
 
@@ -36,7 +36,7 @@ namespace Rawr
                     return int.Parse(m.Groups[1].Value);
                 }
 
-                return 0; 
+                return 0;
             }
         }
 

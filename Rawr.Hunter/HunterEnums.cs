@@ -1,21 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Rawr.Hunter
+﻿namespace Rawr.Hunter
 {
-	public enum Aspect
-	{
-		Hawk,
-		Viper
-	}
+    public enum Aspect
+    {
+        Hawk,
+        Viper
+    }
 
-	public enum ShotRotation
-	{
-		AutoShotOnly,
-		OneToOne,
-		ThreeToTwo
-	}
+    public enum ShotRotation
+    {
+        AutoShotOnly,
+        OneToOne,
+        ThreeToTwo
+    }
 
     public enum PetFamily
     {
@@ -45,14 +41,14 @@ namespace Rawr.Hunter
     }
 
     public enum Faction
-	{
-		None,
-		Aldor,
-		Scryer
-	}
+    {
+        None,
+        Aldor,
+        Scryer
+    }
 
-	public enum PetAttacks
-	{
+    public enum PetAttacks
+    {
         Bite,
         Claw,
         Cower,

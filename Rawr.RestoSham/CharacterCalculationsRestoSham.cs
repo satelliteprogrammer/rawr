@@ -2,33 +2,33 @@
 using System.Collections.Generic;
 
 namespace Rawr.RestoSham
-  {
+{
     class CharacterCalculationsRestoSham : CharacterCalculationsBase
-      {
+    {
         private float _overallPoints = 0f;
         public override float OverallPoints
-          {
+        {
             get { return _overallPoints; }
             set { _overallPoints = value; }
-          }
+        }
 
 
-        private float[] _subPoints = new float[] {0f, 0f};
+        private float[] _subPoints = new float[] { 0f, 0f };
         public override float[] SubPoints
-          {
+        {
             get { return _subPoints; }
             set { _subPoints = value; }
-          }
+        }
 
 
         private Stats _basicStats = null;
         public Stats BasicStats
-          {
+        {
             get { return _basicStats; }
             set { _basicStats = value; }
-          }
-        
-        
+        }
+
+
         public float Mp5OutsideFSR { get; set; }
         public float SpellCrit { get; set; }
         public float TotalManaPool { get; set; }
@@ -37,12 +37,12 @@ namespace Rawr.RestoSham
         public float AverageManaCost { get; set; }
         public float TotalHealed { get; set; }
         public float FightHPS { get; set; }
-        
-        
+
+
         public override Dictionary<string, string> GetCharacterDisplayCalculationValues()
-          {
-            Dictionary<string, string> values = new Dictionary<string,string>();
-            
+        {
+            Dictionary<string, string> values = new Dictionary<string, string>();
+
             values.Add("Health", Math.Round(BasicStats.Health, 0).ToString());
             values.Add("Stamina", Math.Round(BasicStats.Stamina, 0).ToString());
             values.Add("Intellect", BasicStats.Intellect.ToString());
@@ -61,8 +61,8 @@ namespace Rawr.RestoSham
             values.Add("Average Mana Cost", Math.Round(AverageManaCost, 0).ToString());
             values.Add("Total Healed", Math.Round(TotalHealed, 0).ToString("n0"));
             values.Add("Fight HPS", Math.Round(FightHPS, 0).ToString());
-          
+
             return values;
-          }
-      }
-  }
+        }
+    }
+}

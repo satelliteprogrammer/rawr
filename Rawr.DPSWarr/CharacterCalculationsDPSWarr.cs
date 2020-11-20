@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace Rawr.DPSWarr
 {
@@ -139,7 +137,7 @@ namespace Rawr.DPSWarr
         {
             get { return _hastedSpeed; }
             set { _hastedSpeed = value; }
-        }        
+        }
         public Character character { get; set; }
 
         public override Dictionary<string, string> GetCharacterDisplayCalculationValues()
@@ -154,9 +152,9 @@ namespace Rawr.DPSWarr
 
             dictValues.Add("Attack Power", BasicStats.AttackPower.ToString("N2"));
 
-            dictValues.Add("Hit", BasicStats.HitRating.ToString() + " (" + (BasicStats.HitRating / 15.76f).ToString("N2") +"% )");
-            dictValues.Add("Crit", BasicStats.CritRating.ToString() + " (" + (BasicStats.CritRating /22.08f).ToString("N2") +"% )");
-            dictValues.Add("Expertise Rating", BasicStats.ExpertiseRating.ToString("N2")+" ("+(Math.Floor(BasicStats.ExpertiseRating/3.89f)).ToString("N2")+" )");
+            dictValues.Add("Hit", BasicStats.HitRating.ToString() + " (" + (BasicStats.HitRating / 15.76f).ToString("N2") + "% )");
+            dictValues.Add("Crit", BasicStats.CritRating.ToString() + " (" + (BasicStats.CritRating / 22.08f).ToString("N2") + "% )");
+            dictValues.Add("Expertise Rating", BasicStats.ExpertiseRating.ToString("N2") + " (" + (Math.Floor(BasicStats.ExpertiseRating / 3.89f)).ToString("N2") + " )");
             dictValues.Add("Haste Rating", BasicStats.HasteRating.ToString("N2"));
             dictValues.Add("Armor Penetration", BasicStats.ArmorPenetration.ToString());
             dictValues.Add("Hasted Speed", HastedSpeed.ToString("N2"));
@@ -169,7 +167,7 @@ namespace Rawr.DPSWarr
             dictValues.Add("Weapon Damage", BasicStats.WeaponDamage.ToString("N2"));
 
             return dictValues;
-           
+
         }
     }
 }

@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace Rawr.Mage
 {
@@ -21,8 +19,8 @@ namespace Rawr.Mage
 
         public FSRCalc()
         {
-            ManaSpentTimestamp = new List<float> ();
-            ChannelDuration = new List<float> ();
+            ManaSpentTimestamp = new List<float>();
+            ChannelDuration = new List<float>();
         }
 
         public FSRCalc(int capacity)

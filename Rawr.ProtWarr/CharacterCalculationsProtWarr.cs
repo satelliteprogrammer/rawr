@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Rawr.ProtWarr
 {
@@ -282,8 +281,8 @@ namespace Rawr.ProtWarr
         public float FrostSurvivalPoints { get; set; }
         public float FireSurvivalPoints { get; set; }
         public float ShadowSurvivalPoints { get; set; }
-		public float ArcaneSurvivalPoints { get; set; }
-		public List<Buff> ActiveBuffs { get; set; }
+        public float ArcaneSurvivalPoints { get; set; }
+        public List<Buff> ActiveBuffs { get; set; }
         #endregion
 
         public override Dictionary<string, string> GetCharacterDisplayCalculationValues()
@@ -421,7 +420,7 @@ Windfury TPS: {4}", HeroicStrikeThreat, ShieldSlamThreat, RevengeThreat, Devasta
             else
                 dictValues.Add("Chance to be Crit", ((5f + levelDifference) - CritReduction).ToString()
                     + string.Format("%*Uncrittable by bosses. {0} defense rating ({1} defense) or {2} resilience over the crit cap.",
-                    -defToCap, -defToCap * WarriorConversions.DefenseRatingToDefense, - resToCap));
+                    -defToCap, -defToCap * WarriorConversions.DefenseRatingToDefense, -resToCap));
 
             dictValues.Add("Chance Crushed", CrushChance.ToString() + "%");
             dictValues.Add("Overall Points", OverallPoints.ToString());

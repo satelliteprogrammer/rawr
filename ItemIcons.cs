@@ -1,11 +1,9 @@
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.IO;
-using System.Net;
 using System.Threading;
 using System.Windows.Forms;
 //using log4net;
@@ -14,10 +12,10 @@ namespace Rawr
 {
     public static class ItemIcons
     {
-		//private static readonly ILog log = LogManager.GetLogger(typeof(ItemIcons));
+        //private static readonly ILog log = LogManager.GetLogger(typeof(ItemIcons));
 
         private static ImageList _largeIcons = null;
-		public static ImageList LargeIcons
+        public static ImageList LargeIcons
         {
             get
             {
@@ -50,26 +48,26 @@ namespace Rawr
         {
 
             StatusMessaging.UpdateStatus("Cache Item Icons", "Caching all Item Icons");
-			WebRequestWrapper webRequests = new WebRequestWrapper();
-			List<string> filesDownloading = new List<string>();
-			for(int i=0;i<items.Length && !WebRequestWrapper.LastWasFatalError;i++)
+            WebRequestWrapper webRequests = new WebRequestWrapper();
+            List<string> filesDownloading = new List<string>();
+            for (int i = 0; i < items.Length && !WebRequestWrapper.LastWasFatalError; i++)
             {
-				string iconName = items[i].IconPath.Replace(".png", "").Replace(".jpg", "").ToLower();
-			    webRequests.DownloadItemIconAsync(iconName);
+                string iconName = items[i].IconPath.Replace(".png", "").Replace(".jpg", "").ToLower();
+                webRequests.DownloadItemIconAsync(iconName);
             }
-            
-			while (webRequests.RequestQueueCount > 0 && !WebRequestWrapper.LastWasFatalError)
+
+            while (webRequests.RequestQueueCount > 0 && !WebRequestWrapper.LastWasFatalError)
             {
                 Thread.Sleep(200);
             }
 
-			//TODO: Display any error information appropriotly here,
-			//such as, proxy information incorrect or network connection down. Can get pretty detailed about exactly what went 
-			//wrong by analyzing the exception.
-			if (WebRequestWrapper.LastWasFatalError)
-			{
+            //TODO: Display any error information appropriotly here,
+            //such as, proxy information incorrect or network connection down. Can get pretty detailed about exactly what went 
+            //wrong by analyzing the exception.
+            if (WebRequestWrapper.LastWasFatalError)
+            {
                 StatusMessaging.ReportError("Cache All Icons", null, "There was an error trying to retrieve images from the armory.  Please check your proxy settings and network connection.");
-			}
+            }
             StatusMessaging.UpdateStatusFinished("Cache Item Icons");
         }
 
@@ -148,9 +146,9 @@ namespace Rawr
                                     "Rawr encountered an error while attempting to load a saved image. If you encounter this error multiple times, please ensure that Rawr is unzipped in a location that you have full file read/write access, such as your Desktop, or My Documents.");
                                 //Log.Write(ex.Message);
                                 //Log.Write(ex.StackTrace);
-                                #if DEBUG
+#if DEBUG
                                 throw;
-                                #endif
+#endif
                             }
                         }
                         retry++;
@@ -175,7 +173,7 @@ namespace Rawr
 
         private static Image ScaleByPercent(Image imgPhoto, int Percent)
         {
-            float nPercent = ((float) Percent/100);
+            float nPercent = ((float)Percent / 100);
 
             int sourceWidth = imgPhoto.Width;
             int sourceHeight = imgPhoto.Height;
@@ -184,8 +182,8 @@ namespace Rawr
 
             int destX = 0;
             int destY = 0;
-            int destWidth = (int) (sourceWidth*nPercent);
-            int destHeight = (int) (sourceHeight*nPercent);
+            int destWidth = (int)(sourceWidth * nPercent);
+            int destHeight = (int)(sourceHeight * nPercent);
 
             Bitmap bmPhoto = new Bitmap(destWidth, destHeight,
                                         PixelFormat.Format24bppRgb);

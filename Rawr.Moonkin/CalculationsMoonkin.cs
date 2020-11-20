@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace Rawr.Moonkin
 {
@@ -34,13 +32,13 @@ namespace Rawr.Moonkin
                 if (characterDisplayCalculationLabels == null)
                 {
                     characterDisplayCalculationLabels = new string[] {
-					"Basic Stats:Health",
-					"Basic Stats:Mana",
-					"Basic Stats:Armor",
+                    "Basic Stats:Health",
+                    "Basic Stats:Mana",
+                    "Basic Stats:Armor",
                     "Basic Stats:Agility",
-					"Basic Stats:Stamina",
-					"Basic Stats:Intellect",
-					"Basic Stats:Spirit",
+                    "Basic Stats:Stamina",
+                    "Basic Stats:Intellect",
+                    "Basic Stats:Spirit",
                     "Spell Stats:Spell Hit",
                     "Spell Stats:Spell Crit",
                     "Spell Stats:Spell Haste",
@@ -145,8 +143,8 @@ namespace Rawr.Moonkin
             }
         }
 
-		public override Character.CharacterClass TargetClass { get { return Character.CharacterClass.Druid; } }
-		public override ComparisonCalculationBase CreateNewComparisonCalculation()
+        public override Character.CharacterClass TargetClass { get { return Character.CharacterClass.Druid; } }
+        public override ComparisonCalculationBase CreateNewComparisonCalculation()
         {
             return new ComparisonCalculationMoonkin();
         }
@@ -156,14 +154,14 @@ namespace Rawr.Moonkin
             return new CharacterCalculationsMoonkin();
         }
 
-		public override ICalculationOptionBase DeserializeDataObject(string xml)
-		{
-			System.Xml.Serialization.XmlSerializer serializer =
-				new System.Xml.Serialization.XmlSerializer(typeof(CalculationOptionsMoonkin));
-			System.IO.StringReader reader = new System.IO.StringReader(xml);
-			CalculationOptionsMoonkin calcOpts = serializer.Deserialize(reader) as CalculationOptionsMoonkin;
-			return calcOpts;
-		}
+        public override ICalculationOptionBase DeserializeDataObject(string xml)
+        {
+            System.Xml.Serialization.XmlSerializer serializer =
+                new System.Xml.Serialization.XmlSerializer(typeof(CalculationOptionsMoonkin));
+            System.IO.StringReader reader = new System.IO.StringReader(xml);
+            CalculationOptionsMoonkin calcOpts = serializer.Deserialize(reader) as CalculationOptionsMoonkin;
+            return calcOpts;
+        }
 
         public override CharacterCalculationsBase GetCharacterCalculations(Character character, Item additionalItem)
         {
@@ -177,7 +175,7 @@ namespace Rawr.Moonkin
             calcs.SpellCrit = stats.SpellCritRating * critRatingMultiplier;
             calcs.SpellHit = stats.SpellHitRating * hitRatingMultiplier;
 
-			CalculationOptionsMoonkin calcOpts = character.CalculationOptions as CalculationOptionsMoonkin;
+            CalculationOptionsMoonkin calcOpts = character.CalculationOptions as CalculationOptionsMoonkin;
             // All spells: Damage +((0.08/0.16/0.25) * Int)
             switch (calcOpts.LunarGuidance)
             {
@@ -197,9 +195,9 @@ namespace Rawr.Moonkin
             calcs.ArcaneDamage = stats.SpellDamageRating + stats.SpellArcaneDamageRating + stats.SpellDamageFromIntellectPercentage * stats.Intellect + stats.SpellDamageFromSpiritPercentage * stats.Spirit;
             calcs.NatureDamage = stats.SpellDamageRating + stats.SpellNatureDamageRating + stats.SpellDamageFromIntellectPercentage * stats.Intellect + stats.SpellDamageFromSpiritPercentage * stats.Spirit;
 
-			calcs.Latency = calcOpts.Latency;
-			calcs.FightLength = calcOpts.FightLength;
-			calcs.TargetLevel = calcOpts.TargetLevel;
+            calcs.Latency = calcOpts.Latency;
+            calcs.FightLength = calcOpts.FightLength;
+            calcs.TargetLevel = calcOpts.TargetLevel;
             calcs.Scryer = calcOpts.AldorScryer == "Scryer";
 
             // 2.4 spirit regen
@@ -244,7 +242,7 @@ namespace Rawr.Moonkin
 
             Stats statsGearEnchantsBuffs = statsBaseGear + statsEnchants + statsBuffs;
 
-			CalculationOptionsMoonkin calcOpts = character.CalculationOptions as CalculationOptionsMoonkin;
+            CalculationOptionsMoonkin calcOpts = character.CalculationOptions as CalculationOptionsMoonkin;
             // Create the total stats object
             Stats statsTotal = statsGearEnchantsBuffs + statsRace;
 
@@ -255,14 +253,14 @@ namespace Rawr.Moonkin
             statsTotal.Spirit = (float)Math.Floor((Math.Floor(statsRace.Spirit * (1 + statsRace.BonusSpiritMultiplier)) + statsGearEnchantsBuffs.Spirit * (1 + statsRace.BonusSpiritMultiplier)) * (1 + statsGearEnchantsBuffs.BonusSpiritMultiplier));
 
             // Base stats: Intellect% +(0.04 * Heart of the Wild)
-			statsTotal.Intellect *= 1 + 0.04f * calcOpts.HotW;
+            statsTotal.Intellect *= 1 + 0.04f * calcOpts.HotW;
             // Base stats: Stam%, Int%, Spi%, Agi% +(0.01 * Survival of the Fittest)
-			statsTotal.Intellect *= 1 + 0.01f * calcOpts.SotF;
-			statsTotal.Stamina *= 1 + 0.01f * calcOpts.SotF;
-			statsTotal.Agility *= 1 + 0.01f * calcOpts.SotF;
-			statsTotal.Spirit *= 1 + 0.01f * calcOpts.SotF;
+            statsTotal.Intellect *= 1 + 0.01f * calcOpts.SotF;
+            statsTotal.Stamina *= 1 + 0.01f * calcOpts.SotF;
+            statsTotal.Agility *= 1 + 0.01f * calcOpts.SotF;
+            statsTotal.Spirit *= 1 + 0.01f * calcOpts.SotF;
             // Base stats: Spirit% +(0.05 * Living Spirit)
-			statsTotal.Spirit *= 1 + 0.05f * calcOpts.LivingSpirit;
+            statsTotal.Spirit *= 1 + 0.05f * calcOpts.LivingSpirit;
 
             // Bonus multipliers
             statsTotal.BonusAgilityMultiplier = ((1 + statsRace.BonusAgilityMultiplier) * (1 + statsGearEnchantsBuffs.BonusAgilityMultiplier)) - 1;
@@ -276,7 +274,7 @@ namespace Rawr.Moonkin
             statsTotal.Armor = (float)Math.Round(statsGearEnchantsBuffs.Armor + statsTotal.Agility * 2f);
 
             // Regen mechanic: mp5 +((0.1 * Intensity) * Spiritmp5())
-			statsTotal.SpellCombatManaRegeneration += 0.1f * calcOpts.Intensity;
+            statsTotal.SpellCombatManaRegeneration += 0.1f * calcOpts.Intensity;
             // Regen mechanic: mp5 +(0.04/0.07/0.10) * Int)
             float dreamstatePercent = 0.0f;
             switch (calcOpts.Dreamstate)
@@ -374,13 +372,13 @@ namespace Rawr.Moonkin
                 ShatteredSunAcumenProc = stats.ShatteredSunAcumenProc,
                 TimbalsProc = stats.TimbalsProc,
                 DruidAshtongueTrinket = stats.DruidAshtongueTrinket,
-				ThreatReductionMultiplier = stats.ThreatReductionMultiplier
+                ThreatReductionMultiplier = stats.ThreatReductionMultiplier
             };
         }
 
         public override bool HasRelevantStats(Stats stats)
         {
-			return stats.ToString().Equals("") || (stats.Stamina + stats.Intellect + stats.Spirit + stats.Agility + stats.Health + stats.Mp5 + stats.SpellCritRating + stats.SpellDamageRating + stats.SpellArcaneDamageRating + stats.SpellNatureDamageRating + stats.SpellHasteRating + stats.SpellHitRating + +stats.BonusAgilityMultiplier + stats.BonusIntellectMultiplier + stats.BonusSpellCritMultiplier + stats.BonusSpellPowerMultiplier + stats.BonusArcaneSpellPowerMultiplier + stats.BonusNatureSpellPowerMultiplier + stats.BonusStaminaMultiplier + stats.BonusSpiritMultiplier + stats.Mana + stats.SpellCombatManaRegeneration + stats.SpellDamageFor20SecOnUse2Min + stats.SpellHasteFor20SecOnUse2Min + stats.Mp5OnCastFor20SecOnUse2Min + stats.ManaRestorePerHit + stats.ManaRestorePerCast + stats.SpellDamageFor10SecOnHit_10_45 + stats.SpellDamageFromIntellectPercentage + stats.SpellDamageFromSpiritPercentage + stats.SpellDamageFor10SecOnResist + stats.SpellDamageFor15SecOnCrit_20_45 + stats.SpellDamageFor15SecOnUse90Sec + stats.SpellHasteFor5SecOnCrit_50 + stats.SpellHasteFor6SecOnCast_15_45 + stats.SpellHasteFor6SecOnHit_10_45 + stats.StarfireDmg + stats.MoonfireDmg + stats.WrathDmg + stats.IdolCritRating + stats.UnseenMoonDamageBonus + stats.LightningCapacitorProc + stats.StarfireCritChance + stats.MoonfireExtension + stats.InnervateCooldownReduction + stats.StarfireBonusWithDot + stats.BonusManaPotion + stats.ShatteredSunAcumenProc + stats.TimbalsProc + stats.DruidAshtongueTrinket + stats.ThreatReductionMultiplier) > 0;
+            return stats.ToString().Equals("") || (stats.Stamina + stats.Intellect + stats.Spirit + stats.Agility + stats.Health + stats.Mp5 + stats.SpellCritRating + stats.SpellDamageRating + stats.SpellArcaneDamageRating + stats.SpellNatureDamageRating + stats.SpellHasteRating + stats.SpellHitRating + +stats.BonusAgilityMultiplier + stats.BonusIntellectMultiplier + stats.BonusSpellCritMultiplier + stats.BonusSpellPowerMultiplier + stats.BonusArcaneSpellPowerMultiplier + stats.BonusNatureSpellPowerMultiplier + stats.BonusStaminaMultiplier + stats.BonusSpiritMultiplier + stats.Mana + stats.SpellCombatManaRegeneration + stats.SpellDamageFor20SecOnUse2Min + stats.SpellHasteFor20SecOnUse2Min + stats.Mp5OnCastFor20SecOnUse2Min + stats.ManaRestorePerHit + stats.ManaRestorePerCast + stats.SpellDamageFor10SecOnHit_10_45 + stats.SpellDamageFromIntellectPercentage + stats.SpellDamageFromSpiritPercentage + stats.SpellDamageFor10SecOnResist + stats.SpellDamageFor15SecOnCrit_20_45 + stats.SpellDamageFor15SecOnUse90Sec + stats.SpellHasteFor5SecOnCrit_50 + stats.SpellHasteFor6SecOnCast_15_45 + stats.SpellHasteFor6SecOnHit_10_45 + stats.StarfireDmg + stats.MoonfireDmg + stats.WrathDmg + stats.IdolCritRating + stats.UnseenMoonDamageBonus + stats.LightningCapacitorProc + stats.StarfireCritChance + stats.MoonfireExtension + stats.InnervateCooldownReduction + stats.StarfireBonusWithDot + stats.BonusManaPotion + stats.ShatteredSunAcumenProc + stats.TimbalsProc + stats.DruidAshtongueTrinket + stats.ThreatReductionMultiplier) > 0;
         }
     }
 }

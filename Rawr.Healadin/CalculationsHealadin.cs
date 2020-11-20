@@ -3,10 +3,10 @@ using System.Collections.Generic;
 
 namespace Rawr.Healadin
 {
-	[System.ComponentModel.DisplayName("Healadin|Spell_Holy_HolyBolt")]
+    [System.ComponentModel.DisplayName("Healadin|Spell_Holy_HolyBolt")]
     public class CalculationsHealadin : CalculationsBase
     {
-        
+
         private CalculationOptionsPanelBase _calculationOptionsPanel = null;
         public override CalculationOptionsPanelBase CalculationOptionsPanel
         {
@@ -27,20 +27,20 @@ namespace Rawr.Healadin
             {
                 if (_characterDisplayCalculationLabels == null)
                     _characterDisplayCalculationLabels = new string[] {
-					"Basic Stats:Health",
-					"Basic Stats:Mana",
-					"Basic Stats:Stamina",
-					"Basic Stats:Intellect",
-					"Basic Stats:Spirit",
-					"Basic Stats:Healing",
-					"Basic Stats:Mp5",
-					"Basic Stats:Spell Crit",
-					"Basic Stats:Spell Haste",
-					"Cycle Stats:Total Healed",
-					"Cycle Stats:Average Hps",
-					"Cycle Stats:Average Hpm",
-					"Cycle Stats:Holy Light Time",
-					"Cycle Stats:Holy Light Healing",
+                    "Basic Stats:Health",
+                    "Basic Stats:Mana",
+                    "Basic Stats:Stamina",
+                    "Basic Stats:Intellect",
+                    "Basic Stats:Spirit",
+                    "Basic Stats:Healing",
+                    "Basic Stats:Mp5",
+                    "Basic Stats:Spell Crit",
+                    "Basic Stats:Spell Haste",
+                    "Cycle Stats:Total Healed",
+                    "Cycle Stats:Average Hps",
+                    "Cycle Stats:Average Hpm",
+                    "Cycle Stats:Holy Light Time",
+                    "Cycle Stats:Holy Light Healing",
                     "Spell Stats:Flash of Light",
                     "Spell Stats:Holy Light 11",
                     "Spell Stats:Holy Light 10",
@@ -50,7 +50,7 @@ namespace Rawr.Healadin
                     "Spell Stats:Holy Light 6",
                     "Spell Stats:Holy Light 5",
                     "Spell Stats:Holy Light 4"
-				};
+                };
                 return _characterDisplayCalculationLabels;
             }
         }
@@ -62,11 +62,11 @@ namespace Rawr.Healadin
             {
                 if (_customChartNames == null)
                     _customChartNames = new string[] {
-					"Healing per second",
-					"Healing per mana",
-					"Mana per second",
+                    "Healing per second",
+                    "Healing per mana",
+                    "Mana per second",
                     "Average heal"
-					};
+                    };
                 return _customChartNames;
             }
         }
@@ -94,38 +94,38 @@ namespace Rawr.Healadin
                 if (_relevantItemTypes == null)
                 {
                     _relevantItemTypes = new List<Item.ItemType>(new Item.ItemType[]
-					{
+                    {
                         Item.ItemType.Plate,
                         Item.ItemType.Mail,
                         Item.ItemType.Leather,
                         Item.ItemType.Cloth,
                         Item.ItemType.None,
-						Item.ItemType.Shield,
-						Item.ItemType.Libram,
-						Item.ItemType.OneHandAxe,
-						Item.ItemType.OneHandMace,
-						Item.ItemType.OneHandSword,
-						Item.ItemType.TwoHandAxe,
-						Item.ItemType.TwoHandMace,
-						Item.ItemType.TwoHandSword
-					});
+                        Item.ItemType.Shield,
+                        Item.ItemType.Libram,
+                        Item.ItemType.OneHandAxe,
+                        Item.ItemType.OneHandMace,
+                        Item.ItemType.OneHandSword,
+                        Item.ItemType.TwoHandAxe,
+                        Item.ItemType.TwoHandMace,
+                        Item.ItemType.TwoHandSword
+                    });
                 }
                 return _relevantItemTypes;
             }
         }
 
-		public override Character.CharacterClass TargetClass { get { return Character.CharacterClass.Paladin; } }
-		public override ComparisonCalculationBase CreateNewComparisonCalculation() { return new ComparisonCalculationHealadin(); }
+        public override Character.CharacterClass TargetClass { get { return Character.CharacterClass.Paladin; } }
+        public override ComparisonCalculationBase CreateNewComparisonCalculation() { return new ComparisonCalculationHealadin(); }
         public override CharacterCalculationsBase CreateNewCharacterCalculations() { return new CharacterCalculationsHealadin(); }
 
-		public override ICalculationOptionBase DeserializeDataObject(string xml)
-		{
-			System.Xml.Serialization.XmlSerializer serializer =
-				new System.Xml.Serialization.XmlSerializer(typeof(CalculationOptionsHealadin));
-			System.IO.StringReader reader = new System.IO.StringReader(xml);
-			CalculationOptionsHealadin calcOpts = serializer.Deserialize(reader) as CalculationOptionsHealadin;
-			return calcOpts;
-		}
+        public override ICalculationOptionBase DeserializeDataObject(string xml)
+        {
+            System.Xml.Serialization.XmlSerializer serializer =
+                new System.Xml.Serialization.XmlSerializer(typeof(CalculationOptionsHealadin));
+            System.IO.StringReader reader = new System.IO.StringReader(xml);
+            CalculationOptionsHealadin calcOpts = serializer.Deserialize(reader) as CalculationOptionsHealadin;
+            return calcOpts;
+        }
 
         public override CharacterCalculationsBase GetCharacterCalculations(Character character, Item additionalItem)
         {
@@ -135,11 +135,11 @@ namespace Rawr.Healadin
             //CharacterCalculationsHealadin oldStats = _cachedCharacterStatsWithSlotEmpty as CharacterCalculationsHealadin;
             calculatedStats.BasicStats = stats;
 
-			CalculationOptionsHealadin calcOpts = character.CalculationOptions as CalculationOptionsHealadin;
+            CalculationOptionsHealadin calcOpts = character.CalculationOptions as CalculationOptionsHealadin;
             if (calcOpts == null) calcOpts = new CalculationOptionsHealadin();
-			float activity = calcOpts.Activity / 100f;
+            float activity = calcOpts.Activity / 100f;
             float time = calcOpts.Length * 60;
-			float length = time * activity;
+            float length = time * activity;
             float totalMana = stats.Mana + (time * stats.Mp5 / 5) + (calcOpts.Spriest * time / 5) +
                 ((1 + stats.BonusManaPotion) * calcOpts.ManaAmt * (float)Math.Ceiling((time / 60 - 1) / calcOpts.ManaTime))
                 + calcOpts.Spiritual;
@@ -171,9 +171,9 @@ namespace Rawr.Healadin
             float di_mana = (hl1_dimana * 6 + hl2_dimana * 3 + fol_dimana * 6) * activity * (float)Math.Ceiling((time - 1) / 180);
             totalMana += di_mana;
             #endregion
-            
+
             #region Divine Favor
-            totalMana += (float)Math.Ceiling((time-30) / 120f) * calculatedStats[1].DFMana();
+            totalMana += (float)Math.Ceiling((time - 30) / 120f) * calculatedStats[1].DFMana();
             calculatedStats.Healed = (float)Math.Ceiling((time - 30) / 120f) * calculatedStats[1].DFHeal();
             #endregion
 

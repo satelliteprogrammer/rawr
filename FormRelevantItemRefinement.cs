@@ -1,9 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Text;
 using System.Windows.Forms;
 
 namespace Rawr
@@ -31,7 +27,7 @@ namespace Rawr
             checkBoxes.Add(this.checkBoxMailArmor);
             checkBoxes.Add(this.checkBoxLeatherArmor);
             checkBoxes.Add(this.checkBoxClothArmor);
-            
+
             checkBoxes.Add(this.checkBoxDagger);
             checkBoxes.Add(this.checkBoxFistWeapon);
             checkBoxes.Add(this.checkBoxOneHandedAxe);
@@ -67,7 +63,7 @@ namespace Rawr
         {
             if (_relevantItemTypes == null)
             {
-              
+
                 _relevantItemTypes = Calculations.Instance.RelevantItemTypes;
 
                 _RelevantItemTypes = Calculations.Instance.RelevantItemTypes;
@@ -79,21 +75,21 @@ namespace Rawr
 
                     foreach (CheckBox box in checkBoxes)
                     {
-                        
-                            if (item == (Item.ItemType)box.Tag)
-                            {
-                                box.Checked = true;
-                                box.Enabled = true;
-                            }
-                        
+
+                        if (item == (Item.ItemType)box.Tag)
+                        {
+                            box.Checked = true;
+                            box.Enabled = true;
+                        }
+
                     }
-                   /* if (item == Item.ItemType.Cloth)
-                    {
-                        checkBoxClothArmor.Enabled = true;
-                        checkBoxClothArmor.Checked = true;
-                    }
-                   
-                    */
+                    /* if (item == Item.ItemType.Cloth)
+                     {
+                         checkBoxClothArmor.Enabled = true;
+                         checkBoxClothArmor.Checked = true;
+                     }
+
+                     */
                 }
             }
             else
@@ -104,7 +100,7 @@ namespace Rawr
 
                 foreach (CheckBox box in checkBoxes)
                 {
-                                        
+
                     foreach (Item.ItemType enableItem in _relevantItemTypes)
                     {
                         if (enableItem == (Item.ItemType)box.Tag)
@@ -146,11 +142,11 @@ namespace Rawr
                 {
                     if (box.Checked == true)
                     {
-                        if (item == (Item.ItemType) box.Tag)
+                        if (item == (Item.ItemType)box.Tag)
                             _RelevantItemTypes.Add(item);
                     }
                 }
-              
+
             }
         }
 
@@ -180,5 +176,4 @@ namespace Rawr
         }
     }
 }
-        
-   
+

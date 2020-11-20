@@ -1,7 +1,6 @@
 ﻿//#define DEBUG_BRANCHING
 using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Rawr.Mage
 {
@@ -28,7 +27,7 @@ namespace Rawr.Mage
             public double ProbeValue;
 
             int IComparable<BranchNode>.CompareTo(BranchNode other)
-            {                
+            {
                 return -(this.Lp != null ? this.Lp.Value : this.Value).CompareTo(other.Lp != null ? other.Lp.Value : other.Value);
             }
         }
@@ -1082,7 +1081,7 @@ namespace Rawr.Mage
                 // XX 
                 //  XX
                 // X X
-                
+
                 //  X
                 // XXX
                 // X
@@ -1146,7 +1145,7 @@ namespace Rawr.Mage
                                         // XXXXX        core   oo........    XX XX
                                         // XXX  XX      tail_1 ......o...    XX    X
                                         //   XXX XXXX   node   ...oo.....       XX X
-                                        
+
                                         // when looking for a connection it is enough that it touches both
                                         // sides, it does not to completely cover it
                                         // we want to use single indicators anyway as they're more powerful
@@ -1807,7 +1806,7 @@ namespace Rawr.Mage
                 {
                     for (int s = 0; s < segments; s++)
                     {
-                        if (Math.Abs(seg - s) <= mindist && s < seg && segCount[s] > eps) valid = false; 
+                        if (Math.Abs(seg - s) <= mindist && s < seg && segCount[s] > eps) valid = false;
                     }
                     if (!valid)
                     {

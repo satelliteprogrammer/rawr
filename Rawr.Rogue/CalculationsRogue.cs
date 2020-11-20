@@ -1,13 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Rawr.Rogue {
+namespace Rawr.Rogue
+{
     [System.ComponentModel.DisplayName("Rogue|Ability_Rogue_SliceDice")]
-    public class CalculationsRogue : CalculationsBase {
+    public class CalculationsRogue : CalculationsBase
+    {
         private CalculationOptionsPanelBase _calculationOptionsPanel = null;
-        public override CalculationOptionsPanelBase CalculationOptionsPanel {
-            get {
-                if (_calculationOptionsPanel == null) {
+        public override CalculationOptionsPanelBase CalculationOptionsPanel
+        {
+            get
+            {
+                if (_calculationOptionsPanel == null)
+                {
                     _calculationOptionsPanel = new CalculationOptionsPanelRogue();
                 }
                 return _calculationOptionsPanel;
@@ -15,9 +20,12 @@ namespace Rawr.Rogue {
         }
 
         private string[] _characterDisplayCalculationLabels = null;
-        public override string[] CharacterDisplayCalculationLabels {
-            get {
-                if (_characterDisplayCalculationLabels == null) {
+        public override string[] CharacterDisplayCalculationLabels
+        {
+            get
+            {
+                if (_characterDisplayCalculationLabels == null)
+                {
                     _characterDisplayCalculationLabels = new string[] {
                         "Base Stats:Health",
                         "Base Stats:Stamina",
@@ -45,9 +53,12 @@ namespace Rawr.Rogue {
         }
 
         private Dictionary<string, System.Drawing.Color> _subPointNameColors = null;
-        public override Dictionary<string, System.Drawing.Color> SubPointNameColors {
-            get {
-                if (_subPointNameColors == null) {
+        public override Dictionary<string, System.Drawing.Color> SubPointNameColors
+        {
+            get
+            {
+                if (_subPointNameColors == null)
+                {
                     _subPointNameColors = new Dictionary<string, System.Drawing.Color>();
                     _subPointNameColors.Add("DPS", System.Drawing.Color.Red);
                 }
@@ -56,9 +67,12 @@ namespace Rawr.Rogue {
         }
 
         private string[] _customChartNames = null;
-        public override string[] CustomChartNames {
-            get {
-                if (_customChartNames == null) {
+        public override string[] CustomChartNames
+        {
+            get
+            {
+                if (_customChartNames == null)
+                {
                     _customChartNames = new string[] {
                         "Combat Table"
                     };
@@ -68,9 +82,12 @@ namespace Rawr.Rogue {
         }
 
         private List<Item.ItemType> _relevantItemTypes = null;
-        public override List<Item.ItemType> RelevantItemTypes {
-            get {
-                if (_relevantItemTypes == null) {
+        public override List<Item.ItemType> RelevantItemTypes
+        {
+            get
+            {
+                if (_relevantItemTypes == null)
+                {
                     _relevantItemTypes = new List<Item.ItemType>(new Item.ItemType[] {
                         Item.ItemType.None,
                         Item.ItemType.Leather,
@@ -94,7 +111,8 @@ namespace Rawr.Rogue {
         public override ComparisonCalculationBase CreateNewComparisonCalculation() { return new ComparisonCalculationsRogue(); }
         public override CharacterCalculationsBase CreateNewCharacterCalculations() { return new CharacterCalculationsRogue(); }
 
-        public override ICalculationOptionBase DeserializeDataObject(string xml) {
+        public override ICalculationOptionBase DeserializeDataObject(string xml)
+        {
             System.Xml.Serialization.XmlSerializer s = new System.Xml.Serialization.XmlSerializer(typeof(CalculationOptionsRogue));
             System.IO.StringReader sr = new System.IO.StringReader(xml);
             CalculationOptionsRogue calcOpts = s.Deserialize(sr) as CalculationOptionsRogue;
@@ -109,7 +127,8 @@ namespace Rawr.Rogue {
         /// <returns></returns>
         /// Much of this code is based on Aldriana's RogueCalc
         /// 
-        public override CharacterCalculationsBase GetCharacterCalculations(Character character, Item additionalItem) {
+        public override CharacterCalculationsBase GetCharacterCalculations(Character character, Item additionalItem)
+        {
             float energyCPG, numCPG, sndLength, finisherCost, sndEnergy, sndHaste, cycleTime, energyRegen, ruthlessnessCP;
             float totalHaste;
             string cpg;
@@ -136,7 +155,8 @@ namespace Rawr.Rogue {
 
             mhExpertise = ohExpertise = calcOpts.WeaponExpertise * 5f + stats.Expertise + stats.ExpertiseRating * RogueConversions.ExpertiseRatingToExpertise;
 
-            if (character.Race == Character.CharacterRace.Human) {
+            if (character.Race == Character.CharacterRace.Human)
+            {
                 if (character.MainHand != null && (character.MainHand.Type == Item.ItemType.OneHandSword || character.MainHand.Type == Item.ItemType.OneHandMace))
                     mhExpertise += 5f;
                 if (character.OffHand != null && (character.OffHand.Type == Item.ItemType.OneHandSword || character.OffHand.Type == Item.ItemType.OneHandMace))
@@ -172,24 +192,29 @@ namespace Rawr.Rogue {
             // if we have mutilate and we're using two daggers, assume we use it to generate CPs
             if (calcOpts.Mutilate > 0 &&
                 character.MainHand != null && character.MainHand.Type == Item.ItemType.Dagger &&
-                character.OffHand != null && character.OffHand.Type == Item.ItemType.Dagger) {
+                character.OffHand != null && character.OffHand.Type == Item.ItemType.Dagger)
+            {
                 cpg = "mutilate";
                 energyCPG = 60f;
             }
             // if we're main handing a dagger, assume we're using backstab it to generate CPs
-            else if (character.MainHand != null && character.MainHand.Type == Item.ItemType.Dagger) {
+            else if (character.MainHand != null && character.MainHand.Type == Item.ItemType.Dagger)
+            {
                 cpg = "backstab";
                 energyCPG = 60f;
             }
             // if we have hemo, assume we use it to generate CPs
-            else if (calcOpts.Hemorrhage > 0) {
+            else if (calcOpts.Hemorrhage > 0)
+            {
                 cpg = "hemo";
                 energyCPG = 35f;
             }
             // otherwise use sinister strike
-            else {
+            else
+            {
                 cpg = "ss";
-                switch (calcOpts.ImprovedSinisterStrike) {
+                switch (calcOpts.ImprovedSinisterStrike)
+                {
                     case 2:
                         energyCPG = 40f;
                         break;
@@ -211,13 +236,16 @@ namespace Rawr.Rogue {
 
             numCPG = calcOpts.DPSCycle.TotalComboPoints - 2f * ruthlessnessCP;
 
-            if (calcOpts.DPSCycle['r'] > 0) {
+            if (calcOpts.DPSCycle['r'] > 0)
+            {
                 finisherCost = 25f;
             }
-            else if (calcOpts.DPSCycle['e'] > 0) {
+            else if (calcOpts.DPSCycle['e'] > 0)
+            {
                 finisherCost = 35f;
             }
-            else {
+            else
+            {
                 finisherCost = 0f;
             }
 
@@ -245,7 +273,8 @@ namespace Rawr.Rogue {
             mhAttacks = 0f;
             avgMHDmg = 0f;
             ohHits = 0f;
-            if(character.MainHand != null) {
+            if (character.MainHand != null)
+            {
                 avgMHDmg = (character.MainHand.MinDamage + character.MainHand.MaxDamage + stats.WeaponDamage * 2) / 2.0f;
                 avgMHDmg += (stats.AttackPower / 14.0f) * character.MainHand.Speed;
 
@@ -260,7 +289,8 @@ namespace Rawr.Rogue {
 
             // OH
             ohAttacks = 0f;
-            if (character.OffHand != null) {
+            if (character.OffHand != null)
+            {
                 avgOHDmg = (character.OffHand.MinDamage + character.OffHand.MaxDamage + stats.WeaponDamage * 2) / 2.0f;
                 avgOHDmg += (stats.AttackPower / 14.0f) * character.OffHand.Speed;
                 avgOHDmg *= (0.25f + calcOpts.DualWieldSpecialization * 0.1f);
@@ -279,14 +309,16 @@ namespace Rawr.Rogue {
 
             #region CPG Damage
             cpgDPS = 0f;
-            if (character.MainHand != null) {
+            if (character.MainHand != null)
+            {
                 avgCPGDmg = 0f;
                 cpgCrit = 0f;
                 bonusCPGCrit = 0f;
                 bonusCPGDmgMult = 1f;
                 bonusCPGCritDmgMult = 2f;
 
-                if (cpg == "mutilate" && character.OffHand != null) {
+                if (cpg == "mutilate" && character.OffHand != null)
+                {
                     bonusCPGCrit += 5f * calcOpts.PuncturingWounds;
                     bonusCPGCritDmgMult *= (1f + .06f * calcOpts.Lethality);
                     bonusCPGDmgMult *= (1f + 0.04f * calcOpts.Opportunity);
@@ -297,7 +329,8 @@ namespace Rawr.Rogue {
                     avgCPGDmg += stats.AttackPower / 14f * 1.7f;
                     avgCPGDmg *= 1.5f;
                 }
-                else if (cpg == "backstab") {
+                else if (cpg == "backstab")
+                {
                     bonusCPGDmgMult *= (1f + .02f * calcOpts.Aggression);
                     bonusCPGDmgMult *= (1f + .1f * calcOpts.SurpriseAttacks);
                     bonusCPGDmgMult *= (1f + 0.04f * calcOpts.Opportunity);
@@ -309,7 +342,8 @@ namespace Rawr.Rogue {
                     avgCPGDmg *= 1.5f;
                     avgCPGDmg += 255f;
                 }
-                else if (cpg == "hemo") {
+                else if (cpg == "hemo")
+                {
                     bonusCPGDmgMult *= (1f + .1f * calcOpts.SurpriseAttacks);
                     bonusCPGDmgMult *= (1f + stats.BonusCPGDamage);
                     bonusCPGCritDmgMult *= (1f + .06f * calcOpts.Lethality);
@@ -318,7 +352,8 @@ namespace Rawr.Rogue {
                     avgCPGDmg += stats.AttackPower / 14f * 2.4f;
                     avgCPGDmg *= 1.1f;
                 }
-                else {
+                else
+                {
                     // sinister strike
                     avgCPGDmg = (character.MainHand.MinDamage + character.MainHand.MaxDamage + stats.WeaponDamage) / 2f;
                     avgCPGDmg += stats.AttackPower / 14f * 2.4f;
@@ -343,9 +378,12 @@ namespace Rawr.Rogue {
 
             #region Finisher Damage
             finisherDPS = 0f;
-            if (character.MainHand != null) {
-                if (calcOpts.DPSCycle['r'] > 0) {
-                    switch (calcOpts.DPSCycle['r']) {
+            if (character.MainHand != null)
+            {
+                if (calcOpts.DPSCycle['r'] > 0)
+                {
+                    switch (calcOpts.DPSCycle['r'])
+                    {
                         case 5:
                             finisherDmg = 4f * (stats.AttackPower * .01f + 81f);
                             break;
@@ -369,7 +407,8 @@ namespace Rawr.Rogue {
                         finisherDmg *= (1f - mhDodgeChance / 100f);
                     finisherDPS = finisherDmg / cycleTime;
                 }
-                else if (calcOpts.DPSCycle['e'] > 0) {
+                else if (calcOpts.DPSCycle['e'] > 0)
+                {
                     evisMod = stats.AttackPower * calcOpts.DPSCycle['e'] * .03f;
                     evisMin = 245f + (calcOpts.DPSCycle['e'] - 1f) * 185f + evisMod;
                     evisMax = 365f + (calcOpts.DPSCycle['e'] - 1f) * 185f + evisMod;
@@ -379,12 +418,13 @@ namespace Rawr.Rogue {
                     finisherDmg *= (1f + 0.02f * calcOpts.Aggression);
                     finisherDmg = finisherDmg * (1f - (mhCrit / 100f)) + (finisherDmg * 2f) * (mhCrit / 100f);
                     finisherDmg *= (1f - (missChance / 100f));
-                    if(calcOpts.SurpriseAttacks < 1)
+                    if (calcOpts.SurpriseAttacks < 1)
                         finisherDmg *= (1f - (mhDodgeChance / 100f));
                     finisherDmg *= damageReduction;
                     finisherDPS = finisherDmg / cycleTime;
                 }
-                else {
+                else
+                {
                 }
             }
             #endregion
@@ -394,7 +434,8 @@ namespace Rawr.Rogue {
             ssHits = 0f;
 
             // main hand
-            if (character.MainHand != null && character.MainHand.Type == Item.ItemType.OneHandSword) {
+            if (character.MainHand != null && character.MainHand.Type == Item.ItemType.OneHandSword)
+            {
                 ssHits += mhAttacks * 0.01f * calcOpts.SwordSpecialization * probMHHit;
 
                 // CPG
@@ -405,7 +446,8 @@ namespace Rawr.Rogue {
             }
 
             // offhand
-            if (character.OffHand != null && character.OffHand.Type == Item.ItemType.OneHandSword) {
+            if (character.OffHand != null && character.OffHand.Type == Item.ItemType.OneHandSword)
+            {
                 ssHits += ohAttacks * 0.01f * calcOpts.SwordSpecialization * probOHHit;
             }
 
@@ -415,7 +457,8 @@ namespace Rawr.Rogue {
 
             #region WF Damage
             wfDPS = 0f;
-            if (character.MainHand != null && stats.WindfuryAPBonus > 0) {
+            if (character.MainHand != null && stats.WindfuryAPBonus > 0)
+            {
                 wfHits = mhAttacks * probMHHit * .2f * probMHHit;
                 wfHits += ssHits * .2f * probMHHit;
 
@@ -436,22 +479,28 @@ namespace Rawr.Rogue {
             probPoison = (.83f + .05f * calcOpts.MasterPoisoner) * (.2f + .02f * calcOpts.ImprovedPoisons);
             calcDeadly = true;
 
-            if (character.MainHand != null && stats.WindfuryAPBonus == 0f) {
+            if (character.MainHand != null && stats.WindfuryAPBonus == 0f)
+            {
                 // no WF, consider the main hand poison
-                if (calcOpts.TempMainHandEnchant == "Deadly Poison" && calcDeadly) {
+                if (calcOpts.TempMainHandEnchant == "Deadly Poison" && calcDeadly)
+                {
                     poisonDPS += 180f * calcOpts.VilePoisons * .04f / 12f;
                     calcDeadly = false;
                 }
-                else if (calcOpts.TempMainHandEnchant == "Instant Poison") {
+                else if (calcOpts.TempMainHandEnchant == "Instant Poison")
+                {
                     poisonDPS += ohHits * probPoison * 170f * (1f + calcOpts.VilePoisons * 0.04f);
                 }
             }
-            if (character.OffHand != null) {
-                if (calcOpts.TempOffHandEnchant == "Deadly Poison" && calcDeadly) {
+            if (character.OffHand != null)
+            {
+                if (calcOpts.TempOffHandEnchant == "Deadly Poison" && calcDeadly)
+                {
                     poisonDPS += 180f * (1f + calcOpts.VilePoisons * .04f) / 12f;
                     calcDeadly = false;
                 }
-                else if (calcOpts.TempOffHandEnchant == "Instant Poison") {
+                else if (calcOpts.TempOffHandEnchant == "Instant Poison")
+                {
                     poisonDPS += ohHits * probPoison * 170f * (1f + calcOpts.VilePoisons * 0.04f);
                 }
             }
@@ -469,27 +518,29 @@ namespace Rawr.Rogue {
         }
 
         #region Rogue Racial Stats
-        private static float[,] BaseRogueRaceStats = new float[,] 
-		{
+        private static float[,] BaseRogueRaceStats = new float[,]
+        {
 							//	Agility,	Strength,	Stamina
             /*Empty*/       {   0f,         0f,         0f,     },
-			/*Human*/		{	158f,		95f,		89f,	},	
-			/*Orc*/			{	155f,		98f,		91f,	},		
-			/*Dwarf*/		{	154f,		97f,		92f,	},
-			/*Night Elf*/	{	163f,		92f,		88f,	},		
-			/*Undead*/		{	156f,		94f,		90f,	},	
-			/*Tauren*/		{	0f,			0f,			0f,		},		
-			/*Gnome*/		{	161f,		90f,		88f,	},		
-			/*Troll*/		{	160f,		96f,		90f,	},	
-			/*BloodElf*/	{	160f,		92f,		87f,	},
-			/*Draenei*/		{	0f,			0f,			0f,		}
-		};
+			/*Human*/		{   158f,       95f,        89f,    },	
+			/*Orc*/			{   155f,       98f,        91f,    },		
+			/*Dwarf*/		{   154f,       97f,        92f,    },
+			/*Night Elf*/	{   163f,       92f,        88f,    },		
+			/*Undead*/		{   156f,       94f,        90f,    },	
+			/*Tauren*/		{   0f,         0f,         0f,     },		
+			/*Gnome*/		{   161f,       90f,        88f,    },		
+			/*Troll*/		{   160f,       96f,        90f,    },	
+			/*BloodElf*/	{   160f,       92f,        87f,    },
+			/*Draenei*/		{   0f,         0f,         0f,     }
+        };
 
-        private Stats GetRaceStats(Character.CharacterRace race) {
+        private Stats GetRaceStats(Character.CharacterRace race)
+        {
             if (race == Character.CharacterRace.Tauren || race == Character.CharacterRace.Draenei)
                 return new Stats();
 
-            Stats statsRace = new Stats() {
+            Stats statsRace = new Stats()
+            {
                 Health = 3524f,
                 Agility = (float)BaseRogueRaceStats[(int)race, 0],
                 Strength = (float)BaseRogueRaceStats[(int)race, 1],
@@ -511,15 +562,18 @@ namespace Rawr.Rogue {
         }
         #endregion
 
-        public override Stats GetCharacterStats(Character character, Item additionalItem) {
+        public override Stats GetCharacterStats(Character character, Item additionalItem)
+        {
             CalculationOptionsRogue calcOpts = character.CalculationOptions as CalculationOptionsRogue;
 
             Stats statsRace;
 
-            if (character.Race == Character.CharacterRace.Human) {
+            if (character.Race == Character.CharacterRace.Human)
+            {
                 statsRace = GetRaceStats(character.Race);
             }
-            else {
+            else
+            {
                 statsRace = GetRaceStats(character.Race);
             }
             Stats statsBaseGear = GetItemStats(character, additionalItem);
@@ -531,17 +585,20 @@ namespace Rawr.Rogue {
             if (statsBuffs.ExposeWeakness > 0) statsBuffs.AttackPower += 200f;
 
             //Mongoose
-            if (character.MainHand != null && character.MainHandEnchant != null && character.MainHandEnchant.Id == 2673) {
+            if (character.MainHand != null && character.MainHandEnchant != null && character.MainHandEnchant.Id == 2673)
+            {
                 statsBuffs.Agility += 120f * ((40f * (1f / (60f / character.MainHand.Speed)) / 6f));
                 statsBuffs.HasteRating += (15.76f * 2f) * ((40f * (1f / (60f / character.MainHand.Speed)) / 6f));
             }
-            if (character.OffHand != null && character.OffHandEnchant != null && character.OffHandEnchant.Id == 2673) {
+            if (character.OffHand != null && character.OffHandEnchant != null && character.OffHandEnchant.Id == 2673)
+            {
                 statsBuffs.Agility += 120f * ((40f * (1f / (60f / character.OffHand.Speed)) / 6f));
                 statsBuffs.HasteRating += (15.76f * 2f) * ((40f * (1f / (60f / character.OffHand.Speed)) / 6f));
             }
 
             //Executioner
-            if (character.MainHand != null && character.MainHandEnchant != null && character.MainHandEnchant.Id == 3225) {
+            if (character.MainHand != null && character.MainHandEnchant != null && character.MainHandEnchant.Id == 3225)
+            {
                 statsBuffs.ArmorPenetration += 840f * ((40f * (1f / (60f / character.MainHand.Speed)) / 6f));
             }
 
@@ -580,7 +637,8 @@ namespace Rawr.Rogue {
             statsTotal.HasteRating = statsGearEnchantsBuffs.HasteRating;
 
             statsTotal.ArmorPenetration = statsGearEnchantsBuffs.ArmorPenetration;
-            switch (calcOpts.SerratedBlades) {
+            switch (calcOpts.SerratedBlades)
+            {
                 case 3:
                     statsTotal.ArmorPenetration += 560;
                     break;
@@ -624,8 +682,10 @@ namespace Rawr.Rogue {
             return statsTotal;
         }
 
-        public override ComparisonCalculationBase[] GetCustomChartData(Character character, string chartName) {
-            switch (chartName) {
+        public override ComparisonCalculationBase[] GetCustomChartData(Character character, string chartName)
+        {
+            switch (chartName)
+            {
                 case "Combat Table":
                     CharacterCalculationsRogue currentCalculationsRogue = GetCharacterCalculations(character) as CharacterCalculationsRogue;
                     ComparisonCalculationsRogue calcMiss = new ComparisonCalculationsRogue();
@@ -636,7 +696,8 @@ namespace Rawr.Rogue {
                     ComparisonCalculationsRogue calcCrit = new ComparisonCalculationsRogue();
                     ComparisonCalculationsRogue calcHit = new ComparisonCalculationsRogue();
 
-                    if (currentCalculationsRogue != null) {
+                    if (currentCalculationsRogue != null)
+                    {
                         calcMiss.Name = "    Miss    ";
                         calcDodge.Name = "   Dodge   ";
                         calcGlance.Name = " Glance ";
@@ -662,8 +723,10 @@ namespace Rawr.Rogue {
             }
         }
 
-        public override Stats GetRelevantStats(Stats stats) {
-            return new Stats() {
+        public override Stats GetRelevantStats(Stats stats)
+        {
+            return new Stats()
+            {
                 Stamina = stats.Stamina,
                 Agility = stats.Agility,
                 Strength = stats.Strength,
@@ -695,10 +758,12 @@ namespace Rawr.Rogue {
             };
         }
 
-        public static void LoadTalentSpec(Character c, string talentSpec) {
+        public static void LoadTalentSpec(Character c, string talentSpec)
+        {
             string talentCode = "";
 
-            switch (talentSpec) {
+            switch (talentSpec)
+            {
                 case "Combat Swords (20/41/0)":
                     // http://www.worldofwarcraft.com/info/classes/rogue/talents.html?tal=0053201054000000000000233050020050150023211510000000000000000000000
                     talentCode = "0053201054000000000000233050020050150023211510000000000000000000000";
@@ -725,7 +790,8 @@ namespace Rawr.Rogue {
             LoadTalentCode(c, talentCode);
         }
 
-        public static void LoadTalentCode(Character c, string talentCode) {
+        public static void LoadTalentCode(Character c, string talentCode)
+        {
             if (talentCode == null || talentCode.Length != 67) return;
             CalculationOptionsRogue calcOpts = c.CalculationOptions as CalculationOptionsRogue;
 
@@ -800,12 +866,14 @@ namespace Rawr.Rogue {
             calcOpts.Shadowstep = int.Parse(talentCode.Substring(66, 1));
         }
 
-        public override bool HasRelevantStats(Stats stats) {
+        public override bool HasRelevantStats(Stats stats)
+        {
             return (stats.Agility + stats.Strength + stats.BonusAgilityMultiplier + stats.BonusStrengthMultiplier + stats.AttackPower + stats.BonusAttackPowerMultiplier + stats.CritRating + stats.HitRating + stats.HasteRating + stats.ExpertiseRating + stats.ArmorPenetration + stats.WeaponDamage + stats.BonusCritMultiplier + stats.WindfuryAPBonus + stats.MongooseProc + stats.MongooseProcAverage + stats.MongooseProcConstant + stats.ExecutionerProc + stats.BonusSnDDuration + stats.CPOnFinisher + stats.BonusEvisEnvenomDamage + stats.BonusFreeFinisher + stats.BonusCPGDamage + stats.BonusSnDHaste + stats.BonusBleedDamageMultiplier) != 0;
         }
     }
 
-    public class RogueConversions {
+    public class RogueConversions
+    {
         public static readonly float StrengthToAP = 1.0f;
         public static readonly float AgilityToAP = 1.0f;
         public static readonly float AgilityToCrit = 1.0f / 40.0f;

@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Rawr
 {
@@ -39,7 +37,7 @@ namespace Rawr
         {
             talentLine = talentLine.Split('=')[1];
             talentLine = talentLine.Split(';')[0];
-            talentLine = talentLine.Replace("[","").Replace("]","");
+            talentLine = talentLine.Replace("[", "").Replace("]", "");
             talentLine = talentLine.Replace(@"\", "");
             talentLine = talentLine.Replace(@"/", "");
             talentLine = talentLine.Replace("\"", "");
@@ -55,7 +53,7 @@ namespace Rawr
         [System.Xml.Serialization.XmlIgnore]
         public string Tree
         {
-            get { return _tree;}
+            get { return _tree; }
             set { _tree = value; }
         }
 
@@ -97,11 +95,12 @@ namespace Rawr
         [System.Xml.Serialization.XmlIgnore]
         public string Description
         {
-            get { 
-                    if (_description.ContainsKey(PointsInvested))
-                        return _description[PointsInvested];
-                    return "";
-                }
+            get
+            {
+                if (_description.ContainsKey(PointsInvested))
+                    return _description[PointsInvested];
+                return "";
+            }
         }
 
 

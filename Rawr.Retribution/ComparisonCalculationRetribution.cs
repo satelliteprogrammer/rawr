@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace Rawr.Retribution
 {
@@ -38,7 +35,7 @@ namespace Rawr.Retribution
         public override Item Item
         {
             get { return _item; }
-            set {  _item = value; }
+            set { _item = value; }
         }
 
         bool _equipped = false;

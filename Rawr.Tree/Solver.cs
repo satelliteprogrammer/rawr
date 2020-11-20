@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Rawr.Tree
 {
@@ -55,7 +54,7 @@ namespace Rawr.Tree
             get;
             private set;
         }
-       
+
         public Solver(CalculationOptionsTree calcOpts, CharacterCalculationsTree calculatedStats)
         {
             this.calcOpts = calcOpts;
@@ -74,7 +73,7 @@ namespace Rawr.Tree
                 BangleMp5 = BangleInManaPerSecond(bestRotation) * 5f;
                 HpS = bestRotation.healPerCycle / bestRotation.bestCycleDuration * FightFraction +
                     // 1 proc / 50 sec
-                    (calculatedStats.BasicStats.ShatteredSunRestoProc > 0 && calcOpts.ShattrathFaction == "Scryer" ? (618 + 682) / 2f * (1 + calculatedStats.BasicStats.SpellCrit/100f) / 50 : 0);
+                    (calculatedStats.BasicStats.ShatteredSunRestoProc > 0 && calcOpts.ShattrathFaction == "Scryer" ? (618 + 682) / 2f * (1 + calculatedStats.BasicStats.SpellCrit / 100f) / 50 : 0);
             }
         }
 
@@ -145,7 +144,7 @@ namespace Rawr.Tree
             // IED 5% proc-rate, 15 sec cooldown
             // Source: http://elitistjerks.com/f31/t19181-shaman_how_heal_like_pro/p53/#post759589
             float secondsPerProc = secondsPerSpell * 20f + 15f;
-            return calculatedStats.BasicStats.ManaRestorePerCast_5_15  / secondsPerProc;
+            return calculatedStats.BasicStats.ManaRestorePerCast_5_15 / secondsPerProc;
         }
 
         private float LessManaPerCastInManaPerSecond(SpellRotation rot)
@@ -200,22 +199,22 @@ namespace Rawr.Tree
         private List<SpellRotation> FilterSpellRotations(List<SpellRotation> spellRotations)
         {
             // If we can't keep the rotation up, there's no use keeping it
-            spellRotations.RemoveAll(delegate(SpellRotation sr)
+            spellRotations.RemoveAll(delegate (SpellRotation sr)
             {
                 sr.currentCycleDuration = sr.maxCycleDuration;
                 return RotationMultiplier(sr) < 0.7f;
             });
 
             // Filter out rotations that have HPS=0
-            spellRotations.RemoveAll(delegate(SpellRotation sr)
+            spellRotations.RemoveAll(delegate (SpellRotation sr)
             {
                 return sr.healPerCycle == 0;
             });
 
             // If something heals for both more per second and for less mana/cycle, there's no use keeping a rotation
-            spellRotations.RemoveAll(delegate(SpellRotation sr2)
+            spellRotations.RemoveAll(delegate (SpellRotation sr2)
             {
-                return spellRotations.Exists(delegate(SpellRotation sr)
+                return spellRotations.Exists(delegate (SpellRotation sr)
                 {
                     return sr2.manaPerCycle > sr.manaPerCycle && sr.healPerCycle > sr2.healPerCycle;
                 });
@@ -226,7 +225,7 @@ namespace Rawr.Tree
             // Remove duplicates (we get a lot due to being able to pick LB-RG-LB, LB-LB-RG, RG-LB-LB and so on)
             foreach (SpellRotation cycle in spellRotations)
             {
-                if (!res.Exists(delegate(SpellRotation sr)
+                if (!res.Exists(delegate (SpellRotation sr)
                 {
                     return cycle.manaPerCycle == sr.manaPerCycle && cycle.healPerCycle == sr.healPerCycle;
                 }))
@@ -247,9 +246,9 @@ namespace Rawr.Tree
                 spellList[i] = new Spell[calcOpts.availableSpells[i].GetLength(0)];
                 for (int j = 0; j < calcOpts.availableSpells[i].GetLength(0); j++)
                 {
-                    spellList[i][j] = calculatedStats.Spells.Find(delegate(Spell s) { return s.Name.Equals(calcOpts.availableSpells[i][j]); });
+                    spellList[i][j] = calculatedStats.Spells.Find(delegate (Spell s) { return s.Name.Equals(calcOpts.availableSpells[i][j]); });
                     if (calcOpts.TreeOfLife > 0 && spellList[i][j] is HealingTouch)
-                        spellList[i][j] = calculatedStats.Spells.Find(delegate(Spell s) { return s.Name.Equals("Nothing"); });
+                        spellList[i][j] = calculatedStats.Spells.Find(delegate (Spell s) { return s.Name.Equals("Nothing"); });
                 }
             }
 

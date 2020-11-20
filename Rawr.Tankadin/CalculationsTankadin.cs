@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Rawr.Tankadin
 {
@@ -29,33 +28,33 @@ namespace Rawr.Tankadin
             {
                 if (_characterDisplayCalculationLabels == null)
                     _characterDisplayCalculationLabels = new string[] {
-					"Basic Stats:Health",
-					"Basic Stats:Armor",
-					"Basic Stats:Stamina",
-					"Basic Stats:Agility",
-					"Basic Stats:Defense",
-					"Basic Stats:Miss",
-					"Basic Stats:Dodge",
-					"Basic Stats:Parry",
-					"Basic Stats:Block",
-					"Basic Stats:Block Value",
-					"Basic Stats:Spell Damage",
-					"Complex Stats:Avoidance",
-					"Complex Stats:Mitigation",
-					"Complex Stats:Total Mitigation",
-					"Complex Stats:Chance to be Crit",
-					@"Complex Stats:Overall Points*Overall Points are a sum of Mitigation and Survival Points. 
+                    "Basic Stats:Health",
+                    "Basic Stats:Armor",
+                    "Basic Stats:Stamina",
+                    "Basic Stats:Agility",
+                    "Basic Stats:Defense",
+                    "Basic Stats:Miss",
+                    "Basic Stats:Dodge",
+                    "Basic Stats:Parry",
+                    "Basic Stats:Block",
+                    "Basic Stats:Block Value",
+                    "Basic Stats:Spell Damage",
+                    "Complex Stats:Avoidance",
+                    "Complex Stats:Mitigation",
+                    "Complex Stats:Total Mitigation",
+                    "Complex Stats:Chance to be Crit",
+                    @"Complex Stats:Overall Points*Overall Points are a sum of Mitigation and Survival Points. 
 Overall is typically, but not always, the best way to rate gear. 
 For specific encounters, closer attention to Mitigation and 
 Survival Points individually may be important.",
-					@"Complex Stats:Mitigation Points*Mitigation Points represent the amount of damage you mitigate, 
+                    @"Complex Stats:Mitigation Points*Mitigation Points represent the amount of damage you mitigate, 
 on average, through armor mitigation and avoidance. It is directly 
 relational to your Damage Taken. Ideally, you want to maximize 
 Mitigation Points, while maintaining 'enough' Survival Points 
 (see Survival Points). If you find yourself dying due to healers 
 running OOM, or being too busy healing you and letting other 
 raid members die, then focus on Mitigation Points.",
-					@"Complex Stats:Survival Points*Survival Points represents the total raw physical damage 
+                    @"Complex Stats:Survival Points*Survival Points represents the total raw physical damage 
 (pre-mitigation) you can take before dying. Unlike 
 Mitigation Points, you should not attempt to maximize this, 
 but rather get 'enough' of it, and then focus on Mitigation. 
@@ -69,7 +68,7 @@ you are being killed by burst damage, focus on Survival Points.",
                      "Threat:Judgement of Right",
                      "Threat:Consecrate",
                      "Threat:Misc"
-				};
+                };
                 return _characterDisplayCalculationLabels;
             }
         }
@@ -113,18 +112,18 @@ you are being killed by burst damage, focus on Survival Points.",
                 if (_relevantItemTypes == null)
                 {
                     _relevantItemTypes = new List<Item.ItemType>(new Item.ItemType[]
-					{
+                    {
                         Item.ItemType.Plate,
                         Item.ItemType.None,
-						Item.ItemType.Shield,
-						Item.ItemType.Libram,
-						Item.ItemType.OneHandAxe,
-						Item.ItemType.OneHandMace,
-						Item.ItemType.OneHandSword,
-						Item.ItemType.TwoHandAxe,
-						Item.ItemType.TwoHandMace,
-						Item.ItemType.TwoHandSword
-					});
+                        Item.ItemType.Shield,
+                        Item.ItemType.Libram,
+                        Item.ItemType.OneHandAxe,
+                        Item.ItemType.OneHandMace,
+                        Item.ItemType.OneHandSword,
+                        Item.ItemType.TwoHandAxe,
+                        Item.ItemType.TwoHandMace,
+                        Item.ItemType.TwoHandSword
+                    });
                 }
                 return _relevantItemTypes;
             }
@@ -173,7 +172,7 @@ you are being killed by burst damage, focus on Survival Points.",
             float attacks = calcOpts.NumberAttackers / calcOpts.AttackSpeed * 10;
             //Apply armor and multipliers for each attack type...
             float miss = Math.Min(0.01f * attacks * calculatedStats.Avoidance, attacks);
-            float block = Math.Min(Math.Min(8, attacks * (.3f + 0.01f*calculatedStats.Block)), attacks - miss);
+            float block = Math.Min(Math.Min(8, attacks * (.3f + 0.01f * calculatedStats.Block)), attacks - miss);
             if (block > 8) block += Math.Min((attacks - block) * .01f * calculatedStats.Block, attacks - miss - block);
             float crit = Math.Min(0.01f * Math.Max(5 - calculatedStats.CritAvoidance, 0) * attacks, attacks - miss - block);
             float crush = Math.Min((targetLevel == 73 ? .15f : 0f) * attacks, attacks - miss - block - crit);
@@ -196,7 +195,7 @@ you are being killed by burst damage, focus on Survival Points.",
             calculatedStats.SoRTPS = ws == 0 ? 0 : ((0.85f * (2610.43f * ws / 100f) + 0.03f * wd - 1f + (0.108f * ws * stats.SpellDamageRating * ws)) / ws) * modifier;
             calculatedStats.ConsecrateTPS = calcOpts.NumberAttackers * (512 + .9524f * stats.SpellDamageRating) / 8f * modifier;
             calculatedStats.JoRTPS = (218f + stats.SpellDamageRating * .7143f) / 9f * modifier;
-            calculatedStats.OverallTPS = calculatedStats.SoRTPS + calculatedStats.JoRTPS + 
+            calculatedStats.OverallTPS = calculatedStats.SoRTPS + calculatedStats.JoRTPS +
                 calculatedStats.HolyShieldTPS + calculatedStats.ConsecrateTPS + calculatedStats.MiscTPS;
             calculatedStats.ThreatPoints = calculatedStats.OverallTPS * calcOpts.ThreatScale;
 

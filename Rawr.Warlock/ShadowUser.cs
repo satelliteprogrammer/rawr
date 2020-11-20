@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace Rawr.Warlock
 {
@@ -88,7 +85,7 @@ namespace Rawr.Warlock
                 float chanceToHit = CalculationsWarlock.ChanceToHit(calculations.CalculationOptions.TargetLevel, HitPercent);
                 DirectShadowHitsPerSecond = SbCastRatio / SbCastTime * chanceToHit;
                 EffectiveCritRate = CritPercent * DirectShadowHitsPerSecond;
-            }   
+            }
         }
     }
 

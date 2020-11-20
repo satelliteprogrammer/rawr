@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 
 
 namespace Rawr.Warlock
@@ -141,8 +140,8 @@ namespace Rawr.Warlock
             fillerSpell.ManaPerSecond *= fillerSpell.CastRatio;
             float lifeTapFrequency = lifeTapMana / (mpsWithoutFiller - fillerSpell.ManaPerSecond);
             if (lifeTapFrequency < 0)
-                Console.WriteLine("shit");                    
-            
+                Console.WriteLine("shit");
+
             if (calcDps)
             {
                 fillerSpell.CalculateDamage(calculations);

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Rawr.Tree
 {
@@ -42,7 +41,7 @@ namespace Rawr.Tree
                         throw new OverflowException("Could not add all cycles to the rotation");
                     }
                 }
-                
+
                 cycleSpells += sr.cycleSpells;
             }
 
@@ -69,8 +68,8 @@ namespace Rawr.Tree
             }
 
             this.maxCycleDuration = maxCycleDuration;
-            this.tightCycleDuration = sum; 
-            
+            this.tightCycleDuration = sum;
+
             if (cycleSpells.Length != 0)
                 cycleSpells = String.Format("{0:0.0}s: {1}\n", tightCycleDuration, cycleSpells);
         }
@@ -97,7 +96,7 @@ namespace Rawr.Tree
         {
             get
             {
-                return spells.FindAll(delegate(Spell s)
+                return spells.FindAll(delegate (Spell s)
                 {
                     return !(s is Nothing);
                 }).Count;

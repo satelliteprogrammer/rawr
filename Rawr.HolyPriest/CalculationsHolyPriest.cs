@@ -1,17 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 
-using Rawr;
-
 namespace Rawr.HolyPriest
 {
     [System.ComponentModel.DisplayName("HolyPriest|Spell_Holy_Renew")]
-    public class CalculationsHolyPriest : CalculationsBase 
+    public class CalculationsHolyPriest : CalculationsBase
     {
         public override Character.CharacterClass TargetClass { get { return Character.CharacterClass.Priest; } }
 
         private string _currentChartName = null;
-        
+
         private Dictionary<string, System.Drawing.Color> _subPointNameColors = null;
         public override Dictionary<string, System.Drawing.Color> SubPointNameColors
         {
@@ -32,7 +30,7 @@ namespace Rawr.HolyPriest
                         _subPointNameColors.Add("Haste", System.Drawing.Color.Gold);
                         break;
                 }
-               
+
                 return _subPointNameColors;
             }
         }
@@ -44,31 +42,31 @@ namespace Rawr.HolyPriest
             {
                 if (_characterDisplayCalculationLabels == null)
                     _characterDisplayCalculationLabels = new string[] {
-					"Basic Stats:Health",
-					"Basic Stats:Mana",
-					"Basic Stats:Stamina",
-					"Basic Stats:Intellect",
-					"Basic Stats:Spirit",
-					"Basic Stats:Healing",
-					"Basic Stats:Mp5",
-					"Basic Stats:Regen InFSR",
-					"Basic Stats:Regen OutFSR",
-					"Basic Stats:Holy Spell Crit",
-					"Basic Stats:Spell Haste",
+                    "Basic Stats:Health",
+                    "Basic Stats:Mana",
+                    "Basic Stats:Stamina",
+                    "Basic Stats:Intellect",
+                    "Basic Stats:Spirit",
+                    "Basic Stats:Healing",
+                    "Basic Stats:Mp5",
+                    "Basic Stats:Regen InFSR",
+                    "Basic Stats:Regen OutFSR",
+                    "Basic Stats:Holy Spell Crit",
+                    "Basic Stats:Spell Haste",
                     "Basic Stats:Global Cooldown",
                     "Spells:Renew",
                     "Spells:Greater Heal",
                     "Spells:Flash Heal",
-				    "Spells:Binding Heal",
+                    "Spells:Binding Heal",
                     "Spells:Prayer of Mending",
                     "Spells:PoH",
-				    "Spells:CoH",
+                    "Spells:CoH",
                     "Spells:Power Word Shield",
                     "Spells:Heal",
-				    "Spells:Holy Nova",
+                    "Spells:Holy Nova",
                     "Spells:Lightwell",
                     "Spells:Gift of the Naaru"
-				};
+                };
                 return _characterDisplayCalculationLabels;
             }
         }
@@ -76,7 +74,8 @@ namespace Rawr.HolyPriest
         private CalculationOptionsPanelBase _calculationOptionsPanel = null;
         public override CalculationOptionsPanelBase CalculationOptionsPanel
         {
-            get {
+            get
+            {
                 if (_calculationOptionsPanel == null)
                 {
                     _calculationOptionsPanel = new CalculationOptionsPanelHolyPriest();
@@ -102,8 +101,10 @@ namespace Rawr.HolyPriest
         private List<Item.ItemType> _relevantItemTypes = null;
         public override List<Item.ItemType> RelevantItemTypes
         {
-            get {
-                if (_relevantItemTypes == null) {
+            get
+            {
+                if (_relevantItemTypes == null)
+                {
                     _relevantItemTypes = new List<Item.ItemType>(new Item.ItemType[]{
                         Item.ItemType.None,
                         Item.ItemType.Cloth,
@@ -134,8 +135,8 @@ namespace Rawr.HolyPriest
             calculatedStats.BasicStats.Spirit = (float)Math.Floor(calculatedStats.BasicStats.Spirit * (1 + character.Talents.GetTalent("Spirit of Redemption").PointsInvested * 0.05f));
 
             calculatedStats.SpiritRegen = (float)Math.Floor(5 * 0.0093271 * calculatedStats.BasicStats.Spirit * Math.Sqrt(calculatedStats.BasicStats.Intellect));
-            
-            calculatedStats.RegenInFSR = (float)Math.Floor((calculatedStats.BasicStats.Mp5 + character.Talents.GetTalent("Meditation").PointsInvested * 0.1f * 
+
+            calculatedStats.RegenInFSR = (float)Math.Floor((calculatedStats.BasicStats.Mp5 + character.Talents.GetTalent("Meditation").PointsInvested * 0.1f *
                 calculatedStats.SpiritRegen * (1 + calculatedStats.BasicStats.SpellCombatManaRegeneration)));
             calculatedStats.RegenOutFSR = calculatedStats.BasicStats.Mp5 + calculatedStats.SpiritRegen;
 
@@ -143,7 +144,7 @@ namespace Rawr.HolyPriest
                 (calculatedStats.BasicStats.SpellCritRating / 22.08) + 1.24 + character.Talents.GetTalent("Holy Specialization").PointsInvested, 2);
 
             calculatedStats.BasicStats.Healing += calculatedStats.BasicStats.Spirit * character.Talents.GetTalent("Spiritual Guidance").PointsInvested * 0.05f;
-            
+
             calculatedStats.HealPoints = calculatedStats.BasicStats.Healing
                 + (calculatedStats.BasicStats.HealingDoneFor15SecOnUse2Min * 15f / 120f)
                 + (calculatedStats.BasicStats.HealingDoneFor15SecOnUse90Sec * 15f / 90f)
@@ -176,9 +177,9 @@ namespace Rawr.HolyPriest
                 + (calculatedStats.BasicStats.ManaregenOver20SecOnUse3Min * 5f / 180f)
                 + (calculatedStats.BasicStats.ManaregenOver20SecOnUse5Min * 5f / 300f)
                 + (calculatedStats.BasicStats.ManacostReduceWithin15OnHealingCast / (2.0f * 50f)) * 5f
-                + (calculatedStats.BasicStats.FullManaRegenFor15SecOnSpellcast > 0?(((calculatedStats.RegenOutFSR - calculatedStats.RegenInFSR) / 5f) * 15f / 125f) * 5f: 0)
+                + (calculatedStats.BasicStats.FullManaRegenFor15SecOnSpellcast > 0 ? (((calculatedStats.RegenOutFSR - calculatedStats.RegenInFSR) / 5f) * 15f / 125f) * 5f : 0)
                 + (calculatedStats.BasicStats.BangleProc > 0 ? (((calculatedStats.RegenOutFSR - calculatedStats.RegenInFSR) / 5f) * 0.25f * 15f / 125f) * 5f : 0);
-                        
+
             calculatedStats.HastePoints = calculatedStats.BasicStats.SpellHasteRating / 2f
                 + calculatedStats.BasicStats.SpellHasteFor20SecOnUse2Min * 20f / 120f / 2f;
 
@@ -292,7 +293,7 @@ namespace Rawr.HolyPriest
                     p = GetCharacterCalculations(character) as CharacterCalculationsHolyPriest;
                     spellList = new List<Spell>[] {
                                                 Renew.GetAllRanks(p.BasicStats, character.Talents),
-                                                FlashHeal.GetAllRanks(p.BasicStats, character.Talents), 
+                                                FlashHeal.GetAllRanks(p.BasicStats, character.Talents),
                                                 GreaterHeal.GetAllRanks(p.BasicStats, character.Talents),
                                                 Heal.GetAllRanks(p.BasicStats, character.Talents),
                                                 PrayerOfHealing.GetAllRanks(p.BasicStats, character.Talents, 3),
@@ -312,7 +313,7 @@ namespace Rawr.HolyPriest
 
                     foreach (List<Spell> spells in spellList)
                     {
-                        if(spells[0].AvgHeal == 0)
+                        if (spells[0].AvgHeal == 0)
                             continue;
 
                         for (int i = 0; i < spells.Count; i++)
@@ -332,7 +333,7 @@ namespace Rawr.HolyPriest
                     p = GetCharacterCalculations(character) as CharacterCalculationsHolyPriest;
                     spellList = new List<Spell>[] {
                                                 Renew.GetAllRanks(p.BasicStats, character.Talents),
-                                                FlashHeal.GetAllRanks(p.BasicStats, character.Talents), 
+                                                FlashHeal.GetAllRanks(p.BasicStats, character.Talents),
                                                 GreaterHeal.GetAllRanks(p.BasicStats, character.Talents),
                                                 Heal.GetAllRanks(p.BasicStats, character.Talents),
                                                 PrayerOfHealing.GetAllRanks(p.BasicStats, character.Talents, 3),
@@ -372,7 +373,7 @@ namespace Rawr.HolyPriest
                     p = GetCharacterCalculations(character) as CharacterCalculationsHolyPriest;
                     spellList = new List<Spell>[] {
                                                 Renew.GetAllCommonRanks(p.BasicStats, character.Talents),
-                                                FlashHeal.GetAllCommonRanks(p.BasicStats, character.Talents), 
+                                                FlashHeal.GetAllCommonRanks(p.BasicStats, character.Talents),
                                                 GreaterHeal.GetAllCommonRanks(p.BasicStats, character.Talents),
                                                 Heal.GetAllCommonRanks(p.BasicStats, character.Talents),
                                                 PrayerOfHealing.GetAllCommonRanks(p.BasicStats, character.Talents, 3),
@@ -412,7 +413,7 @@ namespace Rawr.HolyPriest
                     p = GetCharacterCalculations(character) as CharacterCalculationsHolyPriest;
                     spellList = new List<Spell>[] {
                                                 Renew.GetAllCommonRanks(p.BasicStats, character.Talents),
-                                                FlashHeal.GetAllCommonRanks(p.BasicStats, character.Talents), 
+                                                FlashHeal.GetAllCommonRanks(p.BasicStats, character.Talents),
                                                 GreaterHeal.GetAllCommonRanks(p.BasicStats, character.Talents),
                                                 Heal.GetAllCommonRanks(p.BasicStats, character.Talents),
                                                 PrayerOfHealing.GetAllCommonRanks(p.BasicStats, character.Talents, 3),

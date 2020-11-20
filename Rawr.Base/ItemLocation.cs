@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
+using System.Windows.Forms;
 using System.Xml;
 using System.Xml.Serialization;
-using System.IO;
-using System.Windows.Forms;
 
 namespace Rawr
 {
@@ -58,16 +58,16 @@ namespace Rawr
     public class ItemLocation
     {
         [XmlIgnore]
-        public ItemSource Source{get;set;}
+        public ItemSource Source { get; set; }
 
         private string _description;
         [XmlIgnore]
         public virtual string Description
         {
-            get{return _description;}
+            get { return _description; }
         }
-        public ItemLocation():this("Unknown location")
-        {            
+        public ItemLocation() : this("Unknown location")
+        {
         }
         public ItemLocation(string desc)
         {
@@ -87,7 +87,7 @@ namespace Rawr
     [Serializable]
     public class NoSource : ItemLocation
     {
-        public NoSource():base("")
+        public NoSource() : base("")
         {
             Source = ItemSource.None;
         }
@@ -118,16 +118,16 @@ namespace Rawr
             return new UnknownItem();
         }
     }
-  
+
     [Serializable]
     public class VendorItem : ItemLocation
     {
-        
-        public string Token{get;set;}
-        public int Count{get;set;}
-        public int Cost{get;set;}
 
-        
+        public string Token { get; set; }
+        public int Count { get; set; }
+        public int Cost { get; set; }
+
+
         [XmlIgnore]
         public string CostString
         {
@@ -168,7 +168,7 @@ namespace Rawr
         {
             get
             {
-                return string.Format("Purchasable with {0} [{1}]{2}{3}", Count, Token, Cost>0?" and":"", CostString);
+                return string.Format("Purchasable with {0} [{1}]{2}{3}", Count, Token, Cost > 0 ? " and" : "", CostString);
             }
         }
 
@@ -178,69 +178,69 @@ namespace Rawr
             WebRequestWrapper wrw = new WebRequestWrapper();
             XmlDocument doc = wrw.DownloadItemInformation(int.Parse(itemId));
 
-			if (doc != null)
-			{
-				XmlNode subNode = doc.SelectSingleNode("/page/itemInfo/item/cost/token");
-				if (subNode != null)
-				{
+            if (doc != null)
+            {
+                XmlNode subNode = doc.SelectSingleNode("/page/itemInfo/item/cost/token");
+                if (subNode != null)
+                {
 
-					string tokenId = subNode.Attributes["id"].Value;
-					int count = int.Parse(subNode.Attributes["count"].Value);
+                    string tokenId = subNode.Attributes["id"].Value;
+                    int count = int.Parse(subNode.Attributes["count"].Value);
 
-					string Boss = null;
-					string Area = null;
+                    string Boss = null;
+                    string Area = null;
 
-					if (!_idToBossMap.ContainsKey(tokenId))
-					{
-						doc = wrw.DownloadItemInformation(int.Parse(tokenId));
+                    if (!_idToBossMap.ContainsKey(tokenId))
+                    {
+                        doc = wrw.DownloadItemInformation(int.Parse(tokenId));
 
-						XmlNodeList list = doc.SelectNodes("/page/itemInfo/item/dropCreatures/creature");
+                        XmlNodeList list = doc.SelectNodes("/page/itemInfo/item/dropCreatures/creature");
 
-						subNode = list[0];
-						if (list.Count == 1)
-						{
-							Boss = subNode.Attributes["name"].Value;
-							Area = subNode.Attributes["area"].Value;
-							_idToBossMap[tokenId] = Boss;
-							_bossToAreaMap[Boss] = Area;
-						}
-						else if (list.Count > 1)
-						{
-							Boss = subNode.SelectSingleNode("/page/itemInfo/item/@name").InnerText;
-							Area = "*";
-						}
-						else
-						{
-							Boss = "Unknown";
-							Area = "*";
-						}
+                        subNode = list[0];
+                        if (list.Count == 1)
+                        {
+                            Boss = subNode.Attributes["name"].Value;
+                            Area = subNode.Attributes["area"].Value;
+                            _idToBossMap[tokenId] = Boss;
+                            _bossToAreaMap[Boss] = Area;
+                        }
+                        else if (list.Count > 1)
+                        {
+                            Boss = subNode.SelectSingleNode("/page/itemInfo/item/@name").InnerText;
+                            Area = "*";
+                        }
+                        else
+                        {
+                            Boss = "Unknown";
+                            Area = "*";
+                        }
 
-						_idToBossMap[tokenId] = Boss;
-						_bossToAreaMap[Boss] = Area;
-					}
-					else
-					{
-						Boss = _idToBossMap[tokenId];
-						Area = _bossToAreaMap[Boss];
-					}
-					if (Area != "*")
-					{
-						return new StaticDrop()
-						{
-							Area = Area,
-							Boss = Boss,
-							Heroic = false
-						};
-					}
+                        _idToBossMap[tokenId] = Boss;
+                        _bossToAreaMap[Boss] = Area;
+                    }
+                    else
+                    {
+                        Boss = _idToBossMap[tokenId];
+                        Area = _bossToAreaMap[Boss];
+                    }
+                    if (Area != "*")
+                    {
+                        return new StaticDrop()
+                        {
+                            Area = Area,
+                            Boss = Boss,
+                            Heroic = false
+                        };
+                    }
 
-					Count = count;
-					Token = Boss;
-				}
-				else
-				{
-					return new ItemLocation("Vendor");
-				}
-			}
+                    Count = count;
+                    Token = Boss;
+                }
+                else
+                {
+                    return new ItemLocation("Vendor");
+                }
+            }
 
             return this;
         }
@@ -253,7 +253,7 @@ namespace Rawr
         static SortedList<string, string> _idToBossMap = new SortedList<string, string>();
         static SortedList<string, string> _bossToAreaMap = new SortedList<string, string>();
     }
-  
+
     [Serializable]
     public class FactionItem : ItemLocation
     {
@@ -281,9 +281,9 @@ namespace Rawr
             }
 
         }
-        public string FactionName {get;set;}
-        public ReputationLevel Level{get;set;}
-        public int Cost{get;set;}
+        public string FactionName { get; set; }
+        public ReputationLevel Level { get; set; }
+        public int Cost { get; set; }
         public SerializableDictionary<string, int> TokenMap
         {
             get
@@ -317,7 +317,7 @@ namespace Rawr
                         sb.AppendFormat("{0} [{1}] ", _tokenMap[key], key);
                     }
 
-                    if(Cost>0)
+                    if (Cost > 0)
                     {
                         return string.Format("Purchasable for {3}{2} and requires {0} - {1}", FactionName, Level.ToString(), CostString, sb.ToString());
 
@@ -351,9 +351,9 @@ namespace Rawr
             {
                 return QuestItem.Construct().Fill(node, itemId);
             }
-                
-                
-                
+
+
+
             subNode = doc.SelectSingleNode("/page/itemInfo/item/cost/@buyPrice");
 
             if (subNode != null)
@@ -369,12 +369,12 @@ namespace Rawr
             {
                 int Count = int.Parse(token.Attributes["count"].Value);
                 string id = token.Attributes["id"].Value;
-                if(!tokenIDMap.ContainsKey(id))
+                if (!tokenIDMap.ContainsKey(id))
                 {
                     WebRequestWrapper wrw2 = new WebRequestWrapper();
                     XmlDocument doc2 = wrw.DownloadItemInformation(int.Parse(id));
 
-                    tokenIDMap[id] =doc2.SelectSingleNode("/page/itemInfo/item/@name").InnerText;
+                    tokenIDMap[id] = doc2.SelectSingleNode("/page/itemInfo/item/@name").InnerText;
                 }
 
                 _tokenMap[tokenIDMap[id]] = Count;
@@ -382,7 +382,7 @@ namespace Rawr
 
 
             subNode = node.SelectSingleNode("/page/itemTooltips/itemTooltip/requiredFaction");
-            if(subNode != null)
+            if (subNode != null)
             {
                 FactionName = subNode.Attributes["name"].Value;
                 Level = (ReputationLevel)System.Enum.Parse(typeof(ReputationLevel), subNode.Attributes["rep"].Value);
@@ -396,14 +396,14 @@ namespace Rawr
             return item;
         }
     }
-   
+
     [Serializable]
     public class PvpItem : ItemLocation
     {
-        public string PointType{get;set;}
-        public int Points{get;set;}
-        public string TokenType{get;set;}
-        public int TokenCount{get;set;}
+        public string PointType { get; set; }
+        public int Points { get; set; }
+        public string TokenType { get; set; }
+        public int TokenCount { get; set; }
 
         public PvpItem()
         {
@@ -437,9 +437,9 @@ namespace Rawr
                 Points = int.Parse(subNode.InnerText);
                 PointType = "Honor";
                 subNode = doc.SelectSingleNode("/page/itemInfo/item/cost/token/@count");
-                if(subNode != null)
+                if (subNode != null)
                 {
-                    
+
                     TokenCount = int.Parse(subNode.InnerText);
                     TokenId = doc.SelectSingleNode("/page/itemInfo/item/cost/token").Attributes["id"].Value;
 
@@ -461,7 +461,7 @@ namespace Rawr
             else
             {
                 subNode = doc.SelectSingleNode("/page/itemInfo/item/cost/@arena");
-                if(subNode != null)
+                if (subNode != null)
                 {
                     Points = int.Parse(subNode.InnerText);
                     PointType = "Arena";
@@ -477,13 +477,13 @@ namespace Rawr
         }
         static SortedList<string, string> _tokenMap = new SortedList<string, string>();
     }
-   
+
     [Serializable]
     public class StaticDrop : ItemLocation
     {
-        public string Area{get;set;}
-        public bool Heroic{get;set;}
-        public string Boss{get;set;}
+        public string Area { get; set; }
+        public bool Heroic { get; set; }
+        public string Boss { get; set; }
 
         [XmlIgnore]
         public override string Description
@@ -512,7 +512,7 @@ namespace Rawr
             return item;
         }
     }
-   
+
     [Serializable]
     public class WorldDrop : ItemLocation
     {
@@ -522,14 +522,14 @@ namespace Rawr
         }
 
 
-        string Location{get;set;}
+        string Location { get; set; }
 
         [XmlIgnore]
         public override string Description
         {
             get
             {
-                if(Location != null)
+                if (Location != null)
                 {
                     return string.Format("Trash drop in {0}", Location);
                 }
@@ -544,7 +544,7 @@ namespace Rawr
             XmlDocument doc = wrw.DownloadItemInformation(int.Parse(itemId));
 
             XmlNode subNode = doc.SelectSingleNode("/page/itemInfo/item/dropCreatures/creature[1]/@area");
-            if(subNode != null)
+            if (subNode != null)
             {
                 Location = subNode.InnerText;
             }
@@ -571,7 +571,7 @@ namespace Rawr
         {
             get
             {
-                if(Skill == "Unknown")
+                if (Skill == "Unknown")
                 {
                     if (SpellName != null)
                     {
@@ -602,10 +602,10 @@ namespace Rawr
         }
 
 
-        public string Skill {get;set;}
-        public int Level {get;set;}
-        public BindsOn Bind {get;set;}
-        public string SpellName{get;set;}
+        public string Skill { get; set; }
+        public int Level { get; set; }
+        public BindsOn Bind { get; set; }
+        public string SpellName { get; set; }
 
 
         public SerializableDictionary<string, int> BopMats
@@ -629,12 +629,12 @@ namespace Rawr
 
             if (subNode != null)
             {
-                Bind = (BindsOn) Enum.Parse(typeof(BindsOn), node.SelectSingleNode("/page/itemTooltips/itemTooltip/bonding").InnerText);
+                Bind = (BindsOn)Enum.Parse(typeof(BindsOn), node.SelectSingleNode("/page/itemTooltips/itemTooltip/bonding").InnerText);
             }
             else
             {
                 subNode = doc.SelectSingleNode("/page/itemInfo/item");
-                if (subNode.Attributes["requiredSkill"]!= null)
+                if (subNode.Attributes["requiredSkill"] != null)
                 {
                     Bind = BindsOn.BoP;
                 }
@@ -648,7 +648,7 @@ namespace Rawr
                 Skill = subNode.Attributes["requiredSkill"].Value;
                 Level = int.Parse(subNode.Attributes["requiredSkillRank"].Value);
             }
-            else 
+            else
             {
                 Skill = "Unknown";
             }
@@ -660,7 +660,7 @@ namespace Rawr
             }
 
 
-            foreach(XmlNode reagent in doc.SelectNodes("/page/itemInfo/item/createdBy/spell/reagent"))
+            foreach (XmlNode reagent in doc.SelectNodes("/page/itemInfo/item/createdBy/spell/reagent"))
             {
                 string name = reagent.Attributes["name"].Value;
                 int count = int.Parse(reagent.Attributes["count"].Value);
@@ -669,7 +669,7 @@ namespace Rawr
                     wrw = new WebRequestWrapper();
                     doc = wrw.DownloadItemToolTipSheet(reagent.Attributes["id"].Value);
 
-                    _materialBindMap[name] = (BindsOn) Enum.Parse(typeof(BindsOn), doc.SelectSingleNode("/page/itemTooltips/itemTooltip/bonding").InnerText);
+                    _materialBindMap[name] = (BindsOn)Enum.Parse(typeof(BindsOn), doc.SelectSingleNode("/page/itemTooltips/itemTooltip/bonding").InnerText);
                 }
 
                 if (_materialBindMap[name] == BindsOn.BoP)
@@ -700,15 +700,15 @@ namespace Rawr
         {
             get
             {
-                return string.Format("Reward from [{0}{1}{2}] {3} in {4}", MinLevel, Party > 0 ? "g" : "", Party > 0 ? Party.ToString() : "", Quest, Area);                
+                return string.Format("Reward from [{0}{1}{2}] {3} in {4}", MinLevel, Party > 0 ? "g" : "", Party > 0 ? Party.ToString() : "", Quest, Area);
             }
         }
 
 
-        public String Area {get;set;}
-        public String Quest {get;set;}
-        public int MinLevel {get;set;}
-        public int Party {get;set;}
+        public String Area { get; set; }
+        public String Quest { get; set; }
+        public int MinLevel { get; set; }
+        public int Party { get; set; }
 
         public override ItemLocation Fill(XmlNode node, string itemId)
         {
@@ -797,7 +797,7 @@ namespace Rawr
         public static ItemLocation Lookup(string id)
         {
             ItemLocation item = null;
-            if(_allLocations.TryGetValue(id, out item))
+            if (_allLocations.TryGetValue(id, out item))
             {
                 return item;
             }
@@ -825,10 +825,10 @@ namespace Rawr
                 try
                 {
                     string xml = System.IO.File.ReadAllText(Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), fileName));
-                    
+
                     System.Xml.Serialization.XmlSerializer serializer = new System.Xml.Serialization.XmlSerializer(_allLocations.GetType());
                     System.IO.StringReader reader = new System.IO.StringReader(xml);
-                    sourceInfo = (SerializableDictionary<string, ItemLocation>) serializer.Deserialize(reader);
+                    sourceInfo = (SerializableDictionary<string, ItemLocation>)serializer.Deserialize(reader);
                     reader.Close();
                     _allLocations = sourceInfo;
                 }

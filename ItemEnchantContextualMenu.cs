@@ -1,46 +1,45 @@
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Windows.Forms;
 
 namespace Rawr
 {
-	public class ItemEnchantContextualMenu : ContextMenuStrip
-	{
-		private static ItemEnchantContextualMenu _instance = null;
-		public static ItemEnchantContextualMenu Instance
-		{
-			get
-			{
-				if (_instance == null)
-				{
-					_instance = new ItemEnchantContextualMenu();
-				}
-				return _instance;
-			}
-		}
+    public class ItemEnchantContextualMenu : ContextMenuStrip
+    {
+        private static ItemEnchantContextualMenu _instance = null;
+        public static ItemEnchantContextualMenu Instance
+        {
+            get
+            {
+                if (_instance == null)
+                {
+                    _instance = new ItemEnchantContextualMenu();
+                }
+                return _instance;
+            }
+        }
 
-		private Character _character;
-		public Character Character
-		{
-			get { return _character; }
-			set { _character = value; }
-		}
+        private Character _character;
+        public Character Character
+        {
+            get { return _character; }
+            set { _character = value; }
+        }
 
-		private Item _item;
-		private ToolStripMenuItem _menuItemName;
+        private Item _item;
+        private ToolStripMenuItem _menuItemName;
         public ItemEnchantContextualMenu()
-		{
-			_menuItemName = new ToolStripMenuItem();
-			_menuItemName.Enabled = false;
+        {
+            _menuItemName = new ToolStripMenuItem();
+            _menuItemName.Enabled = false;
 
             ToolStripMenuItem _menuItemAny = new ToolStripMenuItem("Any");
             _menuItemAny.Click += new EventHandler(_menuItem_Click);
 
-			this.Items.Add(_menuItemName);
-			this.Items.Add(new ToolStripSeparator());
+            this.Items.Add(_menuItemName);
+            this.Items.Add(new ToolStripSeparator());
             this.Items.Add(_menuItemAny);
-		}
+        }
 
         void _menuItem_Click(object sender, EventArgs e)
         {
@@ -49,10 +48,10 @@ namespace Rawr
             Character.ToggleAvailableItemEnchantRestriction(_item, enchant);
         }
 
-		public void Show(Item item)
-		{
-			_item = item;
-			_menuItemName.Text = item.Name;
+        public void Show(Item item)
+        {
+            _item = item;
+            _menuItemName.Text = item.Name;
             Character.ItemAvailability availability = Character.GetItemAvailability(_item);
             string gemmedId = string.Empty;
             bool allEnabled = false;
@@ -96,7 +95,7 @@ namespace Rawr
                 Items[i].Visible = false;
             }
 
-			this.Show(Control.MousePosition);
-		}
-	}
+            this.Show(Control.MousePosition);
+        }
+    }
 }

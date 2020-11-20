@@ -2,32 +2,31 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Xml;
-using System.Reflection;
 
 namespace Rawr.Warlock
 {
     public enum FillerSpell
     {
-        Shadowbolt, 
+        Shadowbolt,
         Incinerate
     }
 
     public enum CastedCurse
     {
-        CurseOfAgony, 
-        CurseOfDoom, 
-        CurseOfTheElements, 
-        CurseOfShadow, 
+        CurseOfAgony,
+        CurseOfDoom,
+        CurseOfTheElements,
+        CurseOfShadow,
         CurseOfRecklessness,
-        CurseOfWeakness, 
+        CurseOfWeakness,
         CurseOfTongues
     }
 
     public enum Pet
     {
         Succubus,
-        Felhunter, 
-        Imp, 
+        Felhunter,
+        Imp,
         Voidwalker,
         Felguard
     }
@@ -156,7 +155,7 @@ namespace Rawr.Warlock
         public int NetherProtection { get; set; }
         public int Shadowfury { get; set; }
 
-        private CalculationOptionsWarlock() 
+        private CalculationOptionsWarlock()
         {
             for (int i = 0; i < 5; i++)
             {
@@ -297,7 +296,7 @@ namespace Rawr.Warlock
         {
             Type t = typeof(CalculationOptionsWarlock);
             t.GetProperty(name).SetValue(this, value, null);
-        } 
+        }
     }
 
     public class CharacterCalculationsWarlock : CharacterCalculationsBase
@@ -369,7 +368,7 @@ namespace Rawr.Warlock
         public override Dictionary<string, string> GetCharacterDisplayCalculationValues()
         {
             CalculationsWarlock cw = new CalculationsWarlock();
-            
+
             Dictionary<string, string> vals = new Dictionary<string, string>();
             vals.Add("Health", BasicStats.Health.ToString());
             vals.Add("Mana", BasicStats.Mana.ToString());
@@ -384,7 +383,7 @@ namespace Rawr.Warlock
             vals.Add("RDPS from ISB", Math.Round(RaidDpsFromIsb).ToString());
             vals.Add("Total Damage", TotalDamage.ToString());
             vals.Add("DPS", Math.Round(DpsRating).ToString());
-            
+
             //vals.Add("Casting Speed", (1f / (TotalStats.SpellHasteRating / 1570f + 1f)).ToString());
             //vals.Add("Shadow Damage", (TotalStats.SpellShadowDamageRating + TotalStats.SpellDamageRating).ToString());
             //vals.Add("Fire Damage", (TotalStats.SpellFireDamageRating + TotalStats.SpellDamageRating).ToString());
@@ -521,7 +520,7 @@ namespace Rawr.Warlock
             //}
             //vals.Add("#Lifetaps", NumLifetaps.ToString());
             //vals.Add("Mana Per LT", LifetapManaReturn.ToString());
-            
+
             return vals;
         }
     }

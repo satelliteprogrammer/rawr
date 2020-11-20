@@ -1936,7 +1936,7 @@ namespace Rawr.Mage.SequenceReconstruction
             bool[] gemPotOrder = gemPotList.ToArray();
             int[] gemPotSeg = gemPotSegList.ToArray();
             Array.Sort<int, bool>(gemPotSeg, gemPotOrder);
-            int gemPotIndex = 0;*/            
+            int gemPotIndex = 0;*/
             double potTime = RemoveIndex(VariableType.ManaPotion);
             double gemTime = RemoveIndex(VariableType.ManaGem);
             double evoTime = RemoveIndex(VariableType.Evocation);

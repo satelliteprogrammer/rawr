@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Rawr.Mage
 {
@@ -45,7 +44,7 @@ namespace Rawr.Mage
         private bool flameCapAvailable;
 
         private double waterElementalCooldown;
-      
+
         private bool trinket1OnManaGem;
         private bool trinket2OnManaGem;
         private double trinket1Cooldown;
@@ -820,7 +819,7 @@ namespace Rawr.Mage
                     for (int i = 0; i < stateList.Count; i++)
                     {
                         if (stateList[i].IncrementalSetIndex == 4 && !stateList[i].Trinket1 && !stateList[i].Trinket2)
-                        {                            
+                        {
                             drumsStates.Add(stateList[i]);
                             found = true;
                             break;
@@ -1043,7 +1042,7 @@ namespace Rawr.Mage
                                 int seg = calculationOptions.IncrementalSetSegments[index];
                                 if (seg != lastSegment)
                                 {
-                                    for (; lastSegment < seg; )
+                                    for (; lastSegment < seg;)
                                     {
                                         segmentColumn[++lastSegment] = column;
                                     }
@@ -1053,7 +1052,7 @@ namespace Rawr.Mage
                             }
                         }
                     }
-                    for (; lastSegment < segments; )
+                    for (; lastSegment < segments;)
                     {
                         segmentColumn[++lastSegment] = column + 1;
                     }
@@ -1817,7 +1816,7 @@ namespace Rawr.Mage
                 }
                 if (state.DestructionPotion)
                 {
-                    bound = Math.Min(bound, 15.0); 
+                    bound = Math.Min(bound, 15.0);
                     for (int ss = 0; ss < segments; ss++)
                     {
                         double cool = 120;

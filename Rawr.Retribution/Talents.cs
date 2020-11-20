@@ -1,10 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 
 namespace Rawr.Retribution
@@ -14,7 +8,7 @@ namespace Rawr.Retribution
         public Talents(CalculationOptionsPanelRetribution retCalcOptsPanel)
         {
             this.calcOptionsPanel = retCalcOptsPanel;
-            InitializeComponent();            
+            InitializeComponent();
         }
         private CalculationOptionsPanelRetribution calcOptionsPanel;
 
@@ -28,10 +22,10 @@ namespace Rawr.Retribution
 
         private void Talents_Load(object sender, EventArgs e)
         {
-			CalculationOptionsRetribution calcOpts = Character.CalculationOptions as CalculationOptionsRetribution;
+            CalculationOptionsRetribution calcOpts = Character.CalculationOptions as CalculationOptionsRetribution;
             if (calcOpts.TalentsSaved)
             {
-				comboBoxTwoHandedSpec.SelectedItem = calcOpts.TwoHandedSpec.ToString();
+                comboBoxTwoHandedSpec.SelectedItem = calcOpts.TwoHandedSpec.ToString();
                 comboBoxConviction.SelectedItem = calcOpts.Conviction.ToString();
                 comboBoxCrusade.SelectedItem = calcOpts.Crusade.ToString();
                 comboBoxDivineStrength.SelectedItem = calcOpts.DivineStrength.ToString();
@@ -41,7 +35,7 @@ namespace Rawr.Retribution
                 comboBoxSanctityAura.SelectedItem = calcOpts.SanctityAura.ToString();
                 comboBoxSanctifiedSeals.SelectedItem = calcOpts.SanctifiedSeals.ToString();
                 comboBoxVengeance.SelectedItem = calcOpts.Vengeance.ToString();
-                               
+
             }
         }
 
@@ -49,9 +43,9 @@ namespace Rawr.Retribution
         {
             ComboBox cb = (ComboBox)sender;
             string talent = cb.Name.Substring(8);
-			CalculationOptionsRetribution calcOpts = Character.CalculationOptions as CalculationOptionsRetribution;
+            CalculationOptionsRetribution calcOpts = Character.CalculationOptions as CalculationOptionsRetribution;
             switch (talent)
-			{
+            {
                 case "TwoHandedSpec": calcOpts.TwoHandedSpec = cb.SelectedIndex; break;// int.Parse(cb.SelectedItem.ToString()); break;
                 case "Conviction": calcOpts.Conviction = cb.SelectedIndex; break;
                 case "Crusade": calcOpts.Crusade = cb.SelectedIndex; break;
@@ -62,9 +56,9 @@ namespace Rawr.Retribution
                 case "SanctityAura": calcOpts.SanctityAura = cb.SelectedIndex; break;
                 case "SanctifiedSeals": calcOpts.SanctifiedSeals = cb.SelectedIndex; break;
                 case "Vengeance": calcOpts.Vengeance = cb.SelectedIndex; break;
-			}
+            }
             Character.OnItemsChanged();
-			calcOpts.TalentsSaved = true;
+            calcOpts.TalentsSaved = true;
         }
     }
 }

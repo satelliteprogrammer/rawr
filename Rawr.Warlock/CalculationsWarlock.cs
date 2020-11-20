@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace Rawr.Warlock
 {
-	[System.ComponentModel.DisplayName("Warlock|Spell_Nature_FaerieFire")]
+    [System.ComponentModel.DisplayName("Warlock|Spell_Nature_FaerieFire")]
     class CalculationsWarlock : CalculationsBase
     {
         private Dictionary<string, System.Drawing.Color> _subPointNameColors = null;
@@ -20,15 +18,16 @@ namespace Rawr.Warlock
         /// </summary>
         public override Dictionary<string, System.Drawing.Color> SubPointNameColors
         {
-            get {
-                
+            get
+            {
+
                 if (_subPointNameColors == null)
                 {
                     _subPointNameColors = new Dictionary<string, System.Drawing.Color>();
                     _subPointNameColors.Add("DPS", System.Drawing.Color.Blue);
                 }
                 return _subPointNameColors;
-                }
+            }
         }
 
 
@@ -52,7 +51,7 @@ namespace Rawr.Warlock
         /// </summary>
         public override string[] CharacterDisplayCalculationLabels
         {
-            get 
+            get
             {
                 if (_characterDisplayCalculationLabels == null)
                 {
@@ -68,9 +67,9 @@ namespace Rawr.Warlock
                         //"Spell Stats:Casting Speed",
                         "Spell Stats:Shadow Damage*Includes trinket and proc effects",
                         "Spell Stats:Fire Damage*Includes trinket and proc effects",
-                        "Overall Stats:ISB Uptime", 
-                        "Overall Stats:RDPS from ISB*Raid DPS loss from switching to Fire", 
-                        "Overall Stats:Total Damage", 
+                        "Overall Stats:ISB Uptime",
+                        "Overall Stats:RDPS from ISB*Raid DPS loss from switching to Fire",
+                        "Overall Stats:Total Damage",
                         "Overall Stats:DPS",
                         //"Shadowbolt Stats:SB Min Hit",
                         //"Shadowbolt Stats:SB Max Hit",
@@ -112,7 +111,7 @@ namespace Rawr.Warlock
                         //"Lifetap Stats:Mana Per LT"
 
                     });
-                    _characterDisplayCalculationLabels = labels.ToArray();   
+                    _characterDisplayCalculationLabels = labels.ToArray();
                 }
                 return _characterDisplayCalculationLabels;
             }
@@ -121,7 +120,7 @@ namespace Rawr.Warlock
         private string[] _customChartNames = null;
         public override string[] CustomChartNames
         {
-            get 
+            get
             {
                 if (_customChartNames == null)
                     _customChartNames = new string[] { "Stats vs Spell Damage", "Stats (Item Budget)", "Talent Specs" };
@@ -144,21 +143,21 @@ namespace Rawr.Warlock
                 if (_relevantItemTypes == null)
                 {
                     _relevantItemTypes = new List<Item.ItemType>(new Item.ItemType[]
-					{
-						Item.ItemType.None,
-						Item.ItemType.Cloth,
-						Item.ItemType.Dagger,
-						Item.ItemType.OneHandSword,
-						Item.ItemType.Staff,
-						Item.ItemType.Wand,
-					});
+                    {
+                        Item.ItemType.None,
+                        Item.ItemType.Cloth,
+                        Item.ItemType.Dagger,
+                        Item.ItemType.OneHandSword,
+                        Item.ItemType.Staff,
+                        Item.ItemType.Wand,
+                    });
                 }
                 return _relevantItemTypes;
             }
         }
 
-		public override Character.CharacterClass TargetClass { get { return Character.CharacterClass.Warlock; } }
-		public override ComparisonCalculationBase CreateNewComparisonCalculation()
+        public override Character.CharacterClass TargetClass { get { return Character.CharacterClass.Warlock; } }
+        public override ComparisonCalculationBase CreateNewComparisonCalculation()
         {
             return new ComparisonCalculationWarlock();
         }
@@ -169,14 +168,14 @@ namespace Rawr.Warlock
         }
 
 
-		public override ICalculationOptionBase DeserializeDataObject(string xml)
-		{
-			System.Xml.Serialization.XmlSerializer serializer =
-				new System.Xml.Serialization.XmlSerializer(typeof(CalculationOptionsWarlock));
-			System.IO.StringReader reader = new System.IO.StringReader(xml);
-			CalculationOptionsWarlock calcOpts = serializer.Deserialize(reader) as CalculationOptionsWarlock;
-			return calcOpts;
-		}
+        public override ICalculationOptionBase DeserializeDataObject(string xml)
+        {
+            System.Xml.Serialization.XmlSerializer serializer =
+                new System.Xml.Serialization.XmlSerializer(typeof(CalculationOptionsWarlock));
+            System.IO.StringReader reader = new System.IO.StringReader(xml);
+            CalculationOptionsWarlock calcOpts = serializer.Deserialize(reader) as CalculationOptionsWarlock;
+            return calcOpts;
+        }
 
         public static float ChanceToHit(float targetLevel, float hitPercent)
         {
@@ -278,7 +277,7 @@ namespace Rawr.Warlock
                     break;
                 case "Ruin Affliction (40/0/21)":
                     talentCode = "0502210502035105510300000000000000000000000505000512200010000000";
-                    if(options != null)
+                    if (options != null)
                     {
                         options.CastUnstableAffliction = false;
                         options.CastCorruption = true;
@@ -319,7 +318,7 @@ namespace Rawr.Warlock
 
             LoadTalentCode(character, talentCode);
         }
-        
+
         /// <summary>
         /// GetCharacterCalculations is the primary method of each model, where a majority of the calculations
         /// and formulae will be used. GetCharacterCalculations should call GetCharacterStats(), and based on
@@ -339,7 +338,7 @@ namespace Rawr.Warlock
         {
             CharacterCalculationsWarlock calculations = new CharacterCalculationsWarlock();
             calculations.BasicStats = GetCharacterStats(character, additionalItem);
-			calculations.CalculationOptions = character.CalculationOptions as CalculationOptionsWarlock;
+            calculations.CalculationOptions = character.CalculationOptions as CalculationOptionsWarlock;
 
             int targetLevel = calculations.CalculationOptions.TargetLevel;
             calculations.HitPercent = calculations.BasicStats.SpellHitRating / 12.62f;
@@ -365,7 +364,7 @@ namespace Rawr.Warlock
 
             //Spellstrike 2 piece bonus
             totalStats.SpellDamageRating += totalStats.SpellDamageFor10SecOnHit_5 * (1 - (float)Math.Pow(0.95, 10 * calculations.SpellRotation.SpellsPerSecond));
-            
+
             //Quagmirran's Eye
             totalStats.HasteRating += totalStats.SpellHasteFor6SecOnHit_10_45 * 6 / (45 + 9 / calculations.SpellRotation.SpellsPerSecond);
 
@@ -442,7 +441,7 @@ namespace Rawr.Warlock
                         Intellect = 135f,
                         Spirit = 145,
                         ArcaneResistance = 10,
-                        BonusIntellectMultiplier = .05f 
+                        BonusIntellectMultiplier = .05f
                     };
                     break;
                 case Character.CharacterRace.Human:
@@ -495,13 +494,13 @@ namespace Rawr.Warlock
 
             Stats statsTotal = statsGearEnchantsBuffs + statsRace;
 
-			statsTotal.NatureResistance = statsGearEnchantsBuffs.NatureResistance + statsRace.NatureResistance + statsGearEnchantsBuffs.NatureResistanceBuff;
-			statsTotal.FireResistance = statsGearEnchantsBuffs.FireResistance + statsRace.FireResistance + statsGearEnchantsBuffs.FireResistanceBuff;
-			statsTotal.FrostResistance = statsGearEnchantsBuffs.FrostResistance + statsRace.FrostResistance + statsGearEnchantsBuffs.FrostResistanceBuff;
-			statsTotal.ShadowResistance = statsGearEnchantsBuffs.ShadowResistance + statsRace.ShadowResistance + statsGearEnchantsBuffs.ShadowResistanceBuff;
-			statsTotal.ArcaneResistance = statsGearEnchantsBuffs.ArcaneResistance + statsRace.ArcaneResistance + statsGearEnchantsBuffs.ArcaneResistanceBuff;
-			statsTotal.AllResist = statsGearEnchantsBuffs.AllResist + statsRace.AllResist;
-            
+            statsTotal.NatureResistance = statsGearEnchantsBuffs.NatureResistance + statsRace.NatureResistance + statsGearEnchantsBuffs.NatureResistanceBuff;
+            statsTotal.FireResistance = statsGearEnchantsBuffs.FireResistance + statsRace.FireResistance + statsGearEnchantsBuffs.FireResistanceBuff;
+            statsTotal.FrostResistance = statsGearEnchantsBuffs.FrostResistance + statsRace.FrostResistance + statsGearEnchantsBuffs.FrostResistanceBuff;
+            statsTotal.ShadowResistance = statsGearEnchantsBuffs.ShadowResistance + statsRace.ShadowResistance + statsGearEnchantsBuffs.ShadowResistanceBuff;
+            statsTotal.ArcaneResistance = statsGearEnchantsBuffs.ArcaneResistance + statsRace.ArcaneResistance + statsGearEnchantsBuffs.ArcaneResistanceBuff;
+            statsTotal.AllResist = statsGearEnchantsBuffs.AllResist + statsRace.AllResist;
+
 
             statsTotal.BonusSpellPowerMultiplier += 1;
             statsTotal.BonusShadowSpellPowerMultiplier += 1;
@@ -512,10 +511,10 @@ namespace Rawr.Warlock
 
             //agility
             statsTotal.Agility = (float)Math.Floor((Math.Floor(statsRace.Agility * (1 + statsRace.BonusAgilityMultiplier)) + statsGearEnchantsBuffs.Agility * (1 + statsRace.BonusAgilityMultiplier)) * (1 + statsGearEnchantsBuffs.BonusAgilityMultiplier));
-            
+
             //intellect
             statsTotal.Intellect = (float)Math.Floor((Math.Floor(statsRace.Intellect * (1 + statsRace.BonusIntellectMultiplier)) + statsGearEnchantsBuffs.Intellect * (1 + statsRace.BonusIntellectMultiplier)) * (1 + statsGearEnchantsBuffs.BonusIntellectMultiplier));
-            
+
             //stamina
             statsTotal.Stamina = (float)Math.Floor((Math.Floor(statsRace.Stamina * (1 + statsRace.BonusStaminaMultiplier)) + statsGearEnchantsBuffs.Stamina * (1 + statsRace.BonusStaminaMultiplier)) * (1 + statsGearEnchantsBuffs.BonusStaminaMultiplier));
             statsTotal.Stamina = (float)Math.Floor(statsTotal.Stamina * (1 + 0.03f * options.DemonicEmbrace));
@@ -550,7 +549,7 @@ namespace Rawr.Warlock
             statsTotal.Mana = (float)Math.Round(statsTotal.Mana * (1 + 0.01f * options.FelIntellect));
 
             //armor
-            statsTotal.Armor = (float)Math.Round(statsGearEnchantsBuffs.Armor + statsTotal.Agility * 2);           
+            statsTotal.Armor = (float)Math.Round(statsGearEnchantsBuffs.Armor + statsTotal.Agility * 2);
 
             if (!options.PetSacrificed)
             {
@@ -602,7 +601,7 @@ namespace Rawr.Warlock
 
             //Soul Link
             statsTotal.BonusSpellPowerMultiplier *= 1 + options.SoulLink * 0.05f;
-            
+
             //Demonic Knowledge
             //TODO: Add pet stats and make Demonic Knowledge model correctly
             //int demonicKnowledge = tree.GetTalent("DemonicKnowledge").PointsInvested;
@@ -626,23 +625,23 @@ namespace Rawr.Warlock
             switch (chartName)
             {
                 case "Stats vs Spell Damage":
-                    itemList = new Item[] 
+                    itemList = new Item[]
                     {
                         new Item() { Stats = new Stats() { SpellDamageRating = 1 } },
-                        new Item() { Stats = new Stats() { SpellShadowDamageRating = 1 } }, 
-                        new Item() { Stats = new Stats() { SpellFireDamageRating = 1 } }, 
+                        new Item() { Stats = new Stats() { SpellShadowDamageRating = 1 } },
+                        new Item() { Stats = new Stats() { SpellFireDamageRating = 1 } },
                         new Item() { Stats = new Stats() { SpellCritRating = 1 } },
                         new Item() { Stats = new Stats() { SpellHasteRating = 1 } },
                         new Item() { Stats = new Stats() { SpellHitRating = 1 } },
                         new Item() { Stats = new Stats() { Mp5 = 1 } }
                     };
-                    statList = new string[] 
+                    statList = new string[]
                     {
-                        "1 Spell Damage", 
-                        "1 Shadow Damage", 
-                        "1 Fire Damage", 
-                        "1 Spell Crit Rating", 
-                        "1 Spell Haste Rating", 
+                        "1 Spell Damage",
+                        "1 Shadow Damage",
+                        "1 Fire Damage",
+                        "1 Spell Crit Rating",
+                        "1 Spell Haste Rating",
                         "1 Spell Hit Rating",
                         "1 Mana per 5 sec"
                     };
@@ -683,23 +682,23 @@ namespace Rawr.Warlock
 
                     return comparisonList.ToArray();
                 case "Stats (Item Budget)":
-                    itemList = new Item[] 
+                    itemList = new Item[]
                     {
                         new Item() { Stats = new Stats() { SpellDamageRating = 11.7f } },
-                        new Item() { Stats = new Stats() { SpellShadowDamageRating = 14.3f } }, 
-                        new Item() { Stats = new Stats() { SpellFireDamageRating = 14.3f } }, 
+                        new Item() { Stats = new Stats() { SpellShadowDamageRating = 14.3f } },
+                        new Item() { Stats = new Stats() { SpellFireDamageRating = 14.3f } },
                         new Item() { Stats = new Stats() { SpellCritRating = 10 } },
                         new Item() { Stats = new Stats() { SpellHasteRating = 10 } },
                         new Item() { Stats = new Stats() { SpellHitRating = 10 } },
                         new Item() { Stats = new Stats() { Mp5 = 4 } }
                     };
-                    statList = new string[] 
+                    statList = new string[]
                     {
-                        "11.7 Spell Damage", 
-                        "14.3 Shadow Damage", 
-                        "14.3 Fire Damage", 
-                        "10 Spell Crit Rating", 
-                        "10 Spell Haste Rating", 
+                        "11.7 Spell Damage",
+                        "14.3 Shadow Damage",
+                        "14.3 Fire Damage",
+                        "10 Spell Crit Rating",
+                        "10 Spell Haste Rating",
                         "10 Spell Hit Rating",
                         "4 Mana per 5 sec"
                     };
@@ -780,12 +779,12 @@ namespace Rawr.Warlock
                 FireResistance = stats.FireResistance,
                 FrostResistance = stats.FrostResistance,
                 NatureResistance = stats.NatureResistance,
-				ShadowResistance = stats.ShadowResistance,
-				ArcaneResistanceBuff = stats.ArcaneResistanceBuff,
-				NatureResistanceBuff = stats.NatureResistanceBuff,
-				FireResistanceBuff = stats.FireResistanceBuff,
-				FrostResistanceBuff = stats.FrostResistanceBuff,
-				ShadowResistanceBuff = stats.ShadowResistanceBuff,
+                ShadowResistance = stats.ShadowResistance,
+                ArcaneResistanceBuff = stats.ArcaneResistanceBuff,
+                NatureResistanceBuff = stats.NatureResistanceBuff,
+                FireResistanceBuff = stats.FireResistanceBuff,
+                FrostResistanceBuff = stats.FrostResistanceBuff,
+                ShadowResistanceBuff = stats.ShadowResistanceBuff,
                 Stamina = stats.Stamina,
                 Intellect = stats.Intellect,
                 Spirit = stats.Spirit,
@@ -811,13 +810,13 @@ namespace Rawr.Warlock
                 Armor = stats.Armor,
                 Hp5 = stats.Hp5,
                 SpellCombatManaRegeneration = stats.SpellCombatManaRegeneration,
-                BonusShadowSpellPowerMultiplier = stats.BonusAgilityMultiplier, 
+                BonusShadowSpellPowerMultiplier = stats.BonusAgilityMultiplier,
                 BonusArcaneSpellPowerMultiplier = stats.BonusArcaneSpellPowerMultiplier,
                 BonusFireSpellPowerMultiplier = stats.BonusFireSpellPowerMultiplier,
                 BonusFrostSpellPowerMultiplier = stats.BonusFrostSpellPowerMultiplier,
-                BonusWarlockNukeMultiplier = stats.BonusWarlockNukeMultiplier, 
+                BonusWarlockNukeMultiplier = stats.BonusWarlockNukeMultiplier,
                 LightningCapacitorProc = stats.LightningCapacitorProc,
-                TimbalsProc = stats.TimbalsProc, 
+                TimbalsProc = stats.TimbalsProc,
                 SpellDamageFor20SecOnUse2Min = stats.SpellDamageFor20SecOnUse2Min,
                 SpellHasteFor20SecOnUse2Min = stats.SpellHasteFor20SecOnUse2Min,
                 Mp5OnCastFor20SecOnUse2Min = stats.Mp5OnCastFor20SecOnUse2Min,
@@ -829,7 +828,7 @@ namespace Rawr.Warlock
                 SpellDamageFor10SecOnResist = stats.SpellDamageFor10SecOnResist,
                 SpellDamageFor15SecOnCrit_20_45 = stats.SpellDamageFor15SecOnCrit_20_45,
                 SpellDamageFor15SecOnUse90Sec = stats.SpellDamageFor15SecOnUse90Sec,
-                SpellDamageFor15SecOnUse2Min = stats.SpellDamageFor15SecOnUse2Min, 
+                SpellDamageFor15SecOnUse2Min = stats.SpellDamageFor15SecOnUse2Min,
                 SpellHasteFor6SecOnCast_15_45 = stats.SpellHasteFor6SecOnCast_15_45,
                 SpellDamageFor10SecOnHit_5 = stats.SpellDamageFor10SecOnHit_5,
                 SpellHasteFor6SecOnHit_10_45 = stats.SpellHasteFor6SecOnHit_10_45,
@@ -886,16 +885,16 @@ namespace Rawr.Warlock
                 + stats.FireResistance
                 + stats.FrostResistance
                 + stats.NatureResistance
-				+ stats.ShadowResistance
-				+ stats.ArcaneResistanceBuff
-				+ stats.FireResistanceBuff
-				+ stats.FrostResistanceBuff
-				+ stats.NatureResistanceBuff
-				+ stats.ShadowResistanceBuff
+                + stats.ShadowResistance
+                + stats.ArcaneResistanceBuff
+                + stats.FireResistanceBuff
+                + stats.FrostResistanceBuff
+                + stats.NatureResistanceBuff
+                + stats.ShadowResistanceBuff
                 + stats.Bloodlust
                 + stats.DrumsOfBattle
-                + stats.DrumsOfWar; 
-            
+                + stats.DrumsOfWar;
+
             return warlockStats > 0;
         }
     }

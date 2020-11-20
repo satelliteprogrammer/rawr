@@ -1,22 +1,17 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Data;
 using System.Text;
-using System.Windows.Forms;
 
 namespace Rawr.Tankadin
 {
-    public partial class CalculationOptionsPanelTankadin  : CalculationOptionsPanelBase
-	{
+    public partial class CalculationOptionsPanelTankadin : CalculationOptionsPanelBase
+    {
 
         private bool _loadingCalculationOptions;
 
-		public CalculationOptionsPanelTankadin()
-		{
-			InitializeComponent();
-		}
+        public CalculationOptionsPanelTankadin()
+        {
+            InitializeComponent();
+        }
 
         protected override void LoadCalculationOptions()
         {
@@ -25,7 +20,7 @@ namespace Rawr.Tankadin
                 Character.CalculationOptions = new CalculationOptionsTankadin();
 
             CalculationOptionsTankadin calcOpts = Character.CalculationOptions as CalculationOptionsTankadin;
-            cmbTargetLevel.SelectedIndex = calcOpts.TargetLevel-70;
+            cmbTargetLevel.SelectedIndex = calcOpts.TargetLevel - 70;
             nubAtkSpeed.Value = (decimal)calcOpts.AttackSpeed;
             nubAttackers.Value = (decimal)calcOpts.NumberAttackers;
             trackBarBossAttackValue.Value = calcOpts.AverageHit;

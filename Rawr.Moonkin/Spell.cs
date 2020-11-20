@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace Rawr.Moonkin
 {
@@ -268,16 +266,16 @@ namespace Rawr.Moonkin
         {
             name = "MF";
             baseDamage = (305.0f + 357.0f) / 2.0f;
-            spellDamageMultiplier = (1.5f/3.5f) * (baseDamage / (baseDamage + 150.0f*4.0f));
+            spellDamageMultiplier = (1.5f / 3.5f) * (baseDamage / (baseDamage + 150.0f * 4.0f));
             baseCastTime = Spell.GlobalCooldown;
             manaCost = 495.0f;
             dotEffect = new DotEffect()
-                {
-                    Duration = 12.0f,
-                    TickDuration = 3.0f,
-                    DamagePerTick = 150.0f,
-                    SpellDamageMultiplier = (12.0f/15.0f) * (150.0f*4.0f / (baseDamage + 150.0f*4.0f))
-                };
+            {
+                Duration = 12.0f,
+                TickDuration = 3.0f,
+                DamagePerTick = 150.0f,
+                SpellDamageMultiplier = (12.0f / 15.0f) * (150.0f * 4.0f / (baseDamage + 150.0f * 4.0f))
+            };
             school = SpellSchool.Arcane;
         }
         public override float DPS(float spellDamage, float hitRate, float critRate, float hasteRating, bool naturesGrace, float latency)
@@ -304,7 +302,7 @@ namespace Rawr.Moonkin
         {
             name = "W";
             baseDamage = (381.0f + 429.0f) / 2.0f;
-            spellDamageMultiplier = 2.0f/3.5f;
+            spellDamageMultiplier = 2.0f / 3.5f;
             baseCastTime = 2.0f;
             manaCost = 255.0f;
             dotEffect = null;
@@ -402,7 +400,7 @@ namespace Rawr.Moonkin
             float accumulatedDamage = 0.0f;
             float accumulatedManaUsed = 0.0f;
             float accumulatedDuration = 0.0f;
-            Dictionary<float, float> activeDots = new Dictionary<float,float>();
+            Dictionary<float, float> activeDots = new Dictionary<float, float>();
             // Handle case where two non-DoT spells are cast (DoTs should not fall off before last spell cast)
             bool has1NonDot = false;
             float lastSpellCastTime = 0.0f;
@@ -473,7 +471,7 @@ namespace Rawr.Moonkin
                 // Prevent double-counting of DoT spells
                 if (sp.DoT == null)
                 {
-                    accumulatedDamage += (currentSpellDPS * timeSpentCastingIn4T5 * (1+T54pcBonus)) + (currentSpellDPS * (timeSpentCasting - timeSpentCastingIn4T5));
+                    accumulatedDamage += (currentSpellDPS * timeSpentCastingIn4T5 * (1 + T54pcBonus)) + (currentSpellDPS * (timeSpentCasting - timeSpentCastingIn4T5));
                 }
                 accumulatedManaUsed += sp.ManaCost * numberOfCasts;
                 accumulatedDuration += sp.CastTime * numberOfCasts;
@@ -650,7 +648,7 @@ namespace Rawr.Moonkin
             // Mana/5 calculations
             float totalManaRegen = calcs.ManaRegen5SR * fightLength;
 
-			CalculationOptionsMoonkin calcOpts = character.CalculationOptions as CalculationOptionsMoonkin;
+            CalculationOptionsMoonkin calcOpts = character.CalculationOptions as CalculationOptionsMoonkin;
             // Mana pot calculations
             float manaPotDelay = calcOpts.ManaPotDelay * 60.0f;
             int numPots = calcOpts.ManaPots && fightLength - manaPotDelay > 0 ? ((int)(fightLength - manaPotDelay) / 120 + 1) : 0;
@@ -706,7 +704,7 @@ namespace Rawr.Moonkin
         private static void UpdateSpells(Character character, ref CharacterCalculationsMoonkin calcs)
         {
             Stats stats = calcs.BasicStats;
-			CalculationOptionsMoonkin calcOpts = character.CalculationOptions as CalculationOptionsMoonkin;
+            CalculationOptionsMoonkin calcOpts = character.CalculationOptions as CalculationOptionsMoonkin;
             // Add (possibly talented) +spelldmg
             // Starfire: Damage +(0.04 * Wrath of Cenarius)
             // Wrath: Damage +(0.02 * Wrath of Cenarius)
@@ -776,8 +774,8 @@ namespace Rawr.Moonkin
             // Try to reset the cached results dictionary on each call
             cachedResults = new Dictionary<string, RotationData>();
             float effectiveSpellHit = calcs.BasicStats.SpellHitRating;
-			CalculationOptionsMoonkin calcOpts = character.CalculationOptions as CalculationOptionsMoonkin;
-			bool naturesGrace = calcOpts.NaturesGrace > 0 ? true : false;
+            CalculationOptionsMoonkin calcOpts = character.CalculationOptions as CalculationOptionsMoonkin;
+            bool naturesGrace = calcOpts.NaturesGrace > 0 ? true : false;
             float fightLength = calcs.FightLength * 60.0f;
 
             float baseHitRate = 0.83f;
@@ -968,8 +966,8 @@ namespace Rawr.Moonkin
             {
                 float procsPerRotation = 0.05f * hitRate * rotation.CastCount;
                 float timeBetweenProcs = rotation.Duration / procsPerRotation;
-                effectiveArcaneDamage += calcs.BasicStats.SpellDamageFor10SecOnHit_5  * 10.0f / timeBetweenProcs;
-                effectiveNatureDamage += calcs.BasicStats.SpellDamageFor10SecOnHit_5  * 10.0f / timeBetweenProcs;
+                effectiveArcaneDamage += calcs.BasicStats.SpellDamageFor10SecOnHit_5 * 10.0f / timeBetweenProcs;
+                effectiveNatureDamage += calcs.BasicStats.SpellDamageFor10SecOnHit_5 * 10.0f / timeBetweenProcs;
             }
             // 10% chance of spell damage on hit, 45 second cooldown.
             if (calcs.BasicStats.SpellDamageFor10SecOnHit_10_45 > 0)

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Rawr.Warlock
+﻿namespace Rawr.Warlock
 {
     class ComparisonCalculationWarlock : ComparisonCalculationBase
     {

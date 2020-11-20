@@ -1,29 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Data;
-using System.Text;
 using System.Windows.Forms;
-using System.Globalization;
 
 namespace Rawr.Mage
 {
-	public partial class CalculationOptionsPanelMage : CalculationOptionsPanelBase
-	{
-		public CalculationOptionsPanelMage()
-		{
-			InitializeComponent();
+    public partial class CalculationOptionsPanelMage : CalculationOptionsPanelBase
+    {
+        public CalculationOptionsPanelMage()
+        {
+            InitializeComponent();
             talents = new MageTalentsForm(this);
             comboBoxMIPMethod.Items.Add(MIPMethod.BestBound);
             comboBoxMIPMethod.Items.Add(MIPMethod.DepthFirst);
-		}
+        }
 
         private MageTalentsForm talents;
         private bool loading = false;
 
-		protected override void LoadCalculationOptions()
-		{
+        protected override void LoadCalculationOptions()
+        {
             if (Character.CalculationOptions == null) Character.CalculationOptions = new CalculationOptionsMage(Character);
             CalculationOptionsMage calculationOptions = Character.CalculationOptions as CalculationOptionsMage;
 
@@ -36,9 +31,9 @@ namespace Rawr.Mage
             loading = false;
         }
 
-		private void checkBoxEnforceMetagemRequirements_CheckedChanged(object sender, EventArgs e)
-		{
-			Character.EnforceMetagemRequirements = checkBoxEnforceMetagemRequirements.Checked;
+        private void checkBoxEnforceMetagemRequirements_CheckedChanged(object sender, EventArgs e)
+        {
+            Character.EnforceMetagemRequirements = checkBoxEnforceMetagemRequirements.Checked;
             if (!loading) Character.OnItemsChanged();
         }
 
@@ -84,5 +79,5 @@ namespace Rawr.Mage
             CustomSpellMixForm form = new CustomSpellMixForm(calculationOptions.CustomSpellMix);
             form.ShowDialog(this);
         }
-	}
+    }
 }

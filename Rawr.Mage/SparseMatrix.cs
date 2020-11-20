@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Rawr.Mage
 {
@@ -189,7 +187,7 @@ namespace Rawr.Mage
             for (int c = lastCol + 1; c <= cols; c++)
             {
                 SparseMatrix.col[c] = sparseIndex;
-            }            
+            }
             finalized = true;
         }
     }

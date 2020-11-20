@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Text;
 using System.Windows.Forms;
 using System.Xml.Serialization;
-using System.IO;
 
 namespace Rawr
 {
@@ -345,7 +344,7 @@ namespace Rawr
                                 }
                             }
 
-                            Dictionary<Character.CharacterSlot, List<ComparisonCalculationBase>> upgrades = new Dictionary<Character.CharacterSlot,List<ComparisonCalculationBase>>();
+                            Dictionary<Character.CharacterSlot, List<ComparisonCalculationBase>> upgrades = new Dictionary<Character.CharacterSlot, List<ComparisonCalculationBase>>();
 
                             foreach (var kvp in upgradeList)
                             {
@@ -372,7 +371,7 @@ namespace Rawr
                                     itemCalc.OverallPoints = entry.Value / totalValue;
                                     itemCalc.SubPoints = entry.ValueList.ToArray();
 
-                                    upgrades[kvp.Key].Add(itemCalc);                                    
+                                    upgrades[kvp.Key].Add(itemCalc);
                                 }
                             }
                             List<string> customSubpoints = new List<string>();

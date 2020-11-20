@@ -1,40 +1,40 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Data;
 using System.Text;
 using System.Windows.Forms;
 using System.Xml;
 
-namespace Rawr.Rogue {
-    public partial class CalculationOptionsPanelRogue : CalculationOptionsPanelBase {
-		private Dictionary<int, string> armorBosses = new Dictionary<int, string>();
+namespace Rawr.Rogue
+{
+    public partial class CalculationOptionsPanelRogue : CalculationOptionsPanelBase
+    {
+        private Dictionary<int, string> armorBosses = new Dictionary<int, string>();
         private RogueTalents talents;
 
-		public CalculationOptionsPanelRogue()
-		{
-			InitializeComponent();
+        public CalculationOptionsPanelRogue()
+        {
+            InitializeComponent();
 
             talents = new RogueTalents(this);
 
             armorBosses.Add(3800, ": Shade of Aran");
-			armorBosses.Add(4700, ": Roar");
-			armorBosses.Add(5500, ": Netherspite");
-			armorBosses.Add(6100, ": Julianne, Curator");
-			armorBosses.Add(6200, ": Karathress, Vashj, Solarian, Kael'thas, Winterchill, Anetheron, Kaz'rogal, Azgalor, Archimonde, Teron, Shahraz");
-			armorBosses.Add(6700, ": Maiden, Illhoof");
-			armorBosses.Add(7300, ": Strawman");
-			armorBosses.Add(7500, ": Attumen");
-			armorBosses.Add(7600, ": Romulo, Nightbane, Malchezaar, Doomwalker");
-			armorBosses.Add(7700, ": Hydross, Lurker, Leotheras, Tidewalker, Al'ar, Naj'entus, Supremus, Akama, Gurtogg");
-			armorBosses.Add(8200, ": Midnight");
-			armorBosses.Add(8800, ": Void Reaver");            
-		}
+            armorBosses.Add(4700, ": Roar");
+            armorBosses.Add(5500, ": Netherspite");
+            armorBosses.Add(6100, ": Julianne, Curator");
+            armorBosses.Add(6200, ": Karathress, Vashj, Solarian, Kael'thas, Winterchill, Anetheron, Kaz'rogal, Azgalor, Archimonde, Teron, Shahraz");
+            armorBosses.Add(6700, ": Maiden, Illhoof");
+            armorBosses.Add(7300, ": Strawman");
+            armorBosses.Add(7500, ": Attumen");
+            armorBosses.Add(7600, ": Romulo, Nightbane, Malchezaar, Doomwalker");
+            armorBosses.Add(7700, ": Hydross, Lurker, Leotheras, Tidewalker, Al'ar, Naj'entus, Supremus, Akama, Gurtogg");
+            armorBosses.Add(8200, ": Midnight");
+            armorBosses.Add(8800, ": Void Reaver");
+        }
 
         private bool _loadingCalculationOptions = false;
 
-        protected override void LoadCalculationOptions() {
+        protected override void LoadCalculationOptions()
+        {
             _loadingCalculationOptions = true;
 
             if (Character.CalculationOptions == null)
@@ -49,12 +49,15 @@ namespace Rawr.Rogue {
         }
 
 
-        private void trackBarTargetArmor_Scroll(object sender, EventArgs e) {
+        private void trackBarTargetArmor_Scroll(object sender, EventArgs e)
+        {
 
         }
 
-        private void trackBarTargetArmor_ValueChanged(object sender, EventArgs e) {
-            if (!_loadingCalculationOptions) {
+        private void trackBarTargetArmor_ValueChanged(object sender, EventArgs e)
+        {
+            if (!_loadingCalculationOptions)
+            {
                 CalculationOptionsRogue calcOpts = Character.CalculationOptions as CalculationOptionsRogue;
                 trackBarTargetArmor.Value = 100 * (trackBarTargetArmor.Value / 100);
                 labelTargetArmorDescription.Text = trackBarTargetArmor.Value.ToString() + (armorBosses.ContainsKey(trackBarTargetArmor.Value) ? armorBosses[trackBarTargetArmor.Value] : "");
@@ -66,27 +69,35 @@ namespace Rawr.Rogue {
             }
         }
 
-        private void buttonTalents_Click(object sender, EventArgs e) {
-            if (Character != null && Character.Talents != null && Character.Talents.Trees != null && Character.Talents.Trees.Count > 0) {
+        private void buttonTalents_Click(object sender, EventArgs e)
+        {
+            if (Character != null && Character.Talents != null && Character.Talents.Trees != null && Character.Talents.Trees.Count > 0)
+            {
                 talents.Show();
             }
-            else {
+            else
+            {
                 MessageBox.Show("Error: There are no talents, which is a problem you know!");
             }
         }
 
-        private void OnCheckedChanged(object sender, EventArgs e) {
+        private void OnCheckedChanged(object sender, EventArgs e)
+        {
         }
 
-        private void OnMHPoisonChanged(object sender, EventArgs e) {
-            if (Character != null && Character.CalculationOptions != null) {
+        private void OnMHPoisonChanged(object sender, EventArgs e)
+        {
+            if (Character != null && Character.CalculationOptions != null)
+            {
                 CalculationOptionsRogue calcOpts = Character.CalculationOptions as CalculationOptionsRogue;
                 calcOpts.TempMainHandEnchant = ((ComboBox)sender).SelectedItem.ToString();
             }
         }
 
-        private void OnOHPoisonChanged(object sender, EventArgs e) {
-            if (Character != null && Character.CalculationOptions != null) {
+        private void OnOHPoisonChanged(object sender, EventArgs e)
+        {
+            if (Character != null && Character.CalculationOptions != null)
+            {
                 CalculationOptionsRogue calcOpts = Character.CalculationOptions as CalculationOptionsRogue;
                 calcOpts.TempOffHandEnchant = ((ComboBox)sender).SelectedItem.ToString();
             }
@@ -94,8 +105,10 @@ namespace Rawr.Rogue {
     }
 
     [Serializable]
-    public class CalculationOptionsRogue : ICalculationOptionBase {
-        public string GetXml() {
+    public class CalculationOptionsRogue : ICalculationOptionBase
+    {
+        public string GetXml()
+        {
             System.Xml.Serialization.XmlSerializer s = new System.Xml.Serialization.XmlSerializer(typeof(CalculationOptionsRogue));
             StringBuilder xml = new StringBuilder();
             System.IO.StringWriter sw = new System.IO.StringWriter(xml);
@@ -104,21 +117,25 @@ namespace Rawr.Rogue {
         }
 
         public CalculationOptionsRogue() { }
-        public CalculationOptionsRogue(Character character): this() {
+        public CalculationOptionsRogue(Character character) : this()
+        {
             DPSCycle = new Cycle("4s5r");
 
             // talent import from DPSWarr module
             #region Rogue Talents Import
-            try {
+            try
+            {
                 WebRequestWrapper wrw = new WebRequestWrapper();
 
-                if (character.Class == Character.CharacterClass.Rogue && character.Name != null && character.Realm != null) {
+                if (character.Class == Character.CharacterClass.Rogue && character.Name != null && character.Realm != null)
+                {
                     XmlDocument docTalents = wrw.DownloadCharacterTalentTree(character.Name, character.Region, character.Realm);
 
                     //<talentTab>
                     //  <talentTree value="2550050300230151333125100000000000000000000002030302010000000000000"/>
                     //</talentTab>
-                    if (docTalents != null) {
+                    if (docTalents != null)
+                    {
                         string talentCode = docTalents.SelectSingleNode("page/characterInfo/talentTab/talentTree").Attributes["value"].Value;
                         ImprovedEviscerate = int.Parse(talentCode.Substring(0, 1));
                         RemorselessAttacks = int.Parse(talentCode.Substring(1, 1));
@@ -193,17 +210,20 @@ namespace Rawr.Rogue {
                     }
                 }
             }
-            catch (Exception) {
+            catch (Exception)
+            {
             }
             #endregion
         }
 
-        public int GetTalentByName(string name) {
+        public int GetTalentByName(string name)
+        {
             Type t = typeof(CalculationOptionsRogue);
             return (int)t.GetProperty(name).GetValue(this, null);
         }
 
-        public void SetTalentByName(string name, int value) {
+        public void SetTalentByName(string name, int value)
+        {
             Type t = typeof(CalculationOptionsRogue);
             t.GetProperty(name).SetValue(this, value, null);
         }

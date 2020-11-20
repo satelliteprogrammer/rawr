@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Rawr.Mage
 {
@@ -81,7 +80,7 @@ namespace Rawr.Mage
         private const double epsPrimal = 1.0e-7;
         private const double epsPrimalLow = 1.0e-6;
         private const double epsPrimalRel = 1.0e-9;
-        private const double epsDual = 1.0e-7; 
+        private const double epsDual = 1.0e-7;
         private const double epsDualI = 1.0e-8;
         private const double epsPivot = 1.0e-5;
         private const double epsPivot2 = 1.0e-7;
@@ -279,7 +278,7 @@ namespace Rawr.Mage
             _cost[cols] = 0.0;
             _ub[cols] = double.PositiveInfinity;
             _flags[cols] = flagNLB | flagLB;
-            cols++;            
+            cols++;
             return A.AddColumn();
         }
 
@@ -1081,7 +1080,7 @@ namespace Rawr.Mage
             int allavailable = 0;
             bool retried = false;
 
-            RETRY:
+        RETRY:
             // mark eligible pivots and compute max step
             double maxstep = double.PositiveInfinity;
             double* cj = c;
@@ -1236,7 +1235,7 @@ namespace Rawr.Mage
                         }
                         if (r < maxstep) maxstep = r;
                     }
-                } 
+                }
 
                 minj = -1;
                 double minv = 0.0;
@@ -1434,7 +1433,7 @@ namespace Rawr.Mage
                 // reduced costs of all nonbasic variable which could lead to loss of feasibility
                 //if ((flags[i] & flagFix) == 0)
                 //{
-                    cost[i] -= 0.5 * (100.0 * epsDual + Math.Abs(cost[i]) * 1.0e-5) * (1 + rnd.NextDouble()); // perturb in negative direction since all variables/slacks have lower bound
+                cost[i] -= 0.5 * (100.0 * epsDual + Math.Abs(cost[i]) * 1.0e-5) * (1 + rnd.NextDouble()); // perturb in negative direction since all variables/slacks have lower bound
                 //}
             }
             costWorkingDirty = true;
