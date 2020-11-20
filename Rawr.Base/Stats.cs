@@ -14,6 +14,7 @@ namespace Rawr
         ArcaneBlastBonus,
         ArcaneResistance,
         Armor,
+        ArmorFor10SecOnHit,
         ArmorPenetration,
         AshtongueTrinketProc,
         AttackPower,
@@ -25,6 +26,7 @@ namespace Rawr
         Bloodlust,
         BloodlustProc,
         BonusCommandingShoutHP,
+        BonusConsecrationDamage,
         BonusCPGDamage,
         BonusEvisEnvenomDamage,
         BonusFreeFinisher,
@@ -32,7 +34,9 @@ namespace Rawr
         BonusManaGem,
         BonusMangleBearDamage,
         BonusMangleCatDamage,
+        BonusRetributionAura,
         BonusRipDamagePerCPPerTick,
+        BonusSoRJoR,
         BonusShredDamage,
         BonusSnDDuration,
         BonusSnDHaste,
@@ -117,6 +121,7 @@ namespace Rawr
         SpellDamageFor10SecOnHit_10_45,
         SpellDamageFor10SecOnHit_5,
         SpellDamageFor10SecOnResist,
+        SpellDamageFor15SecOnCast45Sec,
         SpellDamageFor15SecOnCrit_20_45,
         SpellDamageFor15SecOnManaGem,
         SpellDamageFor15SecOnUse90Sec,
@@ -136,6 +141,7 @@ namespace Rawr
         SpellHasteFor6SecOnHit_10_45,
         SpellHasteRating,
         SpellHitRating,
+        SpellHolyDamageRating,
         SpellNatureDamageRating,
         SpellPenetration,
         SpellShadowDamageRating,
@@ -148,6 +154,7 @@ namespace Rawr
         TerrorProc,
         TimbalsProc,
         UnseenMoonDamageBonus,
+        VengeanceProc,
         WeaponDamage,
         WindfuryAPBonus,
         WrathDmg,
@@ -207,6 +214,7 @@ namespace Rawr
         BonusStrengthMultiplier,
         BonusSwipeDamageMultiplier,
         BonusShadowSpellPowerMultiplier,
+        ConsecrationMultiplier,
         FoLMultiplier,
         ThreatIncreaseMultiplier,
         BonusWarlockDotDamageMultiplier,
@@ -492,6 +500,15 @@ namespace Rawr
         {
             get { return _rawAdditiveData[(int)AdditiveStat.SpellArcaneDamageRating]; }
             set { _rawAdditiveData[(int)AdditiveStat.SpellArcaneDamageRating] = value; }
+        }
+
+        [System.ComponentModel.DefaultValueAttribute(0f)]
+        [Category("Spell Combat Ratings")]
+        [DisplayName("Spell Holy Damage")]
+        public float SpellHolyDamageRating
+        {
+            get { return _rawAdditiveData[(int)AdditiveStat.SpellHolyDamageRating]; }
+            set { _rawAdditiveData[(int)AdditiveStat.SpellHolyDamageRating] = value; }
         }
 
         [System.ComponentModel.DefaultValueAttribute(0f)]
@@ -836,6 +853,27 @@ namespace Rawr
             set { _rawAdditiveData[(int)AdditiveStat.BonusMangleBearDamage] = value; }
         }
 
+        [System.ComponentModel.DefaultValueAttribute(0f)]
+        public float BonusConsecrationDamage
+        {
+            get { return _rawAdditiveData[(int)AdditiveStat.BonusConsecrationDamage]; }
+            set { _rawAdditiveData[(int)AdditiveStat.BonusConsecrationDamage] = value; }
+        }
+
+        [System.ComponentModel.DefaultValueAttribute(0f)]
+        public float BonusRetributionAura
+        {
+            get { return _rawAdditiveData[(int)AdditiveStat.BonusRetributionAura]; }
+            set { _rawAdditiveData[(int)AdditiveStat.BonusRetributionAura] = value; }
+        }
+
+        [System.ComponentModel.DefaultValueAttribute(0f)]
+        public float BonusSoRJoR
+        {
+            get { return _rawAdditiveData[(int)AdditiveStat.BonusSoRJoR]; }
+            set { _rawAdditiveData[(int)AdditiveStat.BonusSoRJoR] = value; }
+        }
+
 
         [System.ComponentModel.DefaultValueAttribute(0f)]
         [DisplayName("Bonus Rip Damage Per Combo Point Per Tick")]
@@ -941,6 +979,15 @@ namespace Rawr
         }
 
         [System.ComponentModel.DefaultValueAttribute(0f)]
+        [DisplayName("Armor 2% on Hit")]
+        [Category("Equipment Procs")]
+        public float ArmorFor10SecOnHit
+        {
+            get { return _rawAdditiveData[(int)AdditiveStat.ArmorFor10SecOnHit]; }
+            set { _rawAdditiveData[(int)AdditiveStat.ArmorFor10SecOnHit] = value; }
+        }
+
+        [System.ComponentModel.DefaultValueAttribute(0f)]
         [DisplayName("Spell Haste (50% 5 sec/Crit)")]
         [Category("Equipment Procs")]
         public float SpellHasteFor5SecOnCrit_50
@@ -967,6 +1014,15 @@ namespace Rawr
         {
             get { return _rawAdditiveData[(int)AdditiveStat.SpellHasteFor6SecOnHit_10_45]; }
             set { _rawAdditiveData[(int)AdditiveStat.SpellHasteFor6SecOnHit_10_45] = value; }
+        }
+
+        [System.ComponentModel.DefaultValueAttribute(0f)]
+        [DisplayName("Spell Damage (10 sec/45 sec)")]
+        [Category("Equipment Procs")]
+        public float SpellDamageFor15SecOnCast45Sec
+        {
+            get { return _rawAdditiveData[(int)AdditiveStat.SpellDamageFor15SecOnCast45Sec]; }
+            set { _rawAdditiveData[(int)AdditiveStat.SpellDamageFor15SecOnCast45Sec] = value; }
         }
 
         [System.ComponentModel.DefaultValueAttribute(0f)]
@@ -1670,6 +1726,13 @@ namespace Rawr
             get { return _rawAdditiveData[(int)AdditiveStat.FullManaRegenFor15SecOnSpellcast]; }
             set { _rawAdditiveData[(int)AdditiveStat.FullManaRegenFor15SecOnSpellcast] = value; }
         }
+
+        [System.ComponentModel.DefaultValueAttribute(0f)]
+        public float VengeanceProc
+        {
+            get { return _rawAdditiveData[(int)AdditiveStat.VengeanceProc]; }
+            set { _rawAdditiveData[(int)AdditiveStat.VengeanceProc] = value; }
+        }
         #endregion
 
         #region MultiplicativeStats
@@ -1988,6 +2051,16 @@ namespace Rawr
         {
             get { return _rawMultiplicativeData[(int)MultiplicativeStat.BonusGHHealingMultiplier]; }
             set { _rawMultiplicativeData[(int)MultiplicativeStat.BonusGHHealingMultiplier] = value; }
+        }
+
+        [System.ComponentModel.DefaultValueAttribute(0f)]
+        [Multiplicative]
+        [DisplayName("Consecration Multiplier")]
+        [Category("Equipment Procs")]
+        public float ConsecrationMultiplier
+        {
+            get { return _rawMultiplicativeData[(int)MultiplicativeStat.ConsecrationMultiplier]; }
+            set { _rawMultiplicativeData[(int)MultiplicativeStat.ConsecrationMultiplier] = value; }
         }
 
         #endregion

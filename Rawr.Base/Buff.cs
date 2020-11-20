@@ -657,6 +657,13 @@ namespace Rawr
             });
             defaultBuffs.Add(new Buff()
             {
+                Name = "Greater Arcane Elixir",
+                Category = BuffCategory.ElixirsAndFlasks,
+                Stats = new Stats() { SpellDamageRating = 35 },
+                ConflictingBuffs = new string[] { "Battle Elixir" }
+            });
+            defaultBuffs.Add(new Buff()
+            {
                 Name = "Elixir of Healing Power",
                 Category = BuffCategory.ElixirsAndFlasks,
                 Stats = new Stats() { Healing = 50 },
@@ -701,7 +708,7 @@ namespace Rawr
             {
                 Name = "Flask of Blinding Light",
                 Category = BuffCategory.ElixirsAndFlasks,
-                Stats = new Stats() { SpellArcaneDamageRating = 80, SpellNatureDamageRating = 80 /*, SpellHolyDamageRating = 80 */ },
+                Stats = new Stats() { SpellArcaneDamageRating = 80, SpellNatureDamageRating = 80, SpellHolyDamageRating = 80 },
                 ConflictingBuffs = new string[] { "Battle Elixir", "Guardian Elixir" }
             });
             defaultBuffs.Add(new Buff()
@@ -801,6 +808,12 @@ namespace Rawr
                 Name = "Scroll of Strength",
                 Category = BuffCategory.OtherConsumables,
                 Stats = new Stats() { Strength = 20 }
+            });
+            defaultBuffs.Add(new Buff()
+            {
+                Name = "Rumsey Rum Black Label",
+                Category = BuffCategory.OtherConsumables,
+                Stats = new Stats() { Stamina = 15 }
             });
             defaultBuffs.Add(new Buff()
             {
@@ -905,7 +918,7 @@ namespace Rawr
             {
                 Name = "Sunwell Radiance Mob",
                 Category = BuffCategory.Debuffs,
-                Stats = new Stats() { Miss = -5f, DodgeRating = -20f * 18.9231f },
+                Stats = new Stats() { Miss = -5f, Dodge = -20f },
                 Type = BuffType.ShortDurationDW
             });
             defaultBuffs.Add(new Buff()
@@ -1175,6 +1188,22 @@ namespace Rawr
             });
             defaultBuffs.Add(new Buff()
             {
+                Name = "Crystalforge Armor 2 Piece",
+                Category = BuffCategory.SetBonuses,
+                Stats = new Stats() { BonusRetributionAura = 15 },
+                SetName = "Crystalforge Armor",
+                SetThreshold = 2
+            });
+            defaultBuffs.Add(new Buff()
+            {
+                Name = "Crystalforge Armor 4 Piece",
+                Category = BuffCategory.SetBonuses,
+                Stats = new Stats() { },
+                SetName = "Crystalforge Armor",
+                SetThreshold = 4
+            });
+            defaultBuffs.Add(new Buff()
+            {
                 Name = "Lightbringer Raiment 2 Piece",
                 Category = BuffCategory.SetBonuses,
                 Stats = new Stats() { HLCrit = .05f },
@@ -1187,6 +1216,14 @@ namespace Rawr
                 Category = BuffCategory.SetBonuses,
                 Stats = new Stats() { FoLMultiplier = .05f },
                 SetName = "Lightbringer Raiment",
+                SetThreshold = 4
+            });
+            defaultBuffs.Add(new Buff()
+            {
+                Name = "Lightbringer Armor 4 Piece",
+                Category = BuffCategory.SetBonuses,
+                Stats = new Stats() { ConsecrationMultiplier = .1f },
+                SetName = "Lightbringer Armor",
                 SetThreshold = 4
             });
             // Resto druid tier 4/5/6 sets
@@ -1422,6 +1459,34 @@ namespace Rawr
             // Rogue set bonuses
             defaultBuffs.Add(new Buff()
             {
+                Name = "Wastewalker 2 Piece Bonus",
+                Category = BuffCategory.SetBonuses,
+                Stats = new Stats() { HitRating = 35 },
+                SetName = "Wastewalker Armor",
+                SetThreshold = 2
+            });
+            defaultBuffs.Add(new Buff()
+            {
+                // Assuming a 2% proc rate and a 3s weapon speed, this bonus
+                //will proc every 150s (2m30). For a 15s uptime
+                // 15/150 * 160ap ~= 16ap
+                Name = "Wastewalker 4 Piece Bonus",
+                Category = BuffCategory.SetBonuses,
+                Stats = new Stats() { AttackPower = 16 },
+                SetName = "Wastewalker Armor",
+                SetThreshold = 4
+            });
+
+            defaultBuffs.Add(new Buff()
+            {
+                Name = "Netherblade 2 Piece Bonus",
+                Category = BuffCategory.SetBonuses,
+                Stats = new Stats() { BonusSnDDuration = 3f },
+                SetName = "Netherblade",
+                SetThreshold = 2
+            });
+            defaultBuffs.Add(new Buff()
+            {
                 Name = "Netherblade 2 Piece Bonus",
                 Category = BuffCategory.SetBonuses,
                 Stats = new Stats() { BonusSnDDuration = 3f },
@@ -1638,6 +1703,13 @@ namespace Rawr
                 Name = "Brooch of the Immortal King",
                 Category = BuffCategory.TemporaryBuffs,
                 Stats = new Stats() { Health = 1250 },
+                Type = BuffType.ShortDurationDW
+            });
+            defaultBuffs.Add(new Buff()
+            {
+                Name = "Darkmoon Card: Vengeance",
+                Category = BuffCategory.TemporaryBuffs,
+                Stats = new Stats() { VengeanceProc = 1 },
                 Type = BuffType.ShortDurationDW
             });
             defaultBuffs.Add(new Buff()

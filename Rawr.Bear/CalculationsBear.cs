@@ -206,7 +206,7 @@ you are being killed by burst damage, focus on Survival Points.",
             calculatedStats.TargetLevel = targetLevel;
             float defSkill = (float)Math.Floor(stats.DefenseRating / (123f / 52f));
             calculatedStats.Miss = 5f + (defSkill * 0.04f) + stats.Miss - levelDifference;
-            calculatedStats.Dodge = Math.Min(100f - calculatedStats.Miss, stats.Agility / 14.7059f + (stats.DodgeRating / (984f / 52f)) + (defSkill * 0.04f) - levelDifference);
+            calculatedStats.Dodge = Math.Min(100f - calculatedStats.Miss, stats.Agility / 14.7059f + (stats.DodgeRating / (984f / 52f)) + (defSkill * 0.04f) + stats.Dodge - levelDifference);
             calculatedStats.Mitigation = (stats.Armor / (stats.Armor - 22167.5f + (467.5f * targetLevel))) * 100f; //(stats.Armor / (stats.Armor + 11959.5f)) * 100f; for only 73s
             calculatedStats.CappedMitigation = Math.Min(75f, calculatedStats.Mitigation);
             calculatedStats.DodgePlusMiss = calculatedStats.Dodge + calculatedStats.Miss;
@@ -552,6 +552,7 @@ you are being killed by burst damage, focus on Survival Points.",
             statsTotal.Stamina = staBase + (float)Math.Round((staBase * statsBuffs.BonusStaminaMultiplier) + staBonus * (1 + statsBuffs.BonusStaminaMultiplier));
             statsTotal.DefenseRating = statsRace.DefenseRating + statsBaseGear.DefenseRating + statsBuffs.DefenseRating;
             statsTotal.DodgeRating = statsRace.DodgeRating + statsBaseGear.DodgeRating + statsBuffs.DodgeRating;
+            statsTotal.Dodge = statsRace.Dodge + statsBaseGear.Dodge + statsBuffs.Dodge;
             statsTotal.Resilience = statsRace.Resilience + statsBaseGear.Resilience + statsBuffs.Resilience;
             statsTotal.Health = (float)Math.Round(((statsRace.Health + statsBaseGear.Health + statsBuffs.Health + (statsTotal.Stamina * 10f)) * (character.Race == Character.CharacterRace.Tauren ? 1.05f : 1f)));
             statsTotal.Miss = statsRace.Miss + statsBaseGear.Miss + statsBuffs.Miss;

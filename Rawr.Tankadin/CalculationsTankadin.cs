@@ -158,8 +158,16 @@ you are being killed by burst damage, focus on Survival Points.",
             //Avoidance calculations
             calculatedStats.Defense = 350 + (float)Math.Floor(stats.DefenseRating / (123f / 52f)) + talents.Anticipation;
             calculatedStats.Miss = 5 + (calculatedStats.Defense - targetDefense) * .04f + stats.Miss;
-            calculatedStats.Parry = 5 + (calculatedStats.Defense - targetDefense) * .04f + stats.ParryRating / 23.6538461538462f + talents.Deflection;
-            calculatedStats.Dodge = (calculatedStats.Defense - targetDefense) * .04f + stats.Agility / 25f + (stats.DodgeRating / (984f / 52f));
+            calculatedStats.Dodge = Math.Min(100f - calculatedStats.Miss,
+                (calculatedStats.Defense - targetDefense) * .04f +
+                stats.Agility / 25f +
+                (stats.DodgeRating / (984f / 52f)) +
+                calculatedStats.BasicStats.Dodge);
+            calculatedStats.Parry = Math.Min(100f - calculatedStats.Miss - calculatedStats.Dodge,
+                5f +
+                (calculatedStats.Defense - targetDefense) * .04f +
+                stats.ParryRating / 23.6538461538462f +
+                talents.Deflection);
             calculatedStats.Avoidance = calculatedStats.Dodge + calculatedStats.Miss + calculatedStats.Parry;
 
             calculatedStats.Block = 5 + (calculatedStats.Defense - targetDefense) * .04f + stats.BlockRating / 7.884614944458f;
